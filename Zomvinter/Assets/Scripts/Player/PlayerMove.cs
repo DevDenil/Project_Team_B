@@ -27,6 +27,7 @@ public class PlayerMove : Character
         Vector3 pos = Vector3.zero;
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
+        pos.Normalize();
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
         this.transform.Translate(pos * CharMoveSpeed * Time.deltaTime);
