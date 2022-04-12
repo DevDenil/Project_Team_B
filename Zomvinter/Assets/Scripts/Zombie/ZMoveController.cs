@@ -103,7 +103,7 @@ public class ZMoveController : Character
 
     protected void MoveToPosition(Transform Target)
     {
-        //myAnim.SetBool("Paramier_Move", true);
+        // myAnim.SetBool("IsMoving", true);
         if (MoveRoutine != null) StopCoroutine(MoveRoutine);
         MoveRoutine = StartCoroutine(Chasing(Target.position, myData.AttRange, myData.AttDelay, myData.AttSpeed));
         if (RotRoutine != null) StopCoroutine(RotRoutine);
@@ -118,6 +118,7 @@ public class ZMoveController : Character
         float Dist = Dir.magnitude;
         Dir.Normalize();
 
+        if (!myAnim.GetBool("isMoving")) myAnim.SetBool("isMoving", true);
         //While 조건문으로 Aggro 해제 조건 삽입
         while (true)
         {
@@ -130,13 +131,16 @@ public class ZMoveController : Character
                 {
                     delta = Dist;
                 }
+                
+                Debug.Log("asd");
                 this.transform.Translate(Dir * delta, Space.World);
                 Dist -= delta;
             }
             else
             {
                 AttackTime += Time.deltaTime;
-
+                if (myAnim.GetBool("isMoving")) myAnim.SetBool("isMoving", false);
+                //myAnim.SetBool("isMoving", false);
                 if (AttackTime >= AttackDelay)
                 {
                     Debug.Log(AttackTime);
