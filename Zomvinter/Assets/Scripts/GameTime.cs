@@ -15,15 +15,15 @@ public class GameTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameTime.Gametime = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameTime.Gametime = TimeScale * Time.deltaTime;
+        gameTime.Gametime += TimeScale * Time.deltaTime;
         TestTime.text = gameTime.Gametime.ToString();
-        if(gameTime.Gametime == Mathf.Epsilon)
+        if(gameTime.Gametime >= 24.0f)
         {
             gameTime.Gametime = 0.0f;
         }
