@@ -5,6 +5,7 @@ struct MonsterData
 {
     public float MoveSpeed;
     public float TurnSpeed;
+    public float AttRange;
     public float AttDelay;
     public float AttSpeed;
 }
@@ -32,8 +33,8 @@ public class ZMoveController : Character
 
     private Transform myTarget = null;
 
-    public float Angle;
-    public float Dir;
+    private float Angle;
+    private float Dir;
 
     /*-----------------------------------------------------------------------------------------------*/
     void ChangeState(STATE s)
@@ -49,6 +50,9 @@ public class ZMoveController : Character
                 mySensor.FindTarget = FindTarget;
                 myData.MoveSpeed = 1.5f;
                 myData.TurnSpeed = 180.0f;
+                myData.AttRange = 1.0f;
+                myData.AttDelay = 3.5f;
+                myData.AttSpeed = 1.0f;
                 break;
             case STATE.ROAM:
                 break;
@@ -88,7 +92,7 @@ public class ZMoveController : Character
         StateProcess();
     }
     /*-----------------------------------------------------------------------------------------------*/
-    public void FindTarget()
+    protected void FindTarget()
     {
         if (mySensor.myEnemy != null)
         {
@@ -97,39 +101,65 @@ public class ZMoveController : Character
         }
     }
 
-    public void MoveToPosition(Transform Target)
+    protected void MoveToPosition(Transform Target)
     {
         //myAnim.SetBool("Paramier_Move", true);
         if (MoveRoutine != null) StopCoroutine(MoveRoutine);
-        MoveRoutine = StartCoroutine(Moving(Target.position));
+        MoveRoutine = StartCoroutine(Chasing(Target.position, myData.AttRange, myData.AttDelay, myData.AttSpeed));
         if (RotRoutine != null) StopCoroutine(RotRoutine);
         RotRoutine = StartCoroutine(Rotating(Target.position));
     }
     /*-----------------------------------------------------------------------------------------------*/
     Coroutine MoveRoutine = null;
-    IEnumerator Moving(Vector3 pos)
+    protected IEnumerator Chasing(Vector3 pos, float AttackRange, float AttackDelay, float AttackSpeed)
     {
+        float AttackTime = AttackDelay;
         Vector3 Dir = pos - this.transform.position;
         float Dist = Dir.magnitude;
         Dir.Normalize();
 
-        while (Dist > Mathf.Epsilon)
+        //While 조건문으로 Aggro 해제 조건 삽입
+        while (true)
         {
-            float delta = myData.MoveSpeed * Time.deltaTime;
-
-            if (Dist < delta)
+            //공격 거리 유지
+            if (Dist > AttackRange)
             {
-                delta = Dist;
-            }
-            this.transform.Translate(Dir * delta, Space.World);
-            Dist -= delta;
+                float delta = myData.MoveSpeed * Time.deltaTime;
 
+                if (Dist < delta)
+                {
+                    delta = Dist;
+                }
+                this.transform.Translate(Dir * delta, Space.World);
+                Dist -= delta;
+            }
+            else
+            {
+                AttackTime += Time.deltaTime;
+
+                if (AttackTime >= AttackDelay)
+                {
+                    Debug.Log(AttackTime);
+                    /*if(랜덤 난수)
+                     * {
+                     * 크리티컬 확률 Anim
+                     * }
+                     * else 
+                     * {
+                     * 일반 공격 확률 Anim
+                     * }
+                     */
+
+                    //Anim Set
+                    AttackTime = 0.0f;
+                }
+            }
             yield return null;
         }
     }
 
     Coroutine RotRoutine = null;
-    IEnumerator Rotating(Vector3 pos)
+    protected IEnumerator Rotating(Vector3 pos)
     {
         //지점 방향 벡터
         Vector3 _Dir = (pos - this.transform.position).normalized;
@@ -148,7 +178,7 @@ public class ZMoveController : Character
         RotRoutine = null;
     }
 
-    public void CalcAngle(Vector3 src, Vector3 des, Vector3 right)
+    private void CalcAngle(Vector3 src, Vector3 des, Vector3 right)
     {
         float Radian = Mathf.Acos(Vector3.Dot(src, des));
         //로테이션 값
