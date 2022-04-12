@@ -19,17 +19,19 @@ public class PlayerMove : Character
     void Update()
     {
         Moving();
-        Rotating();
+        //Rotating();
     }
-    
+    //대각선이동(애니메이션) , rotating lookAt()
     void Moving()
     {
         Vector3 pos = Vector3.zero;
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
+        //pos.Normalize();
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
-        this.transform.Translate(pos * CharMoveSpeed * Time.deltaTime);
+        //Debug.Log(pos.normalized);;
+        this.transform.Translate(pos.normalized * CharMoveSpeed * Time.deltaTime);
     }
     void Rotating()
     {
