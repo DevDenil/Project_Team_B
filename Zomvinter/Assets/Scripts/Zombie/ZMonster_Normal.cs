@@ -24,6 +24,7 @@ public class ZMonster_Normal : ZMoveController
     private STATE myState = STATE.NONE;
     //GameUtil 구축 시 이전
     private MonsterData myData;
+    private CharacterStat myStat;
     /*-----------------------------------------------------------------------------------------------*/
     void ChangeState(STATE s)
     {

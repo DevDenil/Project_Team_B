@@ -1,14 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-struct MonsterData
-{
-    public float MoveSpeed;
-    public float TurnSpeed;
-    public float AttRange;
-    public float AttDelay;
-    public float AttSpeed;
-}
+
 public class ZMoveController : Character
 {
     /*
