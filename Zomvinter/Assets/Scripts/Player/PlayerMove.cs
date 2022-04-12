@@ -30,7 +30,7 @@ public class PlayerMove : Character
         //pos.Normalize();
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
-        //Debug.Log(pos.normalized);
+        //Debug.Log(pos.normalized);;
         this.transform.Translate(pos.normalized * CharMoveSpeed * Time.deltaTime);
     }
     void Rotating()
