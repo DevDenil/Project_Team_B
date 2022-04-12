@@ -11,12 +11,12 @@ struct MonsterData
 }
 public class ZMoveController : Character
 {
+    /*
     public enum STATE
     {
         NONE, IDLE, ROAM, BATTLE, DEAD
     }
     private STATE myState = STATE.NONE;
-    private MonsterData myData;
 
     ZSensor _sensor = null;
     ZSensor mySensor
@@ -30,13 +30,15 @@ public class ZMoveController : Character
             return _sensor;
         }
     }
+    */
 
-    private Transform myTarget = null;
+    protected Transform myTarget = null;
 
     private float Angle;
     private float Dir;
 
     /*-----------------------------------------------------------------------------------------------*/
+    /*
     void ChangeState(STATE s)
     {
         if (myState == s) return;
@@ -81,25 +83,30 @@ public class ZMoveController : Character
                 break;
         }
     }
+    */
+
+    private MonsterData myData;
     /*-----------------------------------------------------------------------------------------------*/
     void Start()
     {
-        ChangeState(STATE.IDLE);
+        //ChangeState(STATE.IDLE);
     }
 
     void Update()
     {
-        StateProcess();
+        //StateProcess();
     }
     /*-----------------------------------------------------------------------------------------------*/
+    /*
     protected void FindTarget()
     {
         if (mySensor.myEnemy != null)
         {
             myTarget = mySensor.myEnemy.transform;
-            ChangeState(STATE.BATTLE);
+            //ChangeState(STATE.BATTLE);
         }
     }
+    */
 
     protected void MoveToPosition(Transform Target)
     {
@@ -121,6 +128,7 @@ public class ZMoveController : Character
         //While 조건문으로 Aggro 해제 조건 삽입
         while (true)
         {
+            Debug.Log("isOn");
             //공격 거리 유지
             if (Dist > AttackRange)
             {
@@ -139,7 +147,7 @@ public class ZMoveController : Character
 
                 if (AttackTime >= AttackDelay)
                 {
-                    Debug.Log(AttackTime);
+                    //Debug.Log(AttackTime);
                     /*if(랜덤 난수)
                      * {
                      * 크리티컬 확률 Anim

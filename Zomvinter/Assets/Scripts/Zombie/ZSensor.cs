@@ -18,7 +18,7 @@ public class ZSensor : MonoBehaviour
         if ((myEnemyMask & (1 << other.gameObject.layer)) != 0)
         {
             myEnemy = other.gameObject;
-            FindTarget?.Invoke();
+            //FindTarget?.Invoke();
             /*
             if (myTarget == null)
             {
