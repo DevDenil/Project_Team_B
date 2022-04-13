@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8514259702498028623}
   - component: {fileID: 503499434469870830}
+  - component: {fileID: 2130493048964160647}
   m_Layer: 0
   m_Name: Ch15
   m_TagString: Untagged
@@ -149,6 +150,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000009268522, y: -0.110321045, z: 0.01001066}
     m_Extent: {x: 0.9001694, y: 0.9612603, z: 0.29741573}
   m_DirtyAABB: 0
+--- !u!114 &2130493048964160647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358633599163880082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0222072be3e5d5f46b285144438ef638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 2054120717625106671}
 --- !u!1 &371116735394356627
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f457f4bd3fd654abe56a830d48cc5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1039671913344026409}
+  RotatePoint: {fileID: 2054120717625106671}
   CharMoveSpeed: 5
   CharJumpForce: 200
   myStat:
@@ -224,7 +238,6 @@ MonoBehaviour:
     DP: 0
     Hunger: 0
     Thirsty: 0
-  RotatePoint: {fileID: 2054120717625106671}
 --- !u!54 &713558194136728044
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -264,6 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4773246970638378941}
+  - component: {fileID: 8498401241245889339}
   m_Layer: 0
   m_Name: mixamorig:Hips
   m_TagString: Untagged
@@ -288,6 +302,19 @@ Transform:
   m_Father: {fileID: 2054120717625106671}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8498401241245889339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495978670159298248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0222072be3e5d5f46b285144438ef638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 2054120717625106671}
 --- !u!1 &543105538353203639
 GameObject:
   m_ObjectHideFlags: 0
