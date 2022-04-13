@@ -74,7 +74,7 @@ public class ZMonster_Normal : ZMoveController
                 break;
             case STATE.BATTLE:
                 //타겟Pos, 이동 속도, 공격 거리, 공격 딜레이, 공격 속도, 턴 속도
-                base.MoveToPosition(myTarget.transform, myData.MoveSpeed, myData.AttRange, myData.AttDelay, myData.AttSpeed,myData.TurnSpeed);
+                MoveToPosition(myTarget.transform, myData.MoveSpeed, myData.AttRange, myData.AttDelay, myData.AttSpeed,myData.TurnSpeed);
                 break;
             case STATE.DEAD:
                 break;
