@@ -7,12 +7,12 @@ public class PlayerMove : Character
     public Transform player;
     public float CharMoveSpeed = 5.0f;
     public float CharJumpForce = 200.0f;
-    new Rigidbody rigidbody;
+    //new Rigidbody rigidbody;
     public CharacterStat myStat;
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        //rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
