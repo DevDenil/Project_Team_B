@@ -7,11 +7,6 @@ public class GameTime : MonoBehaviour
 {
     public Text TestTime;
     public float TimeScale;
-    public struct time
-    {
-        public float Gametime;
-        public int day;
-    }
     public time gameTime;
     public int day;
     // Start is called before the first frame update
