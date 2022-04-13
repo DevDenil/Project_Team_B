@@ -128,4 +128,5 @@ public class ZMonster_Normal : ZMoveController
         myTarget = null;
         UnChaseCor = null;
     }
+    //머징 테스트 주석
 }
