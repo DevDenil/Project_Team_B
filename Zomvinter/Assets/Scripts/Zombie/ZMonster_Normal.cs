@@ -5,6 +5,11 @@ using UnityEngine;
 public class ZMonster_Normal : ZMoveController
 {
     // 데이터 불러오기
+    public enum STATE
+    {
+        NONE, IDLE, ROAM, BATTLE, DEAD
+    }
+
     ZSensor _sensor = null;
     ZSensor mySensor
     {
@@ -18,12 +23,8 @@ public class ZMonster_Normal : ZMoveController
         }
     }
 
-    public Transform myTarget = null;
+    public Transform myTarget = null; 
 
-    public enum STATE
-    {
-        NONE, IDLE, ROAM, BATTLE, DEAD
-    }
     /*-----------------------------------------------------------------------------------------------*/
     // 전역 변수
 
@@ -50,6 +51,7 @@ public class ZMonster_Normal : ZMoveController
                 myData.AttRange = 1.0f;
                 myData.AttDelay = 3.5f;
                 myData.AttSpeed = 1.0f;
+                myData.UnChaseTime = 3.0f;
                 
                 break;
             case STATE.ROAM:
@@ -73,8 +75,7 @@ public class ZMonster_Normal : ZMoveController
                 FindTarget();
                 break;
             case STATE.BATTLE:
-                //타겟Pos, 이동 속도, 공격 거리, 공격 딜레이, 공격 속도, 턴 속도
-                MoveToPosition(myTarget.transform, myData.MoveSpeed, myData.AttRange, myData.AttDelay, myData.AttSpeed,myData.TurnSpeed);
+                ChaseTarget();
                 break;
             case STATE.DEAD:
                 break;
@@ -98,8 +99,33 @@ public class ZMonster_Normal : ZMoveController
     {
         if (mySensor.myEnemy != null)
         {
+            //if (UnChaseCor != null) StopAllCoroutines();
             myTarget = mySensor.myEnemy.transform;
             ChangeState(STATE.BATTLE);
         }
+        else
+        {
+            Debug.Log("AAAAAAAAA");
+            //UnChaseCor = StartCoroutine(UnChaseTimer(myData.UnChaseTime));
+            ChangeState(STATE.IDLE);
+        }
+    }
+    private void ChaseTarget()
+    {
+        //타겟Pos, 이동 속도, 공격 거리, 공격 딜레이, 공격 속도, 턴 속도
+        MoveToPosition(myTarget.transform, myData.MoveSpeed, 
+            myData.AttRange, myData.AttDelay, myData.AttSpeed, myData.TurnSpeed);
+    }
+
+    Coroutine UnChaseCor = null;
+    IEnumerator UnChaseTimer (float T)
+    {
+        if(mySensor.myEnemy == null)
+        {
+            yield return new WaitForSeconds(T);
+        }
+
+        myTarget = null;
+        UnChaseCor = null;
     }
 }

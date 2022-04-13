@@ -12,6 +12,7 @@ public class ZMoveController : MonoBehaviour
             if (_anim == null)
             {
                 _anim = GetComponent<Animator>();
+                _anim = GetComponentInChildren<Animator>();
             }
             return _anim;
         }
@@ -36,7 +37,7 @@ public class ZMoveController : MonoBehaviour
     //상속 함수
     protected void MoveToPosition(Transform Target,float MoveSpeed, float AttRange, float AttDelay, float AttSpeed, float TurnSpeed)
     {
-        // myAnim.SetBool("IsMoving", true);
+        //myAnim.SetBool("IsMoving", true);
         if (MoveRoutine != null) StopCoroutine(MoveRoutine);
         MoveRoutine = StartCoroutine(Chasing(Target.position, MoveSpeed, AttRange, AttDelay, AttSpeed));
         if (RotRoutine != null) StopCoroutine(RotRoutine);
@@ -53,14 +54,13 @@ public class ZMoveController : MonoBehaviour
         float Dist = Dir.magnitude;
         Dir.Normalize();
 
-        if (!myAnim.GetBool("isMoving")) myAnim.SetBool("isMoving", true);
         //While 조건문으로 Aggro 해제 조건 삽입
         while (true)
         {
-            Debug.Log("isOn");
             //공격 거리 유지
             if (Dist > AttackRange)
             {
+                myAnim.SetBool("isMoving", true);
                 float delta = MoveSpeed * Time.deltaTime;
 
                 if (Dist < delta)
@@ -68,15 +68,13 @@ public class ZMoveController : MonoBehaviour
                     delta = Dist;
                 }
                 
-                Debug.Log("asd");
                 this.transform.Translate(Dir * delta, Space.World);
                 Dist -= delta;
             }
             else
             {
+                myAnim.SetBool("isMoving", false);
                 AttackTime += Time.deltaTime;
-                if (myAnim.GetBool("isMoving")) myAnim.SetBool("isMoving", false);
-                //myAnim.SetBool("isMoving", false);
                 if (AttackTime >= AttackDelay)
                 {
                     //Debug.Log(AttackTime);
