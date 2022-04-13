@@ -488,7 +488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c5ca4cbdca1f4692c2935f9f7370b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myState: 0
 --- !u!54 &842801959
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -667,7 +666,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TestTime: {fileID: 29409385}
-  TimeScale: 0.1
+  TimeScale: 1
+  day: 0
 --- !u!4 &1040051089
 Transform:
   m_ObjectHideFlags: 0
