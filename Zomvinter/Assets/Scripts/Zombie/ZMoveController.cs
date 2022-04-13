@@ -25,8 +25,6 @@ public class ZMoveController : Character
     }
     */
 
-    protected Transform myTarget = null;
-
     private float Angle;
     private float Dir;
 

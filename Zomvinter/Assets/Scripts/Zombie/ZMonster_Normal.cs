@@ -17,6 +17,8 @@ public class ZMonster_Normal : ZMoveController
         }
     }
 
+    private Transform myTarget = null;
+
     public enum STATE
     {
         NONE, IDLE, ROAM, BATTLE, DEAD
@@ -36,12 +38,13 @@ public class ZMonster_Normal : ZMoveController
                 break;
             case STATE.IDLE:
                 //
-                mySensor.FindTarget = FindTarget;
+                //mySensor.FindTarget = FindTarget;
                 myData.MoveSpeed = 1.5f;
                 myData.TurnSpeed = 180.0f;
                 myData.AttRange = 1.0f;
                 myData.AttDelay = 3.5f;
                 myData.AttSpeed = 1.0f;
+                
                 break;
             case STATE.ROAM:
                 break;
@@ -76,7 +79,6 @@ public class ZMonster_Normal : ZMoveController
         ChangeState(STATE.IDLE);
     }
 
-    // Update is called once per frame
     void Update()
     {
         StateProcess();
