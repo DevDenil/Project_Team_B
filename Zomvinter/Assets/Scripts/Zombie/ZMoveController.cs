@@ -2,114 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZMoveController : Character
+public class ZMoveController : MonoBehaviour
 {
-    /*
-    public enum STATE
-    {
-        NONE, IDLE, ROAM, BATTLE, DEAD
-    }
-    private STATE myState = STATE.NONE;
-
-    ZSensor _sensor = null;
-    ZSensor mySensor
+    Animator _anim = null;
+    protected Animator myAnim
     {
         get
         {
-            if (_sensor == null)
+            if (_anim == null)
             {
-                _sensor = this.GetComponentInChildren<ZSensor>();
+                _anim = GetComponent<Animator>();
             }
-            return _sensor;
+            return _anim;
         }
     }
-    */
+    /*-----------------------------------------------------------------------------------------------*/
 
     private float Angle;
     private float Dir;
 
     /*-----------------------------------------------------------------------------------------------*/
-    /*
-    void ChangeState(STATE s)
-    {
-        if (myState == s) return;
-        myState = s;
-        switch (myState)
-        {
-            case STATE.NONE:
-                break;
-            case STATE.IDLE:
-                //
-                mySensor.FindTarget = FindTarget;
-                myData.MoveSpeed = 1.5f;
-                myData.TurnSpeed = 180.0f;
-                myData.AttRange = 1.0f;
-                myData.AttDelay = 3.5f;
-                myData.AttSpeed = 1.0f;
-                break;
-            case STATE.ROAM:
-                break;
-            case STATE.BATTLE:
-                break;
-            case STATE.DEAD:
-                break;
-        }
-    }
-    void StateProcess()
-    {
-        switch (myState)
-        {
-            case STATE.NONE:
-                break;
-            case STATE.IDLE:
-                FindTarget();
-                break;
-            case STATE.ROAM:
-                FindTarget();
-                break;
-            case STATE.BATTLE:
-                MoveToPosition(myTarget.transform);
-                break;
-            case STATE.DEAD:
-                break;
-        }
-    }
-    */
-
-    private MonsterData myData;
-    /*-----------------------------------------------------------------------------------------------*/
     void Start()
     {
-        //ChangeState(STATE.IDLE);
+       
     }
 
     void Update()
     {
-        //StateProcess();
+       
     }
-    /*-----------------------------------------------------------------------------------------------*/
-    /*
-    protected void FindTarget()
-    {
-        if (mySensor.myEnemy != null)
-        {
-            myTarget = mySensor.myEnemy.transform;
-            //ChangeState(STATE.BATTLE);
-        }
-    }
-    */
 
-    protected void MoveToPosition(Transform Target)
+    /*-----------------------------------------------------------------------------------------------*/
+    //상속 함수
+    protected void MoveToPosition(Transform Target,float MoveSpeed, float AttRange, float AttDelay, float AttSpeed, float TurnSpeed)
     {
         // myAnim.SetBool("IsMoving", true);
         if (MoveRoutine != null) StopCoroutine(MoveRoutine);
-        MoveRoutine = StartCoroutine(Chasing(Target.position, myData.AttRange, myData.AttDelay, myData.AttSpeed));
+        MoveRoutine = StartCoroutine(Chasing(Target.position, MoveSpeed, AttRange, AttDelay, AttSpeed));
         if (RotRoutine != null) StopCoroutine(RotRoutine);
-        RotRoutine = StartCoroutine(Rotating(Target.position));
+        RotRoutine = StartCoroutine(Rotating(Target.position, TurnSpeed));
     }
+
     /*-----------------------------------------------------------------------------------------------*/
+    //이동 코루틴
     Coroutine MoveRoutine = null;
-    protected IEnumerator Chasing(Vector3 pos, float AttackRange, float AttackDelay, float AttackSpeed)
+    protected IEnumerator Chasing(Vector3 pos,float MoveSpeed, float AttackRange, float AttackDelay, float AttackSpeed)
     {
         float AttackTime = AttackDelay;
         Vector3 Dir = pos - this.transform.position;
@@ -124,7 +61,7 @@ public class ZMoveController : Character
             //공격 거리 유지
             if (Dist > AttackRange)
             {
-                float delta = myData.MoveSpeed * Time.deltaTime;
+                float delta = MoveSpeed * Time.deltaTime;
 
                 if (Dist < delta)
                 {
@@ -160,27 +97,8 @@ public class ZMoveController : Character
             yield return null;
         }
     }
-
-    Coroutine RotRoutine = null;
-    protected IEnumerator Rotating(Vector3 pos)
-    {
-        //지점 방향 벡터
-        Vector3 _Dir = (pos - this.transform.position).normalized;
-        CalcAngle(this.transform.forward, _Dir, this.transform.right);
-
-        while (Angle > Mathf.Epsilon)
-        {
-            float delta = myData.TurnSpeed * Time.deltaTime;
-            delta = delta > Angle ? Angle : delta;
-
-            this.transform.Rotate(Vector3.up * delta * Dir);
-
-            Angle -= delta;
-            yield return null;
-        }
-        RotRoutine = null;
-    }
-
+    /*-----------------------------------------------------------------------------------------------*/
+    //회전 코루틴
     private void CalcAngle(Vector3 src, Vector3 des, Vector3 right)
     {
         float Radian = Mathf.Acos(Vector3.Dot(src, des));
@@ -193,4 +111,25 @@ public class ZMoveController : Character
             Dir = -1.0f;
         }
     }
+
+    Coroutine RotRoutine = null;
+    protected IEnumerator Rotating(Vector3 pos, float TurnSpeed)
+    {
+        //지점 방향 벡터
+        Vector3 _Dir = (pos - this.transform.position).normalized;
+        CalcAngle(this.transform.forward, _Dir, this.transform.right);
+
+        while (Angle > Mathf.Epsilon)
+        {
+            float delta = TurnSpeed * Time.deltaTime;
+            delta = delta > Angle ? Angle : delta;
+
+            this.transform.Rotate(Vector3.up * delta * Dir);
+
+            Angle -= delta;
+            yield return null;
+        }
+        RotRoutine = null;
+    }
+    /*-----------------------------------------------------------------------------------------------*/
 }
