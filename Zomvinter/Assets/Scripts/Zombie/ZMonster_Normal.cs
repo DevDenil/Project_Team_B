@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//LJM
 public class ZMonster_Normal : ZMoveController
 {
     // 데이터 불러오기
@@ -29,6 +29,8 @@ public class ZMonster_Normal : ZMoveController
     // 전역 변수
 
     public STATE myState = STATE.NONE;
+    public Transform myWeapon;
+    public LayerMask EnemyMask;
     //GameUtil 구축 시 이전
     private MonsterData myData;
     private CharacterStat myStat;
@@ -92,7 +94,32 @@ public class ZMonster_Normal : ZMoveController
     {
         StateProcess();
     }
+    /*-----------------------------------------------------------------------------------------------*/
+    void OnAttack()
+    {
+        Debug.Log("공격 성공");
+        Collider[] list = Physics.OverlapSphere(myWeapon.position, 1.0f, EnemyMask);
+        foreach (Collider col in list)
+        {
+            BattleSystem bs = col.gameObject.GetComponent<BattleSystem>();
+            if (bs != null)
+            {
+                bs.OnDamage(50.0f);
+            }
+        }
+    }
+    public void OnDamage(float Damage)
+    {
 
+    }
+    public void OnCritDamage(float CritDamage)
+    {
+
+    }
+    public bool IsLive()
+    {
+        return true;
+    }
     /*-----------------------------------------------------------------------------------------------*/
     // 지역 함수
     protected void FindTarget()
@@ -105,7 +132,6 @@ public class ZMonster_Normal : ZMoveController
         }
         else
         {
-            Debug.Log("AAAAAAAAA");
             //UnChaseCor = StartCoroutine(UnChaseTimer(myData.UnChaseTime));
             ChangeState(STATE.IDLE);
         }
@@ -117,6 +143,8 @@ public class ZMonster_Normal : ZMoveController
             myData.AttRange, myData.AttDelay, myData.AttSpeed, myData.TurnSpeed);
     }
 
+
+    /*
     Coroutine UnChaseCor = null;
     IEnumerator UnChaseTimer (float T)
     {
@@ -128,5 +156,5 @@ public class ZMonster_Normal : ZMoveController
         myTarget = null;
         UnChaseCor = null;
     }
-    //머징 테스트 주석
+    */
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//LJM
 public class ZMoveController : MonoBehaviour
 {
     Animator _anim = null;
@@ -130,5 +130,4 @@ public class ZMoveController : MonoBehaviour
         RotRoutine = null;
     }
     /*-----------------------------------------------------------------------------------------------*/
-    //머징 테스트 주석값
 }
