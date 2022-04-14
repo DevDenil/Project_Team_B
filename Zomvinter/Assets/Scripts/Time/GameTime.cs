@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameTime : MonoBehaviour
+public class GameTime : GameUtil
 {
     public Text TestTime;
-    public float TimeScale;
-    public struct time
-    {
-        public float Gametime;
-        public int day;
-    }
+    public float TimeScale; // 시간 흐름 조정
     public time gameTime;
     public int day;
     // Start is called before the first frame update
     void Start()
     {
-        gameTime.day = 0;
+        day = gameTime.day;
         gameTime.Gametime = 0.0f;
     }
 
