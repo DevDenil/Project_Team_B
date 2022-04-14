@@ -27,12 +27,16 @@ public class PlayerMove : Character
     {
         Vector3 pos = Vector3.zero;
         pos.x = Input.GetAxis("Horizontal");
-        pos.z = Input.GetAxis("Vertical");
-        //pos.Normalize();
+        pos.z = Input.GetAxis("Vertical");        
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
         //Debug.Log(pos.normalized);;
-        this.transform.Translate(pos.normalized * CharMoveSpeed * Time.deltaTime);
+        if (pos.magnitude > 1.0f)
+        {
+            pos.Normalize();
+        }
+        this.transform.Translate(pos * CharMoveSpeed * Time.deltaTime);
+
     }
     //void Rotating()
     //{
