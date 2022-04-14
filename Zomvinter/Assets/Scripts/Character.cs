@@ -11,6 +11,7 @@ struct MonsterData
     public float AttRange;
     public float AttDelay;
     public float AttSpeed;
+    public float UnChaseTime;
 }
 
 [Serializable]
