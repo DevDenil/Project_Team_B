@@ -20,6 +20,8 @@ public struct CharacterStat
     public float HP; //체력 Health Point
     public float AP; //방어력 Armor Point
     public float DP; //공격력 Damage Point
+    public float MoveSpeed;
+    public float TurnSpeed;
     public float Hunger; // 허기
     public float Thirsty; // 갈증
 }
