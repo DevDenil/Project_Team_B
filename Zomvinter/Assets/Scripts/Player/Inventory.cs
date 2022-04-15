@@ -6,7 +6,23 @@ public class Inventory : MonoBehaviour
 {
     private List<Item> items = new List<Item>(); // 아이템 형식 저장공간
     public int inventoryMax = 10;
+    public GameObject InventoryUI;
+    bool active = false;
 
+    void Start()
+    {
+        InventoryUI.SetActive(active);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            active = !active;
+            InventoryUI.SetActive(active);
+        }
+    }
     public Inventory()
     {
 
