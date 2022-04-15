@@ -8,6 +8,12 @@ public struct ROTATEDATA
     public float Angle;
     public float Dir;
 }
+
+public struct time
+{
+    public int day;
+    public float Gametime;
+}
 public class GameUtil : MonoBehaviour
 {
     public static void CalcAngle(Vector3 src, Vector3 des, Vector3 right, out ROTATEDATA data)
