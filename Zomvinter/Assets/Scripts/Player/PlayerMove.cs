@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : Character
+public class PlayerMove : Character, BattleSystem
 {
     public Transform RotatePoint;
     public float CharMoveSpeed = 5.0f;
@@ -38,19 +38,7 @@ public class PlayerMove : Character
         this.transform.Translate(pos * CharMoveSpeed * Time.deltaTime);
 
     }
-    //void Rotating()
-    //{
-    //    Vector3 mPosition = Input.mousePosition; //마우스좌표
-    //    Vector3 oPosition = this.transform.position; //오브젝트좌표
 
-    //    mPosition.y = oPosition.y - Camera.main.transform.position.y; 
-
-    //    Vector3 target = Camera.main.ScreenToWorldPoint(mPosition);
-    //    float dirz = target.z - oPosition.z;
-    //    float dirx = target.x - oPosition.x;
-    //    float rotateDegree = Mathf.Atan2(dirz, dirx) * Mathf.Rad2Deg;
-    //    transform.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
-    //}
     void Rotate(Transform RotatePoint)
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -69,5 +57,29 @@ public class PlayerMove : Character
             RotatePoint.transform.rotation = rot; //방향 돌리기
         }
     }
+    //----------------------------------------------------------------------------------
+    // 전투관련
+    void OnAttack()
+    {
+        Fire();
+    }
+    public void OnDamage(float Damage)
+    {
 
+    }
+    public void OnCritDamage(float CritDamage)
+    {
+
+    }
+    public bool IsLive()
+    {
+        return true;
+    }
+    void Fire()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+
+        }
+    }
 }
