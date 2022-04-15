@@ -11,4 +11,5 @@ public class AnimEvent : MonoBehaviour
     {
         Attack?.Invoke();
     }
+    
 }

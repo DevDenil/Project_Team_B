@@ -33,4 +33,8 @@ public class AttackAnim : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+    public void OnAttack()
+    {
+
+    }
 }

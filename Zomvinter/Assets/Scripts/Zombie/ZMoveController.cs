@@ -21,6 +21,7 @@ public class ZMoveController : MonoBehaviour
 
     private float Angle;
     private float Dir;
+    private float AttTime = 0.0f;
 
     /*-----------------------------------------------------------------------------------------------*/
     void Start()
@@ -49,7 +50,6 @@ public class ZMoveController : MonoBehaviour
     Coroutine MoveRoutine = null;
     protected IEnumerator Chasing(Vector3 pos,float MoveSpeed, float AttackRange, float AttackDelay, float AttackSpeed)
     {
-        float AttackTime = AttackDelay;
         Vector3 Dir = pos - this.transform.position;
         float Dist = Dir.magnitude;
         Dir.Normalize();
@@ -74,8 +74,8 @@ public class ZMoveController : MonoBehaviour
             else
             {
                 myAnim.SetBool("isMoving", false);
-                AttackTime += Time.deltaTime;
-                if (AttackTime >= AttackDelay)
+                AttTime += Time.deltaTime;
+                if (AttackDelay <= AttTime)
                 {
                     //Debug.Log(AttackTime);
                     /*if(·£´ý ³­¼ö)
@@ -88,8 +88,8 @@ public class ZMoveController : MonoBehaviour
                      * }
                      */
 
-                    //Anim Set
-                    AttackTime = 0.0f;
+                    myAnim.SetTrigger("Attack");
+                    AttTime = 0.0f;
                 }
             }
             yield return null;

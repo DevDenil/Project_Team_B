@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //LJM
-public class ZMonster_Normal : ZMoveController
+public class ZMonster_Normal : ZMoveController, BattleSystem
 {
     // 데이터 불러오기
     public enum STATE
