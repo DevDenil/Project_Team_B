@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameTime : GameUtil
 {
-    /*
+    
     public Text TestTime;
     public float TimeScale; // 시간 흐름 조정
     public time gameTime;
@@ -29,5 +29,5 @@ public class GameTime : GameUtil
             gameTime.Gametime = 0.0f;
         }
     }
-    */
+    
 }
