@@ -8,8 +8,12 @@ public class Player : PlayerController, BattleSystem
     //지역 변수
     public CharacterStat myStat;
 
-    public Transform RotatePoint;
+    //인벤토리
+    public List<GameObject> myItems = new List<GameObject>();
 
+    //마우스 로테이트
+    public Transform RotatePoint;
+    //이동 벡터
     Vector3 pos = Vector3.zero;
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
