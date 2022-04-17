@@ -34,7 +34,7 @@ public class PlayerLootArea : MonoBehaviour
         {
             LootableItems.Add(other.gameObject);
 
-            if(InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/ItemPickupUI"), GameObject.Find("Canvas").transform) as GameObject;
+            if(InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/UI_Popup_Pickup"), GameObject.Find("Canvas").transform) as GameObject;
             myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
             myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }
