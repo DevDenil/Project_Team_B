@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class IInventory : MonoBehaviour
 {
     private List<Item> items = new List<Item>(); // 아이템 형식 저장공간
     public int inventoryMax = 10;
 
-    public Inventory()
-    {
+    //public Inventory()
+    //{
 
-    }
+    //}
     public void AddItem(Item item)
     {
         if (this.ItemCount() == inventoryMax) Debug.Log("인벤토리 꽉참"); //배열공간이 차있는지 확인
