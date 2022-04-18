@@ -107,9 +107,6 @@ public class Player : PlayerController, BattleSystem
     }
     void Fire()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-        }
+        
     }
 }
