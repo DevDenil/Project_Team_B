@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Animator _anim = null;
+    //bool isHaveGun = false;
     protected Animator myAnim
     {
         get

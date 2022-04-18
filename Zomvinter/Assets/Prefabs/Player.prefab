@@ -1710,9 +1710,9 @@ GameObject:
   - component: {fileID: 6700787311723906206}
   - component: {fileID: 6700787311723906193}
   - component: {fileID: 6700787311723906192}
+  - component: {fileID: 4762134479592283971}
   - component: {fileID: 6700787311723906195}
   - component: {fileID: 6700787311723906194}
-  - component: {fileID: 4762134479592283971}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1780,7 +1780,28 @@ MonoBehaviour:
     Thirsty: 0
   myItems: []
   RotatePoint: {fileID: 6700787311542356053}
+  bullet: {fileID: 0}
+  bulletStart: {fileID: 0}
+  bulletRotate: {fileID: 0}
   myState: 0
+--- !u!114 &4762134479592283971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700787311723906197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa78914712c45e4997f7c06ad4fd0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArmedGun: {fileID: 5758817663334610178}
+  UnArmedGun: {fileID: 7370659514423866935}
+  AnimGun: {fileID: 8763847923146379133}
+  PaArmedGun: {fileID: 6700787312181829924}
+  PaUnArmedGun: {fileID: 6700787312565943718}
+  PaAnimGun: {fileID: 6700787312181829924}
 --- !u!54 &6700787311723906195
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1811,21 +1832,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &4762134479592283971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6700787311723906197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa78914712c45e4997f7c06ad4fd0b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ArmedGun: {fileID: 5758817663334610178}
-  UnArmedGun: {fileID: 7370659514423866935}
-  AnimGun: {fileID: 8763847923146379133}
 --- !u!1 &6700787311834772478
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Animations;
 public class Player : PlayerController, BattleSystem
 {
     /*-----------------------------------------------------------------------------------------------*/
@@ -10,11 +10,13 @@ public class Player : PlayerController, BattleSystem
 
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
-
+    
     //마우스 로테이트
     public Transform RotatePoint;
     //이동 벡터
     Vector3 pos = Vector3.zero;
+    //총알프리팹, 총알발사위치, 총알각도
+    public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
@@ -26,6 +28,16 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
+        if (Input.GetMouseButtonDown(1))
+        {
+            myAnim.SetBool("IsAiming", true);
+            //Debug.Log("Q");
+            //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            myAnim.SetBool("IsAiming", false);
+        }
     }
     /*-----------------------------------------------------------------------------------------------*/
     //유한 상태 기계
@@ -67,6 +79,11 @@ public class Player : PlayerController, BattleSystem
             case STATE.ALIVE:
                 Move();
                 Rotation();
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))
+                { 
+                    Fire(); 
+                    Debug.Log("좌클릭");
+                }
                 break;
             case STATE.BATTLE:
                 break;
@@ -107,6 +124,6 @@ public class Player : PlayerController, BattleSystem
     }
     void Fire()
     {
-        
+        Instantiate(bullet, bulletStart.position, bulletRotate.rotation);
     }
 }

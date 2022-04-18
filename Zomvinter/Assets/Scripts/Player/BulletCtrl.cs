@@ -9,6 +9,13 @@ public class BulletCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletSpeed);
+        GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletSpeed); 
+        StartCoroutine(bulletDestroy(3.0f));
+    }
+    
+    IEnumerator bulletDestroy(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(bullet);
     }
 }

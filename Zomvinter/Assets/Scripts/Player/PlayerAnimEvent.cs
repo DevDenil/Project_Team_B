@@ -5,13 +5,18 @@ using UnityEngine.Events;
 
 public class PlayerAnimEvent : MonoBehaviour
 {
+    
     public event UnityAction GetGun = null;
     public event UnityAction PutGun = null; 
     public event UnityAction ArmGun = null;
     public event UnityAction StartAim = null;// 총을 꺼낸 이후 
     public Transform ArmedGun; // 아이들, 이동 동작때 사용 
     public Transform UnArmedGun; // 등에 매달아 둔 상태 
-    public Transform AnimGun; // 꺼내는동작때만 사용
+    public Transform AnimGun; // 사격때 사용
+                              //--------------------------------------------------------------------------------------
+    public Transform PaArmedGun; //아이들, 이동 동작 부착할 부모 
+    public Transform PaUnArmedGun; 
+    public Transform PaAnimGun;
     public void OnGetGun()//총 꺼내드는 애니메이션에 작동
     {
         GetGun?.Invoke();
