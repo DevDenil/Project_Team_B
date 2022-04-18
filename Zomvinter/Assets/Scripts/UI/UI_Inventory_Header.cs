@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon_AKM : MonoBehaviour
+public class Inventory_Header : MonoBehaviour
 {
-
+    // Start is called before the first frame update
     void Start()
     {
+        
     }
-    //Assets/Prefabs/Resources
+
     // Update is called once per frame
     void Update()
     {
