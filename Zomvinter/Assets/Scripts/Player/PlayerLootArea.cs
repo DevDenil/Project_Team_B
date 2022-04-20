@@ -7,6 +7,7 @@ public class PlayerLootArea : MonoBehaviour
     public List<GameObject> LootableItems = new List<GameObject>();
 
     private LayerMask ItemLayerMask;
+    public LayerMask FurMask;
     /*-----------------------------------------------------------------------------------------------*/
     void Start()
     {

@@ -7,6 +7,7 @@ public class Lootable : MonoBehaviour
 {
     public GameObject ItemTableUi;
     public GameObject text;
+    bool active = false;
     
     // Start is called before the first frame update
     void Start()
@@ -23,16 +24,21 @@ public class Lootable : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         text.SetActive(true);
+    }
+
+    void OnTriggerStay(Collider other)
+    {
         if (Input.GetKeyDown(KeyCode.F))
         {
             text.SetActive(false);
-            ItemTableUi.SetActive(true);
+            active = !active;
+            ItemTableUi.SetActive(active);
         }
-        
     }
 
     void OnTriggerExit(Collider other)
     {
         text.SetActive(false);
+        ItemTableUi.SetActive(false);
     }
 }
