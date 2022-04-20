@@ -5,26 +5,33 @@ using UnityEngine;
 public class PlayerLootArea : MonoBehaviour
 {
     public List<GameObject> LootableItems = new List<GameObject>();
+    [SerializeField]
+    Canvas myCanvas;
+    [SerializeField]
+    GameObject myInventory;
+
+    List<Item> lootItems;
 
     public LayerMask ItemLayerMask;
 
+    /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
-
     GameObject InstPickupUI = null;
     /*-----------------------------------------------------------------------------------------------*/
     void Start()
     {
-        
+        lootItems = myCanvas.GetComponentInChildren<Inventory>().items;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            this.GetComponentInParent<Player>().AddItems(LootableItems[0]);
+            lootItems.Add(LootableItems[0].GetComponent<ItemData>().myProperties);
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);
             Destroy(InstPickupUI);
+            myInventory.GetComponent<Inventory>().RefreshSlot();
         }
     }
     /*-----------------------------------------------------------------------------------------------*/
@@ -34,7 +41,7 @@ public class PlayerLootArea : MonoBehaviour
         {
             LootableItems.Add(other.gameObject);
 
-            if(InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/UI_Popup_Pickup"), GameObject.Find("Canvas").transform) as GameObject;
+            if(InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Pickup"), GameObject.Find("Canvas").transform) as GameObject;
             myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
             myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }

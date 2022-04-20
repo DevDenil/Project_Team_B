@@ -2307,9 +2307,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6239359517610320279}
-  - component: {fileID: 4478017118777957140}
   - component: {fileID: -2634809553196750048}
   - component: {fileID: -8432482092781168985}
+  - component: {fileID: 4844478336989626503}
   m_Layer: 13
   m_Name: Item_Weapon_AKM
   m_TagString: Untagged
@@ -2367,18 +2367,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4478017118777957140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6975497155788886916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80db715c20428d24d8000f43be93b606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-2634809553196750048
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2408,6 +2396,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 6, z: 19}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4844478336989626503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6975497155788886916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7d161411d73a04aa64c6595a0e8841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myProperties: {fileID: 11400000, guid: 38f927c1b286a2d41bb40216c2f72485, type: 2}
+  _lootData: {fileID: 0}
 --- !u!1 &7024773960602722740
 GameObject:
   m_ObjectHideFlags: 0

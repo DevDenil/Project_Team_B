@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6365644950600317231}
   - component: {fileID: 1876307098788712285}
   - component: {fileID: 7128919574923250918}
+  - component: {fileID: 3867249313776367998}
   m_Layer: 5
   m_Name: Item Icon Image
   m_TagString: Untagged
@@ -31,7 +32,7 @@ RectTransform:
   m_Children:
   - {fileID: 4324876053731543852}
   m_Father: {fileID: 8753893356415076363}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -76,6 +77,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3867249313776367998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409879165474313405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3073ee56dad38ab40b7791f2cf9dfd11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurParent: {fileID: 0}
 --- !u!1 &2791576859639917438
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +120,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8753893356415076363}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -317,8 +331,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6365644950600317231}
   - {fileID: 4070459880745584553}
+  - {fileID: 6365644950600317231}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -418,10 +432,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7683920421708440448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9366ccd5848ba314ba9dbcd94d1fe98e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dbd55b5275329c49a0332054f112664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 7128919574923250918}
+  text: {fileID: 1445477215022951960}
+  SlotIndex: 0
 --- !u!114 &5970676798191026567
 MonoBehaviour:
   m_ObjectHideFlags: 0
