@@ -10,19 +10,14 @@ public class PlayerLootArea : MonoBehaviour
     [SerializeField]
     GameObject myInventory;
 
-<<<<<<< HEAD
     private LayerMask ItemLayerMask;
     public LayerMask FurMask;
-=======
     List<Item> lootItems;
-
-    public LayerMask ItemLayerMask;
 
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
->>>>>>> 8286d2bede006c5ca82d2177d6e990d98d35b8e1
-    /*-----------------------------------------------------------------------------------------------*/
+
     void Start()
     {
         lootItems = myCanvas.GetComponentInChildren<Inventory>().items;
