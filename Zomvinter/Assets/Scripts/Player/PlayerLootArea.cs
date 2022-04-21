@@ -10,6 +10,7 @@ public class PlayerLootArea : MonoBehaviour
     GameObject myInventory;
 
     public List<GameObject> LootableItems = new List<GameObject>();
+
     public List<GameObject> LootableObject = new List<GameObject>();
 
     [SerializeField]
@@ -21,6 +22,7 @@ public class PlayerLootArea : MonoBehaviour
 
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
+    PickUpUI myLootUI = null;
     GameObject InstPickupUI = null;
 
     GameObject InstLootUI = null;
@@ -49,6 +51,13 @@ public class PlayerLootArea : MonoBehaviour
     /*-----------------------------------------------------------------------------------------------*/
     private void OnTriggerEnter(Collider other)
     {
+        if ((LootableLayerMask & (1 << other.gameObject.layer)) != 0)
+        {
+            LootableObject.Add(other.gameObject);
+            if (InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
+            myLootUI = InstPickupUI.GetComponent<PickUpUI>();
+            myLootUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
+        }
         if ((ItemLayerMask & (1 << other.gameObject.layer)) != 0)
         {
             LootableItems.Add(other.gameObject);
@@ -57,14 +66,7 @@ public class PlayerLootArea : MonoBehaviour
             myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
             myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }
-        if ((LootableLayerMask % (1 << other.gameObject.layer)) != 0)
-        {
-            LootableObject.Add(other.gameObject);
-
-            if (InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
-            myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
-            myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 30.0f);
-        }
+        
     }
     private void OnTriggerExit(Collider other)
     {
