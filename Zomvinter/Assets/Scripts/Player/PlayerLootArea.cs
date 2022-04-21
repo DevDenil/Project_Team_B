@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class PlayerLootArea : MonoBehaviour
 {
-    public List<GameObject> LootableItems = new List<GameObject>();
     [SerializeField]
     Canvas myCanvas;
     [SerializeField]
     GameObject myInventory;
 
+    public List<GameObject> LootableItems = new List<GameObject>();
+    public List<GameObject> LootableObject = new List<GameObject>();
+
+    [SerializeField]
     private LayerMask ItemLayerMask;
-    public LayerMask FurMask;
+    [SerializeField]
+    private LayerMask LootableLayerMask;
+
     List<Item> lootItems;
 
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
+
+    GameObject InstLootUI = null;
 
     void Start()
     {
@@ -33,6 +40,11 @@ public class PlayerLootArea : MonoBehaviour
             Destroy(InstPickupUI);
             myInventory.GetComponent<Inventory>().RefreshSlot();
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (InstLootUI == null && LootableObject != null) InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+        }
+                
     }
     /*-----------------------------------------------------------------------------------------------*/
     private void OnTriggerEnter(Collider other)
@@ -45,10 +57,20 @@ public class PlayerLootArea : MonoBehaviour
             myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
             myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }
+        if ((LootableLayerMask % (1 << other.gameObject.layer)) != 0)
+        {
+            LootableObject.Add(other.gameObject);
+
+            if (InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
+            myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
+            myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 30.0f);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         LootableItems.Remove(other.gameObject);
         Destroy(InstPickupUI);
+        LootableObject.Remove(other.gameObject);
+        Destroy(InstLootUI);
     }
 }

@@ -25,6 +25,17 @@ public class Inventory : MonoBehaviour
     {
         RefreshSlot();
     }
+
+    private void Start()
+    {
+
+    }
+
+    private void Update()
+    {
+
+    }
+
     void SetIndexOnSlot()
     {
         for (int i = 0; i < slots.Length; i++)

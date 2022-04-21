@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 748617106632905606}
-  m_Layer: 12
+  m_Layer: 8
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 65660093590615720, guid: c350023b68bece943928351ad0df5c3a, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c350023b68bece943928351ad0df5c3a, type: 3}
@@ -114,5 +114,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ba039ad9f091f4682dc92639471e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemTableUi: {fileID: 0}
-  text: {fileID: 0}

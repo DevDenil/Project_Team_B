@@ -254,7 +254,8 @@ GameObject:
   - component: {fileID: 7811818012288656454}
   - component: {fileID: 3679885728847212299}
   - component: {fileID: 5527720446719555953}
-  m_Layer: 13
+  - component: {fileID: 5658634120983685986}
+  m_Layer: 9
   m_Name: Item_Weapon_S&W_500
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,6 +312,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.17, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5658634120983685986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811818012288301158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7d161411d73a04aa64c6595a0e8841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myProperties: {fileID: 0}
 --- !u!1 &7811818012288301160
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Lootable : MonoBehaviour
+public class LootableObj : MonoBehaviour
 {
-    public GameObject ItemTableUi;
-    public GameObject text;
+    //public GameObject ItemTableUi;
+    //public GameObject text;
     bool active = false;
     
     // Start is called before the first frame update
@@ -20,7 +20,7 @@ public class Lootable : MonoBehaviour
     {
         
     }
-
+    /*
     void OnTriggerEnter(Collider other)
     {
         text.SetActive(true);
@@ -41,4 +41,5 @@ public class Lootable : MonoBehaviour
         text.SetActive(false);
         ItemTableUi.SetActive(false);
     }
+    */
 }

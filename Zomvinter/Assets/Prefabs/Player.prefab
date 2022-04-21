@@ -234,9 +234,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LootableItems: []
-  ItemLayerMask:
+  myCanvas: {fileID: 0}
+  myInventory: {fileID: 0}
+  FurMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 0
 --- !u!1 &6700787310567547295
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,7 +1686,7 @@ GameObject:
   - component: {fileID: 6700787311723906192}
   - component: {fileID: 6700787311723906195}
   - component: {fileID: 6700787311723906194}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1750,6 +1752,7 @@ MonoBehaviour:
     Hunger: 0
     Thirsty: 0
   myItems: []
+  myInventory: {fileID: 0}
   RotatePoint: {fileID: 6700787311542356053}
   myState: 0
 --- !u!54 &6700787311723906195

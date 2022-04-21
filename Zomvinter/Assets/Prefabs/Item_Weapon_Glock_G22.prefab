@@ -578,7 +578,8 @@ GameObject:
   - component: {fileID: 7811818011941824622}
   - component: {fileID: 2449314711873020852}
   - component: {fileID: 4345420693505778159}
-  m_Layer: 13
+  - component: {fileID: 7295548554315934254}
+  m_Layer: 9
   m_Name: Item_Weapon_Glock_G22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,3 +636,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.12, z: 0.2}
   m_Center: {x: 0, y: 0.01, z: 0.04}
+--- !u!114 &7295548554315934254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811818011942057038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7d161411d73a04aa64c6595a0e8841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myProperties: {fileID: 0}
