@@ -74,7 +74,7 @@ public class Player : PlayerController, BattleSystem
                 break;
         }
     }
-
+    /*-----------------------------------------------------------------------------------------------*/
     void Move()
     { 
         pos.x = Input.GetAxis("Horizontal");
@@ -85,7 +85,11 @@ public class Player : PlayerController, BattleSystem
     {
         base.Rotate(RotatePoint);
     }
-
+    /*-----------------------------------------------------------------------------------------------*/
+    public void AddItems(GameObject obj)
+    {
+        myItems.Add(Instantiate(obj));
+    }
 
     /*-----------------------------------------------------------------------------------------------*/
     // 배틀 시스템
