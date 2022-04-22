@@ -10,7 +10,9 @@ public class Player : PlayerController, BattleSystem
     
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
-    
+    public GameObject myInventory;
+    private bool ActiveInv = false;
+
     //마우스 로테이트
     public Transform RotatePoint;
     //이동 벡터
@@ -30,6 +32,11 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
+        if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
+        {
+            ActiveInv = !ActiveInv;
+            myInventory.SetActive(ActiveInv);
+        }
         if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {
             myAnim.SetBool("IsAiming", true);
