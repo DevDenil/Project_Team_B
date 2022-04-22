@@ -22,9 +22,10 @@ public class PlayerLootArea : MonoBehaviour
 
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
-    PickUpUI myLootUI = null;
     GameObject InstPickupUI = null;
 
+    /// <summary> Loot ÆË¾÷ UI </summary>
+    PickUpUI myLootUI = null;
     GameObject InstLootUI = null;
 
     void Start()
@@ -42,11 +43,12 @@ public class PlayerLootArea : MonoBehaviour
             Destroy(InstPickupUI);
             myInventory.GetComponent<Inventory>().RefreshSlot();
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
+            Debug.Log(InstLootUI);
+            if (InstLootUI != null) Destroy(InstLootUI);
             if (InstLootUI == null && LootableObject != null) InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
         }
-                
     }
     /*-----------------------------------------------------------------------------------------------*/
     private void OnTriggerEnter(Collider other)
@@ -54,8 +56,9 @@ public class PlayerLootArea : MonoBehaviour
         if ((LootableLayerMask & (1 << other.gameObject.layer)) != 0)
         {
             LootableObject.Add(other.gameObject);
-            if (InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
-            myLootUI = InstPickupUI.GetComponent<PickUpUI>();
+
+            if (InstLootUI == null) InstLootUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
+            myLootUI = InstLootUI.GetComponent<PickUpUI>();
             myLootUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }
         if ((ItemLayerMask & (1 << other.gameObject.layer)) != 0)
@@ -66,7 +69,6 @@ public class PlayerLootArea : MonoBehaviour
             myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
             myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
         }
-        
     }
     private void OnTriggerExit(Collider other)
     {
@@ -74,5 +76,14 @@ public class PlayerLootArea : MonoBehaviour
         Destroy(InstPickupUI);
         LootableObject.Remove(other.gameObject);
         Destroy(InstLootUI);
+    }
+
+    IEnumerator SearchingObject()
+    {
+        while (true)
+        {
+
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 }
