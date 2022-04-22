@@ -14,7 +14,7 @@ public struct time
     public int day;
     public float Gametime;
 }
-public class GameUtil : MonoBehaviour
+public class GameUtil : MonoBehaviour, IDamageable
 {
     public static void CalcAngle(Vector3 src, Vector3 des, Vector3 right, out ROTATEDATA data)
     {
@@ -28,6 +28,10 @@ public class GameUtil : MonoBehaviour
         {
             data.Dir = -1.0f;
         }
+    }
+    public void TakeHit(float damage,RaycastHit hit)
+    {
+
     }
 }
 public interface BattleSystem

@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Animations;
 public class Player : PlayerController, BattleSystem
 {
     /*-----------------------------------------------------------------------------------------------*/
     //지역 변수
     public CharacterStat myStat;
-
+    
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
-    public GameObject myInventory;
-    private bool ActiveInv = false;
-
+    
     //마우스 로테이트
     public Transform RotatePoint;
     //이동 벡터
     Vector3 pos = Vector3.zero;
+    //총알프리팹, 총알발사위치, 총알각도
+    public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
+    //총 획득시 생성하기 위한 boolcheck용 
+    public bool GunCheck = false;
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
@@ -28,11 +30,18 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
-        if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
+        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {
-            ActiveInv = !ActiveInv;
-            myInventory.SetActive(ActiveInv);
+            myAnim.SetBool("IsAiming", true);
+            //Debug.Log("Q");
+            //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
         }
+        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
+        {
+            myAnim.SetBool("IsAiming", false);
+        }
+        //총 획득시 Guncheck true 만들기
+        //if (GunCheck)
     }
     /*-----------------------------------------------------------------------------------------------*/
     //유한 상태 기계
@@ -74,6 +83,25 @@ public class Player : PlayerController, BattleSystem
             case STATE.ALIVE:
                 Move();
                 Rotation();
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming") && GunCheck)
+                { 
+                    Fire(); 
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun") &&GunCheck)
+                {
+                    myAnim.SetBool("IsGun", true);
+                    myAnim.SetTrigger("GetGun");
+                }
+                if (Input.GetKeyDown(KeyCode.X) && GunCheck)
+                {
+                    myAnim.SetTrigger("PutGun");
+                    myAnim.SetBool("IsGun", false);
+                    myAnim.SetBool("IsAiming", false);
+                }
+                if (Input.GetKeyDown(KeyCode.V))
+                {
+                    myAnim.SetTrigger("Melee");
+                }
                 break;
             case STATE.BATTLE:
                 break;
@@ -81,7 +109,7 @@ public class Player : PlayerController, BattleSystem
                 break;
         }
     }
-    /*-----------------------------------------------------------------------------------------------*/
+
     void Move()
     { 
         pos.x = Input.GetAxis("Horizontal");
@@ -92,21 +120,27 @@ public class Player : PlayerController, BattleSystem
     {
         base.Rotate(RotatePoint);
     }
-    /*-----------------------------------------------------------------------------------------------*/
-    public void AddItems(GameObject obj)
-    {
-        myItems.Add(Instantiate(obj));
-    }
+
 
     /*-----------------------------------------------------------------------------------------------*/
     // 배틀 시스템
+    public void TakeHit(float damage, RaycastHit hit)
+    {
+
+    }
     void OnAttack()
     {
         Fire();
     }
     public void OnDamage(float Damage)
     {
+        if (myState == STATE.DEAD) return;
+        myStat.HP -= Damage;
+        if (myStat.HP <= 0) ChangeState(STATE.DEAD);
+        else
+        {
 
+        }
     }
     public void OnCritDamage(float CritDamage)
     {
@@ -118,9 +152,6 @@ public class Player : PlayerController, BattleSystem
     }
     void Fire()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-        }
+        Instantiate(bullet, bulletStart.position, bulletRotate.rotation);
     }
 }
