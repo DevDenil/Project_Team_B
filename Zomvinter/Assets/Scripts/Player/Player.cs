@@ -7,7 +7,7 @@ public class Player : PlayerController, BattleSystem
     /*-----------------------------------------------------------------------------------------------*/
     //Áö¿ª º¯¼ö
     public CharacterStat myStat;
-
+    
     //ÀÎº¥Åä¸®
     public List<GameObject> myItems = new List<GameObject>();
     
@@ -17,6 +17,8 @@ public class Player : PlayerController, BattleSystem
     Vector3 pos = Vector3.zero;
     //ÃÑ¾ËÇÁ¸®ÆÕ, ÃÑ¾Ë¹ß»çÀ§Ä¡, ÃÑ¾Ë°¢µµ
     public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
+    //ÃÑ È¹µæ½Ã »ý¼ºÇÏ±â À§ÇÑ boolcheck¿ë 
+    public bool GunCheck = false;
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
@@ -28,16 +30,18 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
-        if (Input.GetMouseButtonDown(1))
+        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {
             myAnim.SetBool("IsAiming", true);
             //Debug.Log("Q");
             //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
         }
-        if (Input.GetMouseButtonUp(1))
+        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
         {
             myAnim.SetBool("IsAiming", false);
         }
+        //ÃÑ È¹µæ½Ã Guncheck true ¸¸µé±â
+        //if (GunCheck)
     }
     /*-----------------------------------------------------------------------------------------------*/
     //À¯ÇÑ »óÅÂ ±â°è
@@ -79,10 +83,24 @@ public class Player : PlayerController, BattleSystem
             case STATE.ALIVE:
                 Move();
                 Rotation();
-                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming") && GunCheck)
                 { 
                     Fire(); 
-                    Debug.Log("ÁÂÅ¬¸¯");
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun") &&GunCheck)
+                {
+                    myAnim.SetBool("IsGun", true);
+                    myAnim.SetTrigger("GetGun");
+                }
+                if (Input.GetKeyDown(KeyCode.X) && GunCheck)
+                {
+                    myAnim.SetTrigger("PutGun");
+                    myAnim.SetBool("IsGun", false);
+                    myAnim.SetBool("IsAiming", false);
+                }
+                if (Input.GetKeyDown(KeyCode.V))
+                {
+                    myAnim.SetTrigger("Melee");
                 }
                 break;
             case STATE.BATTLE:
@@ -106,13 +124,23 @@ public class Player : PlayerController, BattleSystem
 
     /*-----------------------------------------------------------------------------------------------*/
     // ¹èÆ² ½Ã½ºÅÛ
+    public void TakeHit(float damage, RaycastHit hit)
+    {
+
+    }
     void OnAttack()
     {
         Fire();
     }
     public void OnDamage(float Damage)
     {
+        if (myState == STATE.DEAD) return;
+        myStat.HP -= Damage;
+        if (myStat.HP <= 0) ChangeState(STATE.DEAD);
+        else
+        {
 
+        }
     }
     public void OnCritDamage(float CritDamage)
     {

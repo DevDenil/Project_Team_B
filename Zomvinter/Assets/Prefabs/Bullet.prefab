@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3419889881703901689}
   - component: {fileID: 5439801143325448243}
   - component: {fileID: 920161694662886511}
-  - component: {fileID: 2943607204929073345}
+  - component: {fileID: -2333021191567502492}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -47,6 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f55bc13dddff4458810e1c39d22f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 5
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 2048
   bullet: {fileID: 581657366986837472}
   bulletSpeed: 1000
 --- !u!33 &3419889881703901689
@@ -111,7 +115,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &2943607204929073345
+--- !u!54 &-2333021191567502492
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

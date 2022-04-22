@@ -34,6 +34,8 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     //GameUtil 구축 시 이전
     private MonsterData myData;
     private CharacterStat myStat;
+    //공격
+    bool AttackTerm = false;
 
     /*-----------------------------------------------------------------------------------------------*/
     // 유한 상태 기계
@@ -54,7 +56,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
                 myData.AttDelay = 3.5f;
                 myData.AttSpeed = 1.0f;
                 myData.UnChaseTime = 3.0f;
-                
+                myStat.DP = 5.0f;
                 break;
             case STATE.ROAM:
                 break;
@@ -78,6 +80,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
                 break;
             case STATE.BATTLE:
                 ChaseTarget();
+                //OnAttack();
                 break;
             case STATE.DEAD:
                 break;
@@ -88,6 +91,9 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     void Start()
     {
         ChangeState(STATE.IDLE);
+        //GetComponentInChildren<AnimEvent>().Attack += OnAttack;
+        GetComponentInChildren<AnimEvent>().AttackStart += OnAttackStart;
+        GetComponentInChildren<AnimEvent>().AttackEnd += OnAttackEnd;
     }
 
     void Update()
@@ -97,20 +103,42 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     /*-----------------------------------------------------------------------------------------------*/
     void OnAttack()
     {
-        Debug.Log("공격 성공");
-        Collider[] list = Physics.OverlapSphere(myWeapon.position, 1.0f, EnemyMask);
-        foreach (Collider col in list)
+         
+        Debug.Log(AttackTerm);
+        if (myAnim.GetBool("AttackTerm"))
         {
-            BattleSystem bs = col.gameObject.GetComponent<BattleSystem>();
-            if (bs != null)
+            Debug.Log("공격 성공");
+            Collider[] list = Physics.OverlapSphere(myWeapon.position, 1.0f, EnemyMask);
+            foreach (Collider col in list)
             {
-                bs.OnDamage(50.0f);
+                BattleSystem bs = col.gameObject.GetComponent<BattleSystem>();
+                if (bs != null)
+                {
+                    bs.OnDamage(myStat.DP);
+                }
             }
         }
+        else Debug.Log("ss");
+    }
+    void OnAttackStart() 
+    {
+        myAnim.SetBool("AttackTerm", true); 
+        OnAttack();
+    }
+    void OnAttackEnd()
+    {
+        myAnim.SetBool("AttackTerm", false);
     }
     public void OnDamage(float Damage)
     {
 
+        if (myState == STATE.DEAD) return;
+        myStat.HP -= Damage;
+        if (myStat.HP <= 0) ChangeState(STATE.DEAD);
+        else
+        {
+            //피격애니메이션 구현
+        }
     }
     public void OnCritDamage(float CritDamage)
     {
