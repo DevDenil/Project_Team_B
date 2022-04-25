@@ -21,21 +21,13 @@ public class Inventory : MonoBehaviour
         SetIndexOnSlot();
     }
 
+    /// <summary> 프로세스가 시작되기 전에 실행되는 함수 </summary>
     private void Awake()
     {
         RefreshSlot();
     }
 
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
-
+    /// <summary> 슬롯에 인덱스 번호를 부여하는 함수 </summary>
     void SetIndexOnSlot()
     {
         for (int i = 0; i < slots.Length; i++)
@@ -58,6 +50,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /// <summary> 아이템 추가 함수 </summary>
     public void AddItem(Item _itme)
     {
         if(items.Count < slots.Length)

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary> 회전 연산 변수 구조체 </summary>
 public struct ROTATEDATA
 {
     public float Angle;
     public float Dir;
 }
 
+/// <summary> 월드 타임 변수 구조체 </summary>
 public struct time
 {
     public int day;
@@ -16,6 +18,11 @@ public struct time
 }
 public class GameUtil : MonoBehaviour, IDamageable
 {
+    /// <summary> 회전 연산 함수 </summary>
+    /// <param name="src">회전 시작 지점</param>
+    /// <param name="des">회전 끝 지점</param>
+    /// <param name="right">해당 오브젝트의 Vector.Right값</param>
+    /// <param name="data">연산 후 리턴 값</param>
     public static void CalcAngle(Vector3 src, Vector3 des, Vector3 right, out ROTATEDATA data)
     {
         data = new ROTATEDATA();
@@ -34,6 +41,8 @@ public class GameUtil : MonoBehaviour, IDamageable
 
     }
 }
+
+/// <summary> 전투 시스템 인터페이스 </summary>
 public interface BattleSystem
 {
     void OnDamage(float Damage);
