@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-
+    /// <summary> 내 플레이어의 위치 </summary>
     public Transform myPlayerPos;
-
+    /// <summary> 인벤토리에 저장 될 아이템 목록 리스트 </summary>
     public List<Item> items;
 
+    /// <summary> 인벤토리 내의 슬롯 프리펩 위치 값 </summary>
     [SerializeField]
     private Transform slotParent;
+    /// <summary> 인벤토리 내의 슬롯들을 저장 할 배열 </summary>
     [SerializeField]
     public Slot[] slots;
 
