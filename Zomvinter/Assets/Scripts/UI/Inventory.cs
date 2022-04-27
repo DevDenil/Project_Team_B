@@ -8,6 +8,18 @@ public class Inventory : MonoBehaviour
     public Transform myPlayerPos;
     /// <summary> 인벤토리에 저장 될 아이템 목록 리스트 </summary>
     public List<Item> items;
+    /// <summary> 주 무기에 저장 될 아이템 목록 리스트 </summary>
+    public Item[] MainItems = new Item[2];
+    /// <summary> 모조 무기에 저장 될 아이템 목록 리스트 </summary>
+    public Item[] SecondaryItems = new Item[2];
+    /// <summary> 소모품에 저장 될 아이템 목록 리스트 </summary>
+    public Item[] ConsumableItems = new Item[3];
+    /// <summary> 헬멧 아이템 변수 </summary>
+    public Item HelmetItem = null;
+    /// <summary> 방어구 아이템 변수 </summary>
+    public Item BodyArmorItem = null;
+    /// <summary> 가방 아이템 변수 </summary>
+    public Item BackpackItem = null;
 
     /// <summary> 인벤토리 내의 슬롯 프리펩 위치 값 </summary>
     [SerializeField]
@@ -51,7 +63,79 @@ public class Inventory : MonoBehaviour
             slots[i].item = null;
         }
     }
-
+    public void ItemTypeChecker(Item _item)
+    {
+        if (_item._type == Item.ItemType.Main)
+        {
+            if (MainItems[0] == null)
+            {
+                MainItems[0] = _item;
+            }
+            else
+            {
+                if(MainItems[1] == null)
+                {
+                    MainItems[1] = _item;
+                }
+                else
+                {
+                    items.Add(_item); 
+                }
+            }
+        }
+        else if (_item._type == Item.ItemType.Second)
+        {
+            if (SecondaryItems[0] == null)
+            {
+                SecondaryItems[0] = _item;
+            }
+            else
+            {
+                if (SecondaryItems[1] == null)
+                {
+                    SecondaryItems[1] = _item;
+                }
+                else
+                {
+                    items.Add(_item);
+                }
+            }
+        }
+        else if (_item._type == Item.ItemType.Consumable)
+        {
+            if (ConsumableItems[0] == null)
+            {
+                ConsumableItems[0] = _item;
+            }
+            else
+            {
+                if (ConsumableItems[1] == null)
+                {
+                    ConsumableItems[1] = _item;
+                }
+                else
+                {
+                    items.Add(_item);
+                }
+            }
+        }
+        else if (_item._type == Item.ItemType.Helmet)
+        {
+            HelmetItem = _item;
+        }
+        else if (_item._type == Item.ItemType.BodyArmor)
+        {
+            BodyArmorItem = _item;
+        }
+        else if (_item._type == Item.ItemType.Backpack)
+        {
+            BackpackItem = _item;
+        }
+        else
+        {
+            items.Add(_item);
+        }
+    }
     /// <summary> 아이템 추가 함수 </summary>
     public void AddItem(Item _itme)
     {

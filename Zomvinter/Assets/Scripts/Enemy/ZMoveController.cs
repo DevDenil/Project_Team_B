@@ -2,22 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //LJM
-public class ZMoveController : MonoBehaviour
+public class ZMoveController : Character
 {
-    /* 반환 함수 -----------------------------------------------------------------------------------------------*/
-    Animator _anim = null;
-    protected Animator myAnim
-    {
-        get
-        {
-            if (_anim == null)
-            {
-                _anim = GetComponent<Animator>();
-                _anim = GetComponentInChildren<Animator>();
-            }
-            return _anim;
-        }
-    }
     /* 지역 변수 -----------------------------------------------------------------------------------------------*/
 
     private float Angle;

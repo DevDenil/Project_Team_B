@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Item : ScriptableObject
 {
+    public enum ItemType // 아이템 타입
+    {
+        Main, Second, Consumable, Helmet, BodyArmor, Backpack, Resource, Document
+    }
+    [SerializeField]
+    public ItemType _type;
     [SerializeField]
     public int _id; // 인덱스
     [SerializeField]
