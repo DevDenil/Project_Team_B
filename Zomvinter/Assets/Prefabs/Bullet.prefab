@@ -44,15 +44,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 581657366986837472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39f55bc13dddff4458810e1c39d22f63, type: 3}
+  m_Script: {fileID: 11500000, guid: cd837f746564860489f813c5be8f6d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
   collisionMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 6144
   bullet: {fileID: 581657366986837472}
-  bulletSpeed: 1000
+  bulletSpeed: 50
+  damage: 5
 --- !u!33 &3419889881703901689
 MeshFilter:
   m_ObjectHideFlags: 0

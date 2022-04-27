@@ -7,7 +7,8 @@ public class Player : PlayerController, BattleSystem
     /*-----------------------------------------------------------------------------------------------*/
     //Áö¿ª º¯¼ö
     public CharacterStat myStat;
-    
+    public LayerMask BulletLayer;//ÃÑ¾Ë µµÂøÁö
+    private Vector3 dir; // ÃÑ¾Ë °¢µµ 
     //ÀÎº¥Åä¸®
     public List<GameObject> myItems = new List<GameObject>();
     public GameObject myInventory;
@@ -20,7 +21,8 @@ public class Player : PlayerController, BattleSystem
     //ÃÑ¾ËÇÁ¸®ÆÕ, ÃÑ¾Ë¹ß»çÀ§Ä¡, ÃÑ¾Ë°¢µµ
     public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
     //ÃÑ È¹µæ½Ã »ý¼ºÇÏ±â À§ÇÑ boolcheck¿ë 
-    public bool GunCheck = false;
+    // public bool GunCheck = false;
+    
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
@@ -40,6 +42,7 @@ public class Player : PlayerController, BattleSystem
         if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {
             myAnim.SetBool("IsAiming", true);
+            BulletRotCtrl();
             //Debug.Log("Q");
             //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
         }
@@ -49,6 +52,10 @@ public class Player : PlayerController, BattleSystem
         }
         //ÃÑ È¹µæ½Ã Guncheck true ¸¸µé±â
         //if (GunCheck)
+    }
+    private void LateUpdate()
+    {
+        base.BulletRotate(bulletRotate);
     }
     /*-----------------------------------------------------------------------------------------------*/
     //À¯ÇÑ »óÅÂ ±â°è
@@ -90,16 +97,16 @@ public class Player : PlayerController, BattleSystem
             case STATE.ALIVE:
                 Move();
                 Rotation();
-                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming") && GunCheck)
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
                 { 
                     Fire(); 
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun") &&GunCheck)
+                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun"))//&&GunCheck
                 {
                     myAnim.SetBool("IsGun", true);
                     myAnim.SetTrigger("GetGun");
                 }
-                if (Input.GetKeyDown(KeyCode.X) && GunCheck)
+                if (Input.GetKeyDown(KeyCode.X))// && GunCheck
                 {
                     myAnim.SetTrigger("PutGun");
                     myAnim.SetBool("IsGun", false);
@@ -128,7 +135,7 @@ public class Player : PlayerController, BattleSystem
         base.Rotate(RotatePoint);
     }
 
-
+    
     /*-----------------------------------------------------------------------------------------------*/
     // ¹èÆ² ½Ã½ºÅÛ
     public void TakeHit(float damage, RaycastHit hit)
@@ -137,7 +144,8 @@ public class Player : PlayerController, BattleSystem
     }
     void OnAttack()
     {
-        Fire();
+        //base.BulletRotate(bulletRotate);
+
     }
     public void OnDamage(float Damage)
     {
@@ -160,5 +168,15 @@ public class Player : PlayerController, BattleSystem
     void Fire()
     {
         Instantiate(bullet, bulletStart.position, bulletRotate.rotation);
+    }
+    void BulletRotCtrl()
+    {
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Physics.Raycast(ray, out RaycastHit hit, 9999.0f))
+        //{
+        //    Vector3 pos = bulletStart.position - hit.point;
+        //}
+        //Quaternion rotation = Quaternion.LookRotation(pos);
+        //transform.rotation = rotation;  
     }
 }

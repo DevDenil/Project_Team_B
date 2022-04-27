@@ -270,38 +270,7 @@ MonoBehaviour:
   myPlayerPos: {fileID: 1304248598}
   items: []
   slotParent: {fileID: 80512661}
-  slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  slots: []
 --- !u!224 &254186407 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
@@ -319,7 +288,7 @@ GameObject:
   - component: {fileID: 396569626}
   - component: {fileID: 396569625}
   - component: {fileID: 396569624}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,7 +1037,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1164,7 +1133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553986354
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1331,6 +1300,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3568774879614828899, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+      propertyPath: m_Name
+      value: BulletStart
+      objectReference: {fileID: 0}
     - target: {fileID: 5619852721595142635, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1
@@ -1340,9 +1313,25 @@ PrefabInstance:
       value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 6700787311723906192, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 8127676554979212102, guid: 613285d4b2437294e8a50f65bbe5ee34, type: 3}
+    - target: {fileID: 6700787311723906192, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+      propertyPath: bulletStart
+      value: 
+      objectReference: {fileID: 1922856843}
+    - target: {fileID: 6700787311723906192, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
       propertyPath: myInventory
       value: 
       objectReference: {fileID: 132291483}
+    - target: {fileID: 6700787311723906192, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+      propertyPath: bulletRotate
+      value: 
+      objectReference: {fileID: 1922856843}
+    - target: {fileID: 6700787311723906193, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 12c0aa2a0fd415c4c96911c9574d4b2a, type: 2}
     - target: {fileID: 6700787311723906197, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1401,6 +1390,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+--- !u!4 &1922856843 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 749263365368124284, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
+  m_PrefabInstance: {fileID: 1922856842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1932765785 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 332722902492472387, guid: cf0cd11bc93df7a40b305f3e0d666d7c, type: 3}
