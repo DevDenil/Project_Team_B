@@ -269,39 +269,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myPlayerPos: {fileID: 1304248598}
   items: []
+  MainItems: []
+  SecondaryItems: []
+  ConsumableItems: []
+  HelmetItem: {fileID: 0}
+  BodyArmorItem: {fileID: 0}
+  BackpackItem: {fileID: 0}
   slotParent: {fileID: 80512661}
-  slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  slots: []
 --- !u!224 &254186407 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
@@ -621,7 +596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8795849371531599548, guid: c8b4b66829dd0f14cbe986560dcf7a3a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8795849371531599551, guid: c8b4b66829dd0f14cbe986560dcf7a3a, type: 3}
       propertyPath: EnemyMask.m_Bits
