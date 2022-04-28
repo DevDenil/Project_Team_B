@@ -6,7 +6,7 @@ using UnityEngine;
 public class Consumable : Item
 {
     [SerializeField]
-    public int _maxAmount = 99; // 최대 갯수
+    public int _Amount; // 최대 갯수
     [SerializeField]
     public float _value; // 효과량
 }

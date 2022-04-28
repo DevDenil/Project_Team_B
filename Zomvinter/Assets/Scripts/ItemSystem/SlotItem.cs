@@ -11,6 +11,33 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     Vector2 DragOffset = Vector2.zero;
     public Transform CurParent = null;
 
+    [SerializeField]
+    public Image image;
+    [SerializeField]
+    public TMPro.TMP_Text text;
+
+    [SerializeField]
+    Item _item;
+    public Item item
+    {
+        get { return _item; }
+        set
+        {
+            _item = value;
+            if (_item != null)
+            {
+                //image.sprite = item._itemImage;
+                //image.color = new Color(1, 1, 1, 1);
+                text.text = item._maxAmount.ToString();
+
+            }
+            else
+            {
+                //image.color = new Color(1, 1, 1, 0);
+            }
+        }
+    }
+
     private void Start()
     {
         CurParent = this.transform.parent;
@@ -21,7 +48,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         //CurParent = this.transform.parent;
         this.transform.SetParent(CurParent.parent);
         //DragOffset = (Vector2)this.transform.position - eventData.position;
-        //this.gameObject.GetComponentInChildren<Image>().raycastTarget = false;
+        this.gameObject.GetComponent<Image>().raycastTarget = false;
     }
     public void OnDrag(PointerEventData eventData)
     {
@@ -35,7 +62,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             Debug.Log("OnEndDrag");
             this.transform.SetParent(CurParent);
             this.transform.localPosition = Vector2.zero;
-            //this.gameObject.GetComponentInChildren<Image>().raycastTarget = true;
+            this.gameObject.GetComponent<Image>().raycastTarget = true;
         }
         else
         {
@@ -46,15 +73,24 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             this.transform.localPosition = Vector2.zero;
             this.gameObject.GetComponent<Image>().raycastTarget = true;
 
-            Debug.Log(this.gameObject.GetComponentInParent<Slot>().item._itemPrefab);
-
-            Instantiate(this.gameObject.GetComponentInParent<Slot>().item._itemPrefab,
+            Instantiate(this.gameObject.GetComponent<SlotItem>().item._itemPrefab,
                 DropPos, Quaternion.identity);
 
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
             this.gameObject.GetComponentInParent<Inventory>().items.RemoveAt(CurIndex);
+            this.GetComponent<SlotItem>().image.sprite = null;
+            this.GetComponent<SlotItem>().text.text = null;
             this.GetComponentInParent<Inventory>().RefreshSlot();
 
+        }
+    }
+    public void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("OnDrop");
+        SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
+        if (item != null)
+        {
+            item.ChangeParent(CurParent);
         }
     }
 

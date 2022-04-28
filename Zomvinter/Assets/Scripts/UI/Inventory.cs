@@ -56,11 +56,11 @@ public class Inventory : MonoBehaviour
         int i = 0;
         for (; i < items.Count && i < slots.Length; i++)
         {
-            slots[i].item = items[i];
+            slots[i].GetComponentInChildren<SlotItem>().item = items[i];
         }
         for (; i< slots.Length; i++)
         {
-            slots[i].item = null;
+            slots[i].GetComponentInChildren<SlotItem>().item = null;
         }
     }
     public void ItemTypeChecker(Item _item)

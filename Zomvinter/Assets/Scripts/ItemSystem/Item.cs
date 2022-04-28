@@ -20,4 +20,6 @@ public class Item : ScriptableObject
     public GameObject _itemPrefab; // 바닥에 떨어질 때 생성할 프리팹
     [SerializeField]
     public string _itemTooltip; // 아이템 설명
+    [SerializeField]
+    public int _maxAmount = 1;
 }
