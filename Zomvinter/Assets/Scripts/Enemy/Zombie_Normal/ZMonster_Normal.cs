@@ -25,26 +25,27 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     /* 전역 변수 -----------------------------------------------------------------------------------------------*/
 
     /// <summary> 내 타겟 오브젝트 레이어 </summary>
-    public LayerMask EnemyMask;
+    LayerMask EnemyMask;
     /// <summary> 내 타겟 오브젝트 위치 값 </summary>
-    public Transform myTarget = null;
+    Transform myTarget = null;
+
     /// <summary> 내 공격 판정 오브젝트 위치값 </summary>
     public Transform myWeapon;
 
     /// <summary> 캐릭터 정보 구조체 선언 </summary>
-    private MonsterData myData;
-    private CharacterStat myStat;
+    MonsterData myData;
+    CharacterStat myStat;
     
     //bool AttackTerm = false;
 
     /* 유한 상태 기계 -----------------------------------------------------------------------------------------------*/
 
     /// <summary> 유한 상태 기계 선언 </summary>
-    public enum STATE
+    enum STATE
     {
-        NONE, IDLE, ROAM, BATTLE, DEAD
+        CREATE, IDLE, ROAM, BATTLE, DEAD
     }
-    public STATE myState = STATE.NONE;
+    STATE myState;
 
     /// <summary> 유한 상태 기계 Start </summary>
     void ChangeState(STATE s)
@@ -53,18 +54,19 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         myState = s;
         switch (myState)
         {
-            case STATE.NONE:
+            case STATE.CREATE:
                 break;
             case STATE.IDLE:
-                //
-                //mySensor.FindTarget = FindTarget;
-                myData.MoveSpeed = 1.5f;
-                myData.TurnSpeed = 180.0f;
+                Debug.Log("생성");
+                myStat.MoveSpeed = 1.5f;
+                myStat.TurnSpeed = 180.0f;
                 myData.AttRange = 1.0f;
                 myData.AttDelay = 3.5f;
                 myData.AttSpeed = 1.0f;
                 myData.UnChaseTime = 3.0f;
                 myStat.DP = 5.0f;
+                EnemyMask = LayerMask.GetMask("Player");
+                ChangeState(STATE.IDLE); 
                 break;
             case STATE.ROAM:
                 break;
@@ -80,7 +82,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     {
         switch (myState)
         {
-            case STATE.NONE:
+            case STATE.CREATE:
                 break;
             case STATE.IDLE:
                 FindTarget();
@@ -185,8 +187,8 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     private void ChaseTarget()
     {
         //타겟Pos, 이동 속도, 공격 거리, 공격 딜레이, 공격 속도, 턴 속도
-        MoveToPosition(myTarget.transform, myData.MoveSpeed, 
-            myData.AttRange, myData.AttDelay, myData.AttSpeed, myData.TurnSpeed);
+        MoveToPosition(myTarget.transform, myStat.MoveSpeed, 
+            myData.AttRange, myData.AttDelay, myData.AttSpeed, myStat.TurnSpeed);
     }
 
 

@@ -7,12 +7,10 @@ using UnityEngine;
 [Serializable]
 struct MonsterData
 {
-    public float MoveSpeed; // 캐릭터 데이터 구조체로 대체 예정
-    public float TurnSpeed; // 캐릭터 데이터 구조체로 대체 예정
-    public float AttRange;
-    public float AttDelay;
-    public float AttSpeed;
-    public float UnChaseTime;
+    public float AttRange; // 공격 범위
+    public float AttDelay; // 공격 딜레이
+    public float AttSpeed; // 공격 애니메이션 속도
+    public float UnChaseTime; // 어그로 해제 간격
 }
 
 /// <summary> 캐릭터 데이터 구조체</summary>
@@ -26,6 +24,13 @@ public struct CharacterStat
     public float TurnSpeed;
     public float Hunger; // 허기
     public float Thirsty; // 갈증
+}
+
+/// <summary> 회전 연산 변수 구조체 </summary>
+public struct ROTATEDATA
+{
+    public float Angle;
+    public float Dir;
 }
 
 public class Character : MonoBehaviour

@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 가방 아이템 변수 </summary>
     public Item BackpackItem = null;
 
-    /// <summary> 인벤토리 내의 슬롯 프리펩 위치 값 </summary>
+    /// <summary> 인벤토리 내의 슬롯들을 모아놓는 Contents의 위치 값 </summary>
     [SerializeField]
     private Transform slotParent;
     /// <summary> 인벤토리 내의 슬롯들을 저장 할 배열 </summary>

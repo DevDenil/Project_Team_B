@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletCtrl : Character, IDamageable, BattleSystem
+public class BulletCtrl : Character, BattleSystem
 {
     public float damage = 5.0f; 
     public LayerMask collisionMask;
