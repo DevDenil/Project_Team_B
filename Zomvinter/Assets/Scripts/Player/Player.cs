@@ -37,16 +37,16 @@ public class Player : PlayerController, BattleSystem
             ActiveInv = !ActiveInv;
             myInventory.SetActive(ActiveInv);
         }
-        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
-        {
-            myAnim.SetBool("IsAiming", true);
-            //Debug.Log("Q");
-            //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
-        }
-        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
-        {
-            myAnim.SetBool("IsAiming", false);
-        }
+        //if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
+        //{
+        //    myAnim.SetBool("IsAiming", true);
+        //    //Debug.Log("Q");
+        //    //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
+        //}
+        //if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
+        //{
+        //    myAnim.SetBool("IsAiming", false);
+        //}
         //√— »πµÊΩ√ Guncheck true ∏∏µÈ±‚
         //if (GunCheck)
     }
@@ -94,7 +94,7 @@ public class Player : PlayerController, BattleSystem
                 { 
                     Fire(); 
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun") &&GunCheck)
+                if (Input.GetKeyDown(KeyCode.Alpha1)  && !myAnim.GetBool("IsGun") &&GunCheck)
                 {
                     myAnim.SetBool("IsGun", true);
                     myAnim.SetTrigger("GetGun");
@@ -131,10 +131,6 @@ public class Player : PlayerController, BattleSystem
 
     /*-----------------------------------------------------------------------------------------------*/
     // πË∆≤ Ω√Ω∫≈€
-    public void TakeHit(float damage, RaycastHit hit)
-    {
-
-    }
     void OnAttack()
     {
         Fire();

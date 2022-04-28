@@ -28,10 +28,10 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     public Slot[] slots;
 
-    /// <summary> Editor 상에서 Slot 자식 오브젝트를 불러와서 slots 배열에 지정 </summary>
+    /// <summary> 에디터 상에서 실행 되는 함수 </summary>
     private void OnValidate()
     {
-        slots = slotParent.GetComponentsInChildren<Slot>();
+        slots = slotParent.GetComponentsInChildren<Slot>(); // Slot의 자식 오브젝트를 불러와서 slots 배열에 지정
         SetIndexOnSlot();
     }
 

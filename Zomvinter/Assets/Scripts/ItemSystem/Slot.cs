@@ -13,7 +13,7 @@ public class Slot : MonoBehaviour, IDropHandler
     public int SlotIndex = 0;
 
     [SerializeField]
-    private Item _item;
+    Item _item;
     public Item item
     {
         get { return _item; }
@@ -24,7 +24,7 @@ public class Slot : MonoBehaviour, IDropHandler
             {
                 image.sprite = item._itemImage;
                 image.color = new Color(1, 1, 1, 1);
-                text.text = "";
+                text.text = item._itemName;
 
             }
             else
@@ -35,6 +35,7 @@ public class Slot : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log("OnDrop");
         SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
         if (item != null)
         {

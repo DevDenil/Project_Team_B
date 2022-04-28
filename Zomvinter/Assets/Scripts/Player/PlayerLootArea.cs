@@ -45,9 +45,11 @@ public class PlayerLootArea : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
-            Debug.Log(InstLootUI);
-            if (InstLootUI != null) Destroy(InstLootUI);
-            if (InstLootUI == null && LootableObject != null) InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+            if (InstLootUI != null)
+            { 
+                Destroy(InstLootUI);
+                InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+            }
         }
     }
     /*-----------------------------------------------------------------------------------------------*/

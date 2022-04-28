@@ -115,6 +115,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     }
 
     /* 배틀 시스템 - 공격 -----------------------------------------------------------------------------------------------*/
+    /// <summary> 공격 판정 함수 </summary>
     void OnAttack()
     {
         if (myAnim.GetBool("AttackTerm"))
@@ -132,18 +133,19 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         }
         else Debug.Log("ss");
     }
-
+    /// <summary> 공격 애니메이션 시작 지점 체크 함수 </summary>
     void OnAttackStart() 
     {
         myAnim.SetBool("AttackTerm", true); 
         OnAttack();
     }
-
+    /// <summary> 공격 애니메이션 끝 지점 체크 함수 </summary>
     void OnAttackEnd()
     {
         myAnim.SetBool("AttackTerm", false);
     }
     /* 배틀 시스템 - 피격 -----------------------------------------------------------------------------------------------*/
+    /// <summary> 피격 함수 </summary>
     public void OnDamage(float Damage)
     {
 
@@ -155,7 +157,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
             //피격애니메이션 구현
         }
     }
-
+    /// <summary> 크리티컬 피격 함수 </summary>
     public void OnCritDamage(float CritDamage)
     {
 

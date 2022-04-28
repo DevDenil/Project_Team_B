@@ -7,40 +7,35 @@ using UnityEngine.UI;
 public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private bool IsOverUI = false;
-    
-    private void Awake()
-    {
-        
-    }
 
-    void Start()
-    {
-        
-    }
+    Vector2 DragOffset = Vector2.zero;
+    public Transform CurParent = null;
 
-    void Update()
+    private void Start()
     {
+        CurParent = this.transform.parent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        CurParent = this.transform.parent;
+        //CurParent = this.transform.parent;
         this.transform.SetParent(CurParent.parent);
-        DragOffset = (Vector2)this.transform.position - eventData.position;
-        this.gameObject.GetComponent<Image>().raycastTarget = false;
+        //DragOffset = (Vector2)this.transform.position - eventData.position;
+        //this.gameObject.GetComponentInChildren<Image>().raycastTarget = false;
     }
     public void OnDrag(PointerEventData eventData)
     {
-        this.transform.position = DragOffset + eventData.position;
+        this.transform.position = eventData.position; //+ DragOffset
         IsOverUI = EventSystem.current.IsPointerOverGameObject();
     }
     public void OnEndDrag(PointerEventData eventData)
     {
         if (IsOverUI)
         {
+            Debug.Log("OnEndDrag");
             this.transform.SetParent(CurParent);
             this.transform.localPosition = Vector2.zero;
-            this.gameObject.GetComponent<Image>().raycastTarget = true;
+            //this.gameObject.GetComponentInChildren<Image>().raycastTarget = true;
         }
         else
         {
@@ -63,12 +58,9 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
     }
 
-    Vector2 DragOffset = Vector2.zero;
-    public Transform CurParent = null;
-
     public void ChangeParent(Transform parent)
     {
-        SlotItem tempItem = parent.GetComponentInChildren<SlotItem>();
+        SlotItem tempItem = parent.GetComponent<SlotItem>();
         if (tempItem != null)
         {
             tempItem.ChangeParent(CurParent);
