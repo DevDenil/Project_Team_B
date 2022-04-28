@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IDropHandler
 {
     //[SerializeField]
     //public Image image;
@@ -33,13 +33,17 @@ public class Slot : MonoBehaviour
     //        }
     //    }
     //}
-    //public void OnDrop(PointerEventData eventData)
-    //{
-    //    Debug.Log("OnDrop");
-    //    SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
-    //    if (item != null)
-    //    {
-    //        item.ChangeParent(this.transform);
-    //    }
-    //}
+    public void OnDrop(PointerEventData eventData)
+    {
+        SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
+        if (item != null)
+        {
+            item.ChangeIndex(this.GetComponentInParent<Inventory>().items, this.transform);
+            item.ChangeParent(this.transform);
+            item.SetIndex();
+            
+            
+
+        }
+    }
 }
