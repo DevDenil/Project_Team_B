@@ -111,7 +111,11 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     }
     public void ChangeIndex<Item>(List<Item> items, Transform parent)
     {
-        Item temp = items[parent.GetComponentInChildren<SlotItem>().CurIndex];
+        Item temp = default;
+        if (items[parent.GetComponentInChildren<SlotItem>().CurIndex] != null)
+        {
+            temp = items[parent.GetComponentInChildren<SlotItem>().CurIndex];
+        }
         if(temp != null)
         {
             items[parent.GetComponentInChildren<SlotItem>().CurIndex] = items[CurIndex];

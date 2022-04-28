@@ -31,6 +31,11 @@ public class Inventory : MonoBehaviour
     /// <summary> 에디터 상에서 실행 되는 함수 </summary>
     private void OnValidate()
     {
+        //28은 기본 가방 크기만큼 지정
+        for (int i = 0; i < 28; i++)
+        {
+            items.Add(default);
+        }
         slots = slotParent.GetComponentsInChildren<Slot>(); // Slot의 자식 오브젝트를 불러와서 slots 배열에 지정
         SetIndexOnSlot();
     }
@@ -38,6 +43,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 프로세스가 시작되기 전에 실행되는 함수 </summary>
     private void Awake()
     {
+        
         RefreshSlot();
     }
 
