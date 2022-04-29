@@ -19,6 +19,7 @@ public class PlayerLootArea : MonoBehaviour
     private LayerMask LootableLayerMask;
 
     List<Item> lootItems;
+    Inventory Inv;
 
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
@@ -31,13 +32,41 @@ public class PlayerLootArea : MonoBehaviour
     void Start()
     {
         lootItems = myCanvas.GetComponentInChildren<Inventory>().items;
+        Inv = myCanvas.GetComponentInChildren<Inventory>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            lootItems.Add(LootableItems[0].GetComponent<ItemData>().myProperties);
+            for(int i = 0; i < lootItems.Count; i++)
+            {
+                if(lootItems[i] == null)
+                {
+                    if (LootableItems[0].GetComponent<ItemData>().myEquipmentData != null)
+                    {
+                        Debug.Log("Equip");
+                        lootItems[i] = LootableItems[0].GetComponent<ItemData>().myEquipmentData;
+                        break;
+                    }
+                    else
+                    {
+                        if (LootableItems[0].GetComponent<ItemData>().myConsumableData != null)
+                        {
+                            Debug.Log("Consume");
+                            lootItems[i] = LootableItems[0].GetComponent<ItemData>().myConsumableData;
+                            break;
+                        }
+                        else
+                        {
+
+                            Debug.Log("Else");
+                            lootItems[i] = LootableItems[0].GetComponent<ItemData>().myProperties;
+                            break;
+                        }
+                    }
+                }
+            }
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);
             Destroy(InstPickupUI);

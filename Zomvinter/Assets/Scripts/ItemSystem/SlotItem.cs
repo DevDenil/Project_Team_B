@@ -75,8 +75,11 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             this.transform.localPosition = Vector2.zero;
             this.gameObject.GetComponent<Image>().raycastTarget = true;
 
-            Instantiate(this.gameObject.GetComponent<SlotItem>()._itemProperty._itemPrefab,
-                DropPos, Quaternion.identity);
+            if (this.gameObject.GetComponent<SlotItem>()._itemProperty._itemPrefab != null)
+            {
+                Instantiate(this.gameObject.GetComponent<SlotItem>()._itemProperty._itemPrefab,
+                    DropPos, Quaternion.identity);
+            }
 
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
             this.gameObject.GetComponentInParent<Inventory>().items.RemoveAt(CurIndex);
@@ -115,6 +118,10 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         if (items[parent.GetComponentInChildren<SlotItem>().CurIndex] != null)
         {
             temp = items[parent.GetComponentInChildren<SlotItem>().CurIndex];
+        }
+        else
+        {
+
         }
         if(temp != null)
         {
