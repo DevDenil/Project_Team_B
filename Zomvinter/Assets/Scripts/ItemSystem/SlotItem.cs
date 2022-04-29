@@ -80,7 +80,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 Instantiate(this.gameObject.GetComponent<SlotItem>()._itemProperty._itemPrefab,
                     DropPos, Quaternion.identity);
             }
-
+            this.GetComponent<Button>().colors.
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
             this.gameObject.GetComponentInParent<Inventory>().items.RemoveAt(CurIndex);
             this.GetComponent<SlotItem>().image.sprite = null;
