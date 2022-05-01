@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerLootArea : MonoBehaviour
 {
+    /// <summary> UI를 불러오기 위한 변수  </summary>
     [SerializeField]
     Canvas myCanvas;
+    /// <summary> 내 인벤토리UI 스크립트 변수 </summary>
     [SerializeField]
-    GameObject myInventory;
+    Inventory myInventory;
+    [SerializeField]
+    List<Item> myItems;
 
     public List<GameObject> LootableItems = new List<GameObject>();
 
@@ -18,8 +22,6 @@ public class PlayerLootArea : MonoBehaviour
     [SerializeField]
     private LayerMask LootableLayerMask;
 
-    List<Item> lootItems;
-    Inventory Inv;
 
     /// <summary> PickUp 팝업 UI </summary>
     PickUpUI myPickUpUI = null;
@@ -31,47 +33,23 @@ public class PlayerLootArea : MonoBehaviour
 
     void Start()
     {
-        lootItems = myCanvas.GetComponentInChildren<Inventory>().items;
-        Inv = myCanvas.GetComponentInChildren<Inventory>();
+        myInventory = myCanvas.GetComponentInChildren<Inventory>();
+        myItems = myInventory.items;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            for(int i = 0; i < lootItems.Count; i++)
-            {
-                if(lootItems[i] == null)
-                {
-                    if (LootableItems[0].GetComponent<ItemData>().myEquipmentData != null)
-                    {
-                        Debug.Log("Equip");
-                        lootItems[i] = LootableItems[0].GetComponent<ItemData>().myEquipmentData;
-                        break;
-                    }
-                    else
-                    {
-                        if (LootableItems[0].GetComponent<ItemData>().myConsumableData != null)
-                        {
-                            Debug.Log("Consume");
-                            lootItems[i] = LootableItems[0].GetComponent<ItemData>().myConsumableData;
-                            break;
-                        }
-                        else
-                        {
+            ItemData ItemData = LootableItems[0].GetComponent<ItemData>();
+            myInventory.AddItem(ItemData);
 
-                            Debug.Log("Else");
-                            lootItems[i] = LootableItems[0].GetComponent<ItemData>().myProperties;
-                            break;
-                        }
-                    }
-                }
-            }
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);
             Destroy(InstPickupUI);
-            myInventory.GetComponent<Inventory>().RefreshSlot();
+            myInventory.GetComponent<Inventory>().Refresh();
         }
+
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
             if (InstLootUI != null)

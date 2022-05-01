@@ -12,6 +12,12 @@ public class Slot : MonoBehaviour, IDropHandler
     //public TMPro.TMP_Text text;
     public int SlotIndex = 0;
 
+    Inventory myInventry;
+
+    private void Start()
+    {
+        myInventry = this.GetComponentInParent<Inventory>();
+    }
     //[SerializeField]
     //Item _item;
     //public Item item
@@ -33,17 +39,18 @@ public class Slot : MonoBehaviour, IDropHandler
     //        }
     //    }
     //}
+
+    /// <summary> OnDrop 이벤트가 발생했을 때 실행 될 이벤트 </summary>
+    /// <param name="eventData">OnDrop이 발생 되는 지점의 오브젝트</param>
     public void OnDrop(PointerEventData eventData)
     {
         SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
         if (item != null)
         {
-            item.ChangeIndex(this.GetComponentInParent<Inventory>().items, this.transform);
+            item.ChangeIndex(myInventry.items, this.transform);
             item.ChangeParent(this.transform);
-            item.SetIndex();
-            
-            
-
+            //item.SetIndex();
         }
+        this.GetComponentInChildren<SlotItem>().CurIndex = SlotIndex;
     }
 }

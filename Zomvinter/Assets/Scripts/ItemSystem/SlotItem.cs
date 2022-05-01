@@ -34,7 +34,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             }
             else
             {
-                image.color = new Color(1, 1, 1, 0);
+                //image.color = new Color(1, 1, 1, 0);
             }
         }
     }
@@ -49,19 +49,17 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         CurParent = this.transform.parent;
         this.transform.SetParent(CurParent.parent);
-        //DragOffset = (Vector2)this.transform.position - eventData.position;
         this.gameObject.GetComponent<Image>().raycastTarget = false;
     }
     public void OnDrag(PointerEventData eventData)
     {
-        this.transform.position = eventData.position; //+ DragOffset
+        this.transform.position = eventData.position;
         IsOverUI = EventSystem.current.IsPointerOverGameObject();
     }
     public void OnEndDrag(PointerEventData eventData)
     {
         if (IsOverUI)
         {
-            //Debug.Log(eventData.pointerDrag.name);
             this.transform.SetParent(CurParent);
             this.transform.localPosition = Vector2.zero;
             this.gameObject.GetComponent<Image>().raycastTarget = true;
@@ -80,24 +78,14 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 Instantiate(this.gameObject.GetComponent<SlotItem>()._itemProperty._itemPrefab,
                     DropPos, Quaternion.identity);
             }
-            this.GetComponent<Button>().colors.
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
             this.gameObject.GetComponentInParent<Inventory>().items.RemoveAt(CurIndex);
             this.GetComponent<SlotItem>().image.sprite = null;
             this.GetComponent<SlotItem>().text.text = null;
-            this.GetComponentInParent<Inventory>().RefreshSlot();
+            this.GetComponentInParent<Inventory>().Refresh();
 
         }
     }
-    //public void OnDrop(PointerEventData eventData)
-    //{
-    //    Debug.Log("OnDrop");
-    //    SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
-    //    if (item != null)
-    //    {
-    //        item.ChangeParent(CurParent);
-    //    }
-    //}
 
     public void ChangeParent(Transform parent)
     {
@@ -109,29 +97,22 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
         CurParent = parent;
         this.transform.SetParent(CurParent);
-        this.transform.localPosition = Vector2.zero;
-        this.SetIndex();
-    }
-    public void ChangeIndex<Item>(List<Item> items, Transform parent)
-    {
-        Item temp = default;
-        if (items[parent.GetComponentInChildren<SlotItem>().CurIndex] != null)
-        {
-            temp = items[parent.GetComponentInChildren<SlotItem>().CurIndex];
-        }
-        else
-        {
-
-        }
-        if(temp != null)
-        {
-            items[parent.GetComponentInChildren<SlotItem>().CurIndex] = items[CurIndex];
-            items[CurIndex] = temp;
-        }
-    }
-
-    public void SetIndex()
-    {
         CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
+        this.transform.localPosition = Vector2.zero;
+    }
+
+    /// <summary> 위치가 바뀐 아이템을 Inventory.Items 리스트에서 Swap </summary>
+    /// <typeparam name="Item">인벤토리 리스트를 불러올 타입</typeparam>
+    /// <param name="items">바뀔 아이템의 정보가 임시 저장 될 아이템 변수</param>
+    /// <param name="Swap">바뀜을 당하는 대상의 정보</param>
+    public void ChangeIndex(List<Item> items, Transform Swap)
+    {
+        //임시 저장 될 아이템 타입 변수
+        Item temp;
+        int tempIndex = Swap.GetComponentInChildren<SlotItem>().CurIndex;
+
+        temp = items[tempIndex];
+        items[tempIndex] = items[CurIndex];
+        items[CurIndex] = temp;
     }
 }
