@@ -9,7 +9,9 @@ public class Inventory : MonoBehaviour
     /// <summary> 인벤토리에 저장 될 아이템 목록 리스트 </summary>
     public List<Item> items;
     public int _itemsCapacity = 28;
-    private int _isStockable = 28;
+    [SerializeField]
+    public int _isStockable = 28;
+    public int _hasItems = 0;
     /// <summary> 인벤토리 내의 슬롯들을 모아놓는 Contents의 위치 값 </summary>
     [SerializeField]
     private Transform slotParent;
@@ -76,6 +78,7 @@ public class Inventory : MonoBehaviour
         GenerateInventory();
         Refresh();
     }
+
     public void Refresh()
     {
         RefreshSlotIndex(slots);
@@ -101,18 +104,13 @@ public class Inventory : MonoBehaviour
     public void RefreshSlot(Slot[] Bag, List<Item> items)
     {
         int i = 0;
-        _isStockable = 0;
         for (; i < items.Count && i < Bag.Length; i++)
         {
             Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = items[i];
-
-            _isStockable--;
         }
         for (; i< Bag.Length; i++)
         {
             Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = null;
-
-            _isStockable++;
         }
     }
     public void GenerateInventory()
@@ -214,96 +212,90 @@ public class Inventory : MonoBehaviour
     /// <param name="_item">추가 될 아이템 정보</param>
     public void AddItem(ItemData _item)
     {
-        if(_isStockable < _itemsCapacity)
+        switch (ItemClassifier(_item))
         {
-            switch (ItemClassifier(_item))
-            {
-                case 1:
-                    if (SlotFillCheck(PrimaryItems))
-                    {
-                        
-                        PrimaryItems[GetIndex(PrimaryItems)] = _item.myProperties;
-                    }
-                    else
-                    {
-                        items[GetIndex(items)] = _item.myProperties;
-                    }
-                    break;
-                case 2:
-                    Debug.Log("CHeck");
-                    if (SlotFillCheck(SecondaryItems))
-                    {
-                        SecondaryItems[GetIndex(SecondaryItems)] = _item.myProperties;
-                    }
-                    else
-                    {
-                        items[GetIndex(items)] = _item.myProperties;
-                    }
-                    break;
-                case 3:
-                    if (SlotFillCheck(ConsumableItems))
-                    {
-                        ConsumableItems[GetIndex(ConsumableItems)] = _item.myProperties;
-                    }
-                    else
-                    {
-                        items[GetIndex(items)] = _item.myProperties;
-                    }
-                    break;
-                case 4:
-                    if (SlotFillCheck(HelmetItem))
-                    {
-                        HelmetItem = _item.myProperties;
-                    }
-                    else
-                    {
-                        items.Add(_item.myProperties);
-                    }
-                    break;
-                case 5:
-                    if (SlotFillCheck(BodyArmorItem))
-                    {
-                        BodyArmorItem = _item.myProperties;
-                    }
-                    else
-                    {
-                        items.Add(_item.myProperties);
-                    }
-                    break;
-                case 6:
-                    if (SlotFillCheck(BackpackItem))
-                    {
-                        BackpackItem = _item.myProperties;
-                    }
-                    else
-                    {
-                        items.Add(_item.myProperties);
-                    }
-                    break;
-                case 7:
-                    if (SlotFillCheck(items))
-                    {
-                        items[GetIndex(items)] = _item.myProperties;
-                    }
-                    else
-                    {
-                        Vector3 DropPos = myPlayerPos.position;
-                        DropPos.y += 2.0f;
-                        GameObject obj = Instantiate(_item.myProperties._itemPrefab,
-                                DropPos, Quaternion.identity);
-                        obj.GetComponent<Rigidbody>().AddForce(transform.up * 10.0f);
-                        Debug.Log("슬롯이 가득 차 있습니다.");
-                    }
-                    break;
-                default:
-                    break;
-            }
-            Refresh();
+            case 1:
+                if (SlotFillCheck(PrimaryItems))
+                {
+
+                    PrimaryItems[GetIndex(PrimaryItems)] = _item.myProperties;
+                }
+                else
+                {
+                    items[GetIndex(items)] = _item.myProperties;
+                }
+                break;
+            case 2:
+                Debug.Log("CHeck");
+                if (SlotFillCheck(SecondaryItems))
+                {
+                    SecondaryItems[GetIndex(SecondaryItems)] = _item.myProperties;
+                }
+                else
+                {
+                    items[GetIndex(items)] = _item.myProperties;
+                }
+                break;
+            case 3:
+                if (SlotFillCheck(ConsumableItems))
+                {
+                    ConsumableItems[GetIndex(ConsumableItems)] = _item.myProperties;
+                }
+                else
+                {
+                    items[GetIndex(items)] = _item.myProperties;
+                }
+                break;
+            case 4:
+                if (SlotFillCheck(HelmetItem))
+                {
+                    HelmetItem = _item.myProperties;
+                }
+                else
+                {
+                    items.Add(_item.myProperties);
+                }
+                break;
+            case 5:
+                if (SlotFillCheck(BodyArmorItem))
+                {
+                    BodyArmorItem = _item.myProperties;
+                }
+                else
+                {
+                    items.Add(_item.myProperties);
+                }
+                break;
+            case 6:
+                if (SlotFillCheck(BackpackItem))
+                {
+                    BackpackItem = _item.myProperties;
+                }
+                else
+                {
+                    items.Add(_item.myProperties);
+                }
+                break;
+            case 7:
+                if (SlotFillCheck(items))
+                {
+                    items[GetIndex(items)] = _item.myProperties;
+                }
+                else
+                {
+                    Vector3 DropPos = myPlayerPos.position;
+                    DropPos.y += 2.0f;
+                    GameObject obj = Instantiate(_item.myProperties._itemPrefab,
+                            DropPos, Quaternion.identity);
+                    obj.GetComponent<Rigidbody>().AddForce(transform.up * 10.0f);
+                    Debug.Log("슬롯이 가득 차 있습니다.");
+                }
+                break;
+            default:
+                break;
         }
-        else
-        {
-            //인벤토리 꽉 찬 경우
-        }
+        Refresh();
+
     }
 
     public int ItemClassifier(ItemData _item)

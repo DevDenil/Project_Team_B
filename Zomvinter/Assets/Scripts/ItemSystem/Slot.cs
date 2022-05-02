@@ -31,7 +31,7 @@ public class Slot : MonoBehaviour, IDropHandler
         SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
         if (item != null)
         {
-            item.ChangeIndex(myInventry.items, this.transform);
+            item.SwapItem(myInventry.items, this.transform);
             item.ChangeParent(this.transform);
             //item.SetIndex();
         }
