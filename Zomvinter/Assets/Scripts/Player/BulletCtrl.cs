@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletCtrl : MonoBehaviour, IDamageable, BattleSystem
+public class BulletCtrl : MonoBehaviour, BattleSystem
 {
-    
+
     public LayerMask collisionMask;
     public GameObject bullet;
     public float bulletSpeed;
     public float damage = 5.0f;
-    private Vector3 dir;
+    public float RotRange = 0.001f;
     // Start is called before the first frame update
     void Start()
     {
         //GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletSpeed);
-        StartCoroutine(bulletDestroy(3.0f));
+        //StartCoroutine(bulletDestroy(3.0f));
         bulletSpeed = 500.0f;
 
+        GetComponent<Transform>().parent = null;
     }
     void Update()
     {
@@ -34,40 +35,38 @@ public class BulletCtrl : MonoBehaviour, IDamageable, BattleSystem
         //    dir = targetPos.normalized; //방향 설정
         //}
         //transform.Translate(moveDist * dir, Space.World); //이동
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit,9999, collisionMask)) 
+        float rnd = Random.Range(-RotRange, RotRange);
+        if (Physics.Raycast(ray, out hit, 9999, collisionMask))
         {
-            
-            Vector3 dir = new Vector3(hit.point.x - transform.position.x, hit.point.y - transform.position.y, hit.point.z - transform.position.z); //방향 구하기
+
+            Vector3 dir = new Vector3(hit.point.x - transform.position.x,
+                hit.point.y - transform.position.y, hit.point.z - transform.position.z); //방향 구하기
             Debug.Log(dir);
             transform.rotation = Quaternion.LookRotation(dir); //방향 설정
-            
-        } 
-        transform.Translate(Vector3.forward * Time.deltaTime); 
+                                                               //transform.Translate(rnd)
 
-    } 
+        }
+        transform.Translate(Vector3.forward * Time.deltaTime);
+
+    }
     void CheckCollision(float moveDist)
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        
+
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit , moveDist, collisionMask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out hit, moveDist, collisionMask, QueryTriggerInteraction.Collide))
         {
-            Debug.DrawRay(ray.origin, ray.direction*10.0f, Color.blue, 0.1f);
+            Debug.DrawRay(ray.origin, ray.direction * 10.0f, Color.blue, 0.1f);
             Debug.Log("hit");
             BattleSystem bs = hit.collider.GetComponent<BattleSystem>();
             Destroy(gameObject);
             if (bs != null) bs.OnDamage(damage);
         }
     }
-    
 
-    public void TakeHit(float damage, RaycastHit hit)
-    {
-        
-    }
     public void OnDamage(float Damage)
     {
 

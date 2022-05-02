@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //float Rot;
+    public Transform RotPoint;
     Animator _anim = null;
     //bool isHaveGun = false;
     protected Animator myAnim
@@ -21,17 +23,16 @@ public class PlayerController : MonoBehaviour
     /*-----------------------------------------------------------------------------------------------*/
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
     /*-----------------------------------------------------------------------------------------------*/
-    protected void Moving(Vector3 pos, float MoveSpeed)
+    protected void Moving(Vector3 pos, float MoveSpeed, Transform tr)
     {
-        //Vector3 pos = Vector3.zero;
         float delta = MoveSpeed * Time.deltaTime;
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
@@ -40,9 +41,12 @@ public class PlayerController : MonoBehaviour
             pos.Normalize();
         }
         this.transform.Translate(pos * delta, Space.World);
+        this.transform.LookAt(this.transform.position + pos) ;
+    }
+    protected void KeyRotate(Transform tr)
+    {
 
     }
-
     protected void Rotate(Transform RotatePoint)
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);

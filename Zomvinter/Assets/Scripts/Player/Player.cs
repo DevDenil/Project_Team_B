@@ -21,8 +21,11 @@ public class Player : PlayerController, BattleSystem
     //총알프리팹, 총알발사위치, 총알각도
     public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
     //총 획득시 생성하기 위한 boolcheck용 
-    // public bool GunCheck = false;
-    
+    public bool GunCheck1 = false; public bool GunCheck2 = false;
+    //총 획득시 생성되는 위치의 부모 설정
+    public Transform UnArmed1; public Transform UnArmed2; //플레이어 등 부분에 스폰되는 위치
+    public Transform UnArmedGun1; public Transform UnArmedGun2; // 플레이어가 획득한 무기의 prefab을 사용해야함 
+
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
@@ -42,6 +45,7 @@ public class Player : PlayerController, BattleSystem
         if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {
             myAnim.SetBool("IsAiming", true);
+            base.Rotate(RotatePoint);
             BulletRotCtrl();
             //Debug.Log("Q");
             //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
@@ -96,10 +100,10 @@ public class Player : PlayerController, BattleSystem
                 break;
             case STATE.ALIVE:
                 Move();
-                Rotation();
-                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
-                { 
-                    Fire(); 
+                //Rotation();
+                if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
+                {
+                    Fire();
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun"))//&&GunCheck
                 {
@@ -125,17 +129,17 @@ public class Player : PlayerController, BattleSystem
     }
 
     void Move()
-    { 
+    {
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
-        base.Moving(pos ,myStat.MoveSpeed);
+        base.Moving(pos, myStat.MoveSpeed, RotatePoint);
     }
     void Rotation()
     {
-        base.Rotate(RotatePoint);
+        //base.Rotate(RotatePoint);
     }
 
-    
+
     /*-----------------------------------------------------------------------------------------------*/
     // 배틀 시스템
     public void TakeHit(float damage, RaycastHit hit)
@@ -178,5 +182,19 @@ public class Player : PlayerController, BattleSystem
         //}
         //Quaternion rotation = Quaternion.LookRotation(pos);
         //transform.rotation = rotation;  
+    }
+    void GetWeapon()//주무기 획득시 등에 스폰
+    {
+        if (GunCheck1 == true)
+            Instantiate(UnArmedGun1, UnArmed1);
+        if (GunCheck2 == true)
+            Instantiate(UnArmedGun2, UnArmed2);
+    }
+    void PutWeapon()//주무기 버릴때 없앰
+    {
+        if (GunCheck1 == false)
+            if (UnArmedGun1 != null) Destroy(UnArmedGun1);
+        if (GunCheck2 == false)
+            if (UnArmedGun2 != null) Destroy(UnArmedGun2);
     }
 }
