@@ -29,12 +29,29 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             {
                 image.sprite = _itemProperty._itemImage;
                 image.color = new Color(1, 1, 1, 1);
+                switch(this.GetComponentInParent<Slot>().SlotState)
+                {
+                    case Slot.STATE.Primary:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(80.0f, 45.0f);
+                        break;
+                    case Slot.STATE.Secondary:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(40.0f, 25.0f);
+                        break;
+                    case Slot.STATE.Expand:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(40.0f, 25.0f);
+                        break;
+                    case Slot.STATE.Inventory:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(25.0f, 25.0f);
+                        break;
+                    default:
+                        break;
+                }
                 text.text = _itemProperty._maxAmount.ToString();
 
             }
             else
             {
-                //image.color = new Color(1, 1, 1, 0);
+                image.color = new Color(1, 1, 1, 0.5f);
             }
         }
     }

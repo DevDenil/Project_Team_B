@@ -6,39 +6,23 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
-    //[SerializeField]
-    //public Image image;
-    //[SerializeField]
-    //public TMPro.TMP_Text text;
+    /// <summary> 슬롯의 인덱스 번호 </summary>
     public int SlotIndex = 0;
 
+    /// <summary> Inventory.cs 참조용 변수 </summary>
     Inventory myInventry;
+
+    public enum STATE 
+    { 
+        Primary, Secondary, Expand, Inventory
+    }
+    [SerializeField]
+    public STATE SlotState;
 
     private void Start()
     {
         myInventry = this.GetComponentInParent<Inventory>();
     }
-    //[SerializeField]
-    //Item _item;
-    //public Item item
-    //{
-    //    get { return _item; }
-    //    set
-    //    {
-    //        _item = value;
-    //        if(_item != null)
-    //        {
-    //            //image.sprite = item._itemImage;
-    //            //image.color = new Color(1, 1, 1, 1);
-    //            text.text = item._maxAmount.ToString();
-
-    //        }
-    //        else
-    //        {
-    //            //image.color = new Color(1, 1, 1, 0);
-    //        }
-    //    }
-    //}
 
     /// <summary> OnDrop 이벤트가 발생했을 때 실행 될 이벤트 </summary>
     /// <param name="eventData">OnDrop이 발생 되는 지점의 오브젝트</param>
@@ -52,5 +36,6 @@ public class Slot : MonoBehaviour, IDropHandler
             //item.SetIndex();
         }
         this.GetComponentInChildren<SlotItem>().CurIndex = SlotIndex;
+        myInventry.Refresh();
     }
 }

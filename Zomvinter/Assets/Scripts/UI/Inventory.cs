@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
 
     /// <summary> 모조 무기에 저장 될 아이템 목록 리스트 </summary>
     public List<Item> SecondaryItems;
-    private int _SecondaryCapacity = 2;
+    private int _SecondaryCapacity = 1;
     /// <summary> 인벤토리 내의 슬롯들을 모아놓는 Contents의 위치 값 </summary>
     [SerializeField]
     private Transform SecondaryParent;
