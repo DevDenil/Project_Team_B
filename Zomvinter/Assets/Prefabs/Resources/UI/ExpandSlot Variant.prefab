@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2339708048735589982, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_Name
-      value: ExpandSlot
+      value: ExpandSlot Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_Pivot.x
@@ -48,6 +48,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -77,11 +89,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 26.5
+      value: -9.900003
       objectReference: {fileID: 0}
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.8
+      value: -66.1
       objectReference: {fileID: 0}
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -94,6 +106,10 @@ PrefabInstance:
     - target: {fileID: 2339708048735589983, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339708048922960623, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
+      propertyPath: m_Name
+      value: ExpandSlot
       objectReference: {fileID: 0}
     - target: {fileID: 2968800826888027989, guid: 6efca873266223b4ebb362bae0c07513, type: 3}
       propertyPath: m_text

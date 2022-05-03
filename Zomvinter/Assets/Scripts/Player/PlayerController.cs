@@ -61,6 +61,11 @@ public class PlayerController : MonoBehaviour
             RotatePoint.transform.rotation = rot; //방향 돌리기
         }
     }
+
+    protected void PickUp()
+    {
+
+    }
     /*-----------------------------------------------------------------------------------------------*/
 
     //대각선이동(애니메이션) , rotating lookAt()

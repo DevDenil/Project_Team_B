@@ -11,7 +11,8 @@ public class Player : PlayerController, BattleSystem
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
     public GameObject myInventory;
-    private bool ActiveInv = false;
+    public GameObject myStatUi;
+    public bool ActiveInv = false;
 
     //마우스 로테이트
     public Transform RotatePoint;
@@ -36,6 +37,8 @@ public class Player : PlayerController, BattleSystem
         {
             ActiveInv = !ActiveInv;
             myInventory.SetActive(ActiveInv);
+            myStatUi.SetActive(ActiveInv);
+
         }
         if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
         {

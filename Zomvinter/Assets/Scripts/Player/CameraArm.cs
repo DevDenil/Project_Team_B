@@ -24,11 +24,11 @@ public class CameraArm : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Q))
         {
-            TargetRot.y += 5.0f;
+            TargetRot.y -= 5.0f;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            TargetRot.y -= 5.0f;
+            TargetRot.y += 5.0f;
         }
         if(TargetRot.y > 180.0f || TargetRot.y < -180.0f)
         {
