@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLootArea : MonoBehaviour
 {
@@ -23,10 +24,13 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> PickUp 팝업 UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
+    [SerializeField]
+    GameObject SearchingObj = null;
 
     /// <summary> Loot 팝업 UI </summary>
     PickUpUI myLootUI = null;
     GameObject InstLootUI = null;
+    GameObject ItemTable = null;
 
     void Start()
     {
@@ -45,9 +49,21 @@ public class PlayerLootArea : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
-            Debug.Log(InstLootUI);
-            if (InstLootUI != null) Destroy(InstLootUI);
-            if (InstLootUI == null && LootableObject != null) InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+            if (ItemTable == null)
+            {
+                if (InstLootUI != null) Destroy(InstLootUI);
+                if (SearchingObj == null && LootableObject != null)
+                {
+                    SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
+                    StartCoroutine(SearchingObject(SearchingObj));
+                }
+            }
+            else
+            {
+                Destroy(ItemTable);
+                ItemTable = null;
+            }
+            
         }
     }
     /*-----------------------------------------------------------------------------------------------*/
@@ -76,14 +92,21 @@ public class PlayerLootArea : MonoBehaviour
         Destroy(InstPickupUI);
         LootableObject.Remove(other.gameObject);
         Destroy(InstLootUI);
+        Destroy(SearchingObj);
+        Destroy(ItemTable);
     }
 
-    IEnumerator SearchingObject()
+    IEnumerator SearchingObject(GameObject obj)
     {
-        while (true)
+        /* 애니메이션 실행 줄 */
+        while (obj.gameObject.GetComponent<Slider>().value < 1.0f)
         {
-
-            yield return new WaitForSeconds(1.0f);
+            obj.gameObject.GetComponent<Slider>().value += Time.deltaTime;
+            yield return null;
         }
+        Destroy(obj);
+        SearchingObj = null;
+        ItemTable = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+        yield return null;
     }
 }

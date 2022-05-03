@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2027136632743861106}
   - component: {fileID: 6588249416496870232}
+  - component: {fileID: 3701430935729308290}
   m_Layer: 8
   m_Name: BigCloset
   m_TagString: Untagged
@@ -45,6 +46,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.6, y: 2, z: 0.8}
   m_Center: {x: 0, y: 1.56, z: -0.05}
+--- !u!114 &3701430935729308290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027136632743861107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b75bbbd550d214a8853964d0715b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2027136631768243758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -106,25 +119,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d4494b8b100519479f9699c5a7390a9, type: 3}
---- !u!1 &7513898265764064836 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8387792330663407722, guid: 9d4494b8b100519479f9699c5a7390a9, type: 3}
-  m_PrefabInstance: {fileID: 2027136631768243758}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7137477554360431870 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9163906065887161040, guid: 9d4494b8b100519479f9699c5a7390a9, type: 3}
   m_PrefabInstance: {fileID: 2027136631768243758}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2027136632325909891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513898265764064836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19ba039ad9f091f4682dc92639471e2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
