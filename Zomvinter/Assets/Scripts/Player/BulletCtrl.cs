@@ -38,7 +38,7 @@ public class BulletCtrl : MonoBehaviour, BattleSystem
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        float rnd = Random.Range(-RotRange, RotRange);
+        //float rnd = Random.Range(-RotRange, RotRange);
         if (Physics.Raycast(ray, out hit, 9999, collisionMask))
         {
 

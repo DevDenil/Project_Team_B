@@ -37,29 +37,11 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
-        if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
-        {
-            ActiveInv = !ActiveInv;
-            myInventory.SetActive(ActiveInv);
-        }
-        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
-        {
-            myAnim.SetBool("IsAiming", true);
-            base.Rotate(RotatePoint);
-            BulletRotCtrl();
-            //Debug.Log("Q");
-            //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
-        }
-        if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
-        {
-            myAnim.SetBool("IsAiming", false);
-        }
-        //ÃÑ È¹µæ½Ã Guncheck true ¸¸µé±â
-        //if (GunCheck)
+        
     }
     private void LateUpdate()
     {
-        base.BulletRotate(bulletRotate);
+        //base.BulletRotate(bulletRotate);
     }
     /*-----------------------------------------------------------------------------------------------*/
     //À¯ÇÑ »óÅÂ ±â°è
@@ -99,7 +81,8 @@ public class Player : PlayerController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.ALIVE:
-                Move();
+                if(!myAnim.GetBool("IsAiming")) Move();
+
                 //Rotation();
                 if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
                 {
@@ -120,6 +103,30 @@ public class Player : PlayerController, BattleSystem
                 {
                     myAnim.SetTrigger("Melee");
                 }
+                if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
+                {
+                    ActiveInv = !ActiveInv;
+                    myInventory.SetActive(ActiveInv);
+                }
+                if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
+                {
+                    StartAiming(); //·ÎÅ×ÀÌ¼Ç °ª ÀúÀå
+                    myAnim.SetBool("IsAiming", true);
+                    //BulletRotCtrl();
+                }
+                if (myAnim.GetBool("IsGun") && Input.GetMouseButton(1))
+                {
+                    Rotate(RotatePoint);
+                    BulletRotate(bulletRotate);
+                }
+                if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
+                {
+                    myAnim.SetBool("IsAiming", false);
+                    StopAiming(); Debug.Log("StopAiming");
+
+                }
+                //ÃÑ È¹µæ½Ã Guncheck true ¸¸µé±â
+                //if (GunCheck)
                 break;
             case STATE.BATTLE:
                 break;
