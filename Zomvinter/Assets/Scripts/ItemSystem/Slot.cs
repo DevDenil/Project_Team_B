@@ -12,12 +12,9 @@ public class Slot : MonoBehaviour, IDropHandler
     /// <summary> Inventory.cs 참조용 변수 </summary>
     Inventory myInventry;
 
-    public enum STATE 
-    { 
-        Primary, Secondary, Expand, Inventory
-    }
+
     [SerializeField]
-    public STATE SlotState;
+    public ItemType SlotState;
 
     private void Start()
     {
@@ -29,13 +26,30 @@ public class Slot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
+        Slot itemSlot = eventData.pointerDrag.GetComponentInParent<Slot>();
+        Debug.Log(item.CurIndex);
         if (item != null)
         {
-            item.SwapItem(myInventry.items, this.transform);
+            if (itemSlot.SlotState == ItemType.Primary)
+            {
+                item.SwapItem(myInventry.PrimaryItems, this.transform);
+            }
+            else if (itemSlot.SlotState == ItemType.Secondary)
+            {
+                item.SwapItem(myInventry.SecondaryItems, this.transform);
+            }
+            else if (itemSlot.SlotState == ItemType.Expand)
+            {
+                item.SwapItem(myInventry.ConsumableItems, this.transform);
+            }
+            else if(itemSlot.SlotState == ItemType.Any)
+            {
+                item.SwapItem(myInventry.items, this.transform);
+            }
             item.ChangeParent(this.transform);
             //item.SetIndex();
         }
         this.GetComponentInChildren<SlotItem>().CurIndex = SlotIndex;
-        myInventry.Refresh();
+        myInventry.RefreshList();
     }
 }

@@ -12,10 +12,10 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public Transform CurParent = null;
     public int CurIndex = 0;
 
-    Inventory myInventroy;
-
     [SerializeField]
+    /// <summary> 슬롯에 표시 될 이미지 </summary>
     public Image image;
+    /// <summary> 슬롯에 표시 될 텍스트 </summary>
     [SerializeField]
     public TMPro.TMP_Text text;
 
@@ -33,19 +33,14 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 image.color = new Color(1, 1, 1, 1);
                 switch(this.GetComponentInParent<Slot>().SlotState)
                 {
-                    case Slot.STATE.Primary:
+                    case ItemType.Primary:
                         image.GetComponent<RectTransform>().sizeDelta = new Vector2(80.0f, 45.0f);
                         break;
-                    case Slot.STATE.Secondary:
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(40.0f, 25.0f);
-                        break;
-                    case Slot.STATE.Expand:
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(40.0f, 25.0f);
-                        break;
-                    case Slot.STATE.Inventory:
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(25.0f, 25.0f);
+                    case ItemType.Secondary:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(80.0f, 45.0f);
                         break;
                     default:
+                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(25.0f, 25.0f);
                         break;
                 }
                 text.text = _itemProperty._maxAmount.ToString();
@@ -62,7 +57,6 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         CurParent = this.transform.parent;
         CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
-        myInventroy = this.GetComponentInParent<Inventory>();
         if(ItemProperty == null)
         {
             this.GetComponent<Image>().raycastTarget = false;
@@ -91,7 +85,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             this.transform.SetParent(CurParent);
             this.transform.localPosition = Vector2.zero;
             this.gameObject.GetComponent<Image>().raycastTarget = true;
-            this.GetComponentInParent<Inventory>().Refresh();
+            this.GetComponentInParent<Inventory>().RefreshList();
         }
         else
         {
@@ -109,9 +103,9 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             }
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
             this.gameObject.GetComponentInParent<Inventory>().items.RemoveAt(CurIndex);
-            this.GetComponent<SlotItem>().image.sprite = null;
+            //this.GetComponent<SlotItem>().image.sprite = null;
             this.GetComponent<SlotItem>().text.text = null;
-            this.GetComponentInParent<Inventory>().Refresh();
+            this.GetComponentInParent<Inventory>().RefreshList();
 
         }
     }
@@ -138,30 +132,22 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         //임시 저장 될 아이템 타입 변수
         Item temp;
-        int tempIndex = Swap.GetComponentInChildren<SlotItem>().CurIndex;
         Item SwapItem = this.GetComponentInChildren<SlotItem>().ItemProperty;
+        int SwapedIndex = Swap.GetComponentInChildren<SlotItem>().CurIndex;
         Item SwapedItem = Swap.GetComponentInChildren<SlotItem>().ItemProperty;
-
-        if (SwapedItem != null)
+        if (Swap.GetComponent<Slot>().SlotState == SwapItem._type || Swap.GetComponent<Slot>().SlotState == ItemType.Any)
         {
-            Debug.Log("NotNullCheck");
-            temp = items[tempIndex];
-            if (SwapItem != null)
+            if (SwapedItem != null)
             {
-                items[tempIndex] = items[CurIndex];
+                temp = items[SwapedIndex];
+                items[SwapedIndex] = items[CurIndex];
+                items[CurIndex] = temp;
             }
             else
             {
-                Debug.Log("Swap Null");
-                items[tempIndex] = null;
+                items[SwapedIndex] = items[CurIndex];
+                items[CurIndex] = null;
             }
-            items[CurIndex] = temp;
-        }
-        else
-        {
-            Debug.Log("NullCheck");
-            items[tempIndex] = null;
-            items[CurIndex] = items[tempIndex];
         }
     }
 }

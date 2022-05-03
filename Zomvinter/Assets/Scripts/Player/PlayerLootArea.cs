@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLootArea : MonoBehaviour
 {
@@ -10,8 +11,6 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> ³» ÀÎº¥Åä¸®UI ½ºÅ©¸³Æ® º¯¼ö </summary>
     [SerializeField]
     Inventory myInventory;
-    [SerializeField]
-    List<Item> myItems;
 
     public List<GameObject> LootableItems = new List<GameObject>();
 
@@ -26,15 +25,18 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
+    GameObject SearchingObj = null;
 
     /// <summary> Loot ÆË¾÷ UI </summary>
     PickUpUI myLootUI = null;
     GameObject InstLootUI = null;
 
+    /// <summary> ¼­Äª ÆË¾÷ UI </summary>
+    GameObject ObjectUI = null;
+
     void Start()
     {
         myInventory = myCanvas.GetComponentInChildren<Inventory>();
-        myItems = myInventory.items;
     }
 
     void Update()
@@ -47,15 +49,28 @@ public class PlayerLootArea : MonoBehaviour
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);
             Destroy(InstPickupUI);
-            myInventory.GetComponent<Inventory>().Refresh();
+            myInventory.GetComponent<Inventory>().RefreshList();
         }
 
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
-            if (InstLootUI != null)
-            { 
-                Destroy(InstLootUI);
-                InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+            if (ObjectUI == null)
+            {
+                if (InstLootUI != null)
+                {
+                    Destroy(InstLootUI);
+                    InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+                }
+                if(SearchingObj == null && LootableObject != null)
+                {
+                    SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
+                    StartCoroutine(SearchingObject(SearchingObj));
+                }
+            }
+            else
+            {
+                Destroy(ObjectUI);
+                ObjectUI = null;
             }
         }
     }
@@ -85,14 +100,21 @@ public class PlayerLootArea : MonoBehaviour
         Destroy(InstPickupUI);
         LootableObject.Remove(other.gameObject);
         Destroy(InstLootUI);
+        Destroy(SearchingObj);
+        Destroy(ObjectUI);
     }
 
-    IEnumerator SearchingObject()
+    IEnumerator SearchingObject(GameObject UI)
     {
-        while (true)
+        while (UI.gameObject.GetComponent<Slider>().value < 1.0f) 
         {
+            UI.gameObject.GetComponent<Slider>().value += Time.deltaTime;
 
-            yield return new WaitForSeconds(1.0f);
+            yield return null;
         }
+        Destroy(UI);
+        SearchingObj = null;
+        ObjectUI = Instantiate(Resources.Load("UI/ItemTableUi"), GameObject.Find("Canvas").transform) as GameObject;
+        yield return null;
     }
 }

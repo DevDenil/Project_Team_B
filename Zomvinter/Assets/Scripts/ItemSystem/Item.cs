@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum ItemType // 아이템 타입
+{
+    Primary, Secondary, Expand, Helmet, Bodyarmor, Backpack, Any
+}
 
 public class Item : ScriptableObject
 {
-    public enum ItemType // 아이템 타입
-    {
-        Main, Second, Consumable, Helmet, BodyArmor, Backpack, Resource, Document
-    }
+    
     [SerializeField]
     public ItemType _type;
     [SerializeField]
