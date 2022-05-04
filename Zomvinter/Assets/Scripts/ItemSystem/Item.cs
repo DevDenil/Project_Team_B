@@ -1,26 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum ItemType // 아이템 타입
-{
-    Primary, Secondary, Expand, Helmet, Bodyarmor, Backpack, Any
-}
 
-public class Item : ScriptableObject
+public abstract class Item : MonoBehaviour
 {
-    
-    [SerializeField]
-    public ItemType _type;
-    [SerializeField]
-    public int _id; // 인덱스
-    [SerializeField]
-    public string _itemName; // 아이템 이름
-    [SerializeField]
-    public Sprite _itemImage; // 아이템 대표 이미지
-    [SerializeField]
-    public GameObject _itemPrefab; // 바닥에 떨어질 때 생성할 프리팹
-    [SerializeField]
-    public string _itemTooltip; // 아이템 설명
-    [SerializeField]
-    public int _maxAmount = 1;
+    /// <summary> 아이템 데이터를 불러온다 </summary>
+    public ItemData Data { get; private set; }
+    /// <summary> 불러온 데이터를 Data에 대입 </summary>
+    /// <param name="data"></param>
+    public Item(ItemData data) => Data = data;
+
+    public void WatchItemInfo()
+    {
+        Debug.Log("아이템 이름 :: " + Data.ItemName);
+    }
 }

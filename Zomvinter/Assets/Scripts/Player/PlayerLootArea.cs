@@ -43,13 +43,13 @@ public class PlayerLootArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            ItemData ItemData = LootableItems[0].GetComponent<ItemData>();
-            myInventory.AddItem(ItemData);
+            Item ItemData = LootableItems[0].GetComponent<Item>();
+            //myInventory.AddItem(ItemData);
 
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);
             Destroy(InstPickupUI);
-            myInventory.GetComponent<Inventory>().RefreshList();
+            //myInventory.GetComponent<Inventory>().RefreshList();
         }
 
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)

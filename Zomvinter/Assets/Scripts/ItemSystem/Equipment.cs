@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item_Equipment_", menuName = "Inventory System/Item Data/Equipment", order = 2)]
 public class Equipment : Item
 {
+    public Equipment(EquipmentData data, int amount = 1) : base(data)
+    {
+        Data = data;;
+    }
 
-    [SerializeField]
-    public float _durability; // 내구도
-    [SerializeField]
-    public int _ammunition; // 장탄 수
+    /// <summary> ConsumableData로부터 가져온 정보를 Data에 저장 </summary>
+    public EquipmentData Data { get; private set; }
 }
