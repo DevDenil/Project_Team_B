@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
         //this.transform.Rotate(transform.right);
         //this.transform.LookAt(this.transform.position + pos) ;
         //구면 선형보간 , 내 로테이션값을 구면 선형보간하여 부드럽게 돌아가게 함
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.LookRotation(pos),Time.deltaTime*10.0f);
+        if(!Mathf.Approximately(pos.magnitude, 0.0f))
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.LookRotation(pos),Time.deltaTime*10.0f);
         
         //myRot = this.transform.rotation;
         //StartCoroutine(CheckLog(myRot));
