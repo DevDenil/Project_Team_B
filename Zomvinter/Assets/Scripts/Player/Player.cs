@@ -16,6 +16,8 @@ public class Player : PlayerController, BattleSystem
 
     //마우스 로테이트
     public Transform RotatePoint;
+    //캐릭터 위 아래보기
+    public Transform mySpine;
     //이동 벡터
     Vector3 pos = Vector3.zero;
     //총알프리팹, 총알발사위치, 총알각도
@@ -41,7 +43,8 @@ public class Player : PlayerController, BattleSystem
     }
     private void LateUpdate()
     {
-        //base.BulletRotate(bulletRotate);
+        //보는 방향(y축) pos값 변경해야함
+        //mySpine.localRotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pos), Time.deltaTime * 10.0f);
     }
     /*-----------------------------------------------------------------------------------------------*/
     //유한 상태 기계
@@ -82,7 +85,8 @@ public class Player : PlayerController, BattleSystem
                 break;
             case STATE.ALIVE:
                 if(!myAnim.GetBool("IsAiming")) Move();
-
+                if (Input.GetKeyDown(KeyCode.LeftShift)) myAnim.SetBool("IsRun", true); //달리기
+                if (Input.GetKeyUp(KeyCode.LeftShift)) myAnim.SetBool("IsRun", false); //달리기끝
                 //Rotation();
                 if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
                 {
@@ -90,11 +94,13 @@ public class Player : PlayerController, BattleSystem
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun"))//&&GunCheck
                 {
+                    myAnim.SetLayerWeight(1, 1.0f);
                     myAnim.SetBool("IsGun", true);
                     myAnim.SetTrigger("GetGun");
                 }
                 if (Input.GetKeyDown(KeyCode.X))// && GunCheck
                 {
+                    myAnim.SetLayerWeight(1, 0.0f);
                     myAnim.SetTrigger("PutGun");
                     myAnim.SetBool("IsGun", false);
                     myAnim.SetBool("IsAiming", false);

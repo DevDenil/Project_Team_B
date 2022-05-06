@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     //float Rot;
     public Transform RotPoint;
+    
     Animator _anim = null;
     //bool isHaveGun = false;
     Quaternion myRot; //이동했을 때의 rotation값 저장
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+    
     /*-----------------------------------------------------------------------------------------------*/
     protected void Moving(Vector3 pos, float MoveSpeed, Transform tr)
     {
@@ -42,7 +44,8 @@ public class PlayerController : MonoBehaviour
         {
             pos.Normalize();
         }
-        this.transform.Translate(pos * delta, Space.World);
+        bool IsRun = myAnim.GetBool("IsRun");
+        this.transform.Translate(pos * delta *(IsRun ? 1.3f : 1.0f), Space.World);
         //this.transform.Rotate(transform.right);
         //this.transform.LookAt(this.transform.position + pos) ;
         //구면 선형보간 , 내 로테이션값을 구면 선형보간하여 부드럽게 돌아가게 함
