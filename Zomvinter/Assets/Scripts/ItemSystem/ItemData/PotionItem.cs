@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> 수량 아이템 - 포션 아이템 </summary>
-public class ConsumableItem : CountableItem
+public class PotionItem : CountableItem
 {
-    public ConsumableItem(ConsumableItemData data, int amount = 1) : base(data, amount) { }
+    public PotionItem(PotionItemData data, int amount = 1) : base(data, amount) { }
 
     public bool Use()
     {
@@ -17,6 +17,6 @@ public class ConsumableItem : CountableItem
 
     protected override CountableItem Clone(int amount)
     {
-        return new ConsumableItem(CountableData as ConsumableItemData, amount);
+        return new PotionItem(CountableData as PotionItemData, amount);
     }
 }

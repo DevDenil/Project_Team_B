@@ -32,7 +32,7 @@ public class Slot : MonoBehaviour, IDropHandler
     private Image _slotImage; // 슬롯의 이미지
 
     // 현재 하이라이트 알파값
-    private float _currentHLAlpha = 0.0f;
+    //private float _currentHLAlpha = 0.0f;
 
     /// <summary> 슬롯 접근가능 여부 </summary>
     private bool _isAccessibleSlot = true;
@@ -154,7 +154,7 @@ public class Slot : MonoBehaviour, IDropHandler
             }
             else if(itemSlot.SlotState == ItemType.Any)
             {
-                item.SwapItem(_Inventory.Items, this.transform);
+                //item.SwapItem(_Inventory.Items, this.transform);
             }
             item.ChangeParent(this.transform);
             //item.SetIndex();

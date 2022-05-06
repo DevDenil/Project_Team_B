@@ -1,57 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/*
+    [Item의 상속구조]
+    - Item
+        - Consumable : IUsableItem.Use() -> 사용 및 수량 1 소모
+
+        - EquipmentItem
+            - WeaponItem
+            - ArmorItem
+
+    [ItemData의 상속구조]
+      (ItemData는 해당 아이템이 공통으로 가질 데이터 필드 모음)
+      (개체마다 달라져야 하는 현재 내구도, 강화도 등은 Item 클래스에서 관리)
+
+    - ItemData
+        - ConsumableData : 효과량(Value : 회복량, 공격력 등에 사용)
+
+        - EquipmentData : 최대 내구도
+            - WeaponData : 기본 공격력
+            - ArmorData : 기본 방어력
+*/
+
+/*
+    [API]
+    - bool HasItem(int) : 해당 인덱스의 슬롯에 아이템이 존재하는지 여부
+    - bool IsCountableItem(int) : 해당 인덱스의 아이템이 셀 수 있는 아이템인지 여부
+    - int GetCurrentAmount(int) : 해당 인덱스의 아이템 수량
+        - -1 : 잘못된 인덱스
+        -  0 : 빈 슬롯
+        -  1 : 셀 수 없는 아이템이거나 수량 1
+    - ItemData GetItemData(int) : 해당 인덱스의 아이템 정보
+    - string GetItemName(int) : 해당 인덱스의 아이템 이름
+
+    - int Add(ItemData, int) : 해당 타입의 아이템을 지정한 개수만큼 인벤토리에 추가
+        - 자리 부족으로 못넣은 개수만큼 리턴(0이면 모두 추가 성공했다는 의미)
+    - void Remove(int) : 해당 인덱스의 슬롯에 있는 아이템 제거
+    - void Swap(int, int) : 두 인덱스의 아이템 위치 서로 바꾸기
+    - void SeparateAmount(int a, int b, int amount)
+        - a 인덱스의 아이템이 셀 수 있는 아이템일 경우, amount만큼 분리하여 b 인덱스로 복제
+    - void Use(int) : 해당 인덱스의 아이템 사용
+    - void UpdateSlot(int) : 해당 인덱스의 슬롯 상태 및 UI 갱신
+    - void UpdateAllSlot() : 모든 슬롯 상태 및 UI 갱신
+    - void UpdateAccessibleStatesAll() : 모든 슬롯 UI에 접근 가능 여부 갱신
+    - void TrimAll() : 앞에서부터 아이템 슬롯 채우기
+    - void SortAll() : 앞에서부터 아이템 슬롯 채우면서 정렬
+
+// 날짜 : 2021-03-07 PM 7:33:52
+*/
 
 public class Inventory : MonoBehaviour
 {
-    /*
-        [Item의 상속구조]
-        - Item
-            - Consumable : IUsableItem.Use() -> 사용 및 수량 1 소모
-
-            - EquipmentItem
-                - WeaponItem
-                - ArmorItem
-
-        [ItemData의 상속구조]
-          (ItemData는 해당 아이템이 공통으로 가질 데이터 필드 모음)
-          (개체마다 달라져야 하는 현재 내구도, 강화도 등은 Item 클래스에서 관리)
-
-        - ItemData
-            - ConsumableData : 효과량(Value : 회복량, 공격력 등에 사용)
-
-            - EquipmentData : 최대 내구도
-                - WeaponData : 기본 공격력
-                - ArmorData : 기본 방어력
-    */
-
-    /*
-        [API]
-        - bool HasItem(int) : 해당 인덱스의 슬롯에 아이템이 존재하는지 여부
-        - bool IsCountableItem(int) : 해당 인덱스의 아이템이 셀 수 있는 아이템인지 여부
-        - int GetCurrentAmount(int) : 해당 인덱스의 아이템 수량
-            - -1 : 잘못된 인덱스
-            -  0 : 빈 슬롯
-            -  1 : 셀 수 없는 아이템이거나 수량 1
-        - ItemData GetItemData(int) : 해당 인덱스의 아이템 정보
-        - string GetItemName(int) : 해당 인덱스의 아이템 이름
-
-        - int Add(ItemData, int) : 해당 타입의 아이템을 지정한 개수만큼 인벤토리에 추가
-            - 자리 부족으로 못넣은 개수만큼 리턴(0이면 모두 추가 성공했다는 의미)
-        - void Remove(int) : 해당 인덱스의 슬롯에 있는 아이템 제거
-        - void Swap(int, int) : 두 인덱스의 아이템 위치 서로 바꾸기
-        - void SeparateAmount(int a, int b, int amount)
-            - a 인덱스의 아이템이 셀 수 있는 아이템일 경우, amount만큼 분리하여 b 인덱스로 복제
-        - void Use(int) : 해당 인덱스의 아이템 사용
-        - void UpdateSlot(int) : 해당 인덱스의 슬롯 상태 및 UI 갱신
-        - void UpdateAllSlot() : 모든 슬롯 상태 및 UI 갱신
-        - void UpdateAccessibleStatesAll() : 모든 슬롯 UI에 접근 가능 여부 갱신
-        - void TrimAll() : 앞에서부터 아이템 슬롯 채우기
-        - void SortAll() : 앞에서부터 아이템 슬롯 채우면서 정렬
-    
-    // 날짜 : 2021-03-07 PM 7:33:52
-    */
-
     /***********************************************************************
     *                               Public Properties
     ***********************************************************************/
@@ -83,10 +82,12 @@ public class Inventory : MonoBehaviour
     private InventoryUI _inventoryUI;
 
     #region 가방
+    [SerializeField] private Item[] MyItems;
+
     /// <summary> 백팩 아이템 목록 리스트 </summary>
-    public List<Item> Items;
+    public List<ItemData> Items;
     /// <summary> 백팩 초기 수용 한도 </summary>
-    [Range(4, 48)]
+    [SerializeField, Range(4, 48)]
     private int _itemInitalCapacity = 4;
     /// <summary> 백팩 최대 수용 한도 </summary>
     [Range(4, 48)]
@@ -98,7 +99,7 @@ public class Inventory : MonoBehaviour
     public List<Item> PrimaryItems;
 
     /// <summary> 아이템 최대 수용 한도 </summary>
-    [Range(2, 2)]
+    [SerializeField,Range(1, 2)]
     private int _PrimaryMaxCapacity = 2;
     #endregion -------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ public class Inventory : MonoBehaviour
     public List<Item> SecondaryItems;
 
     /// <summary> 보조무기 최대 수용 한도 </summary>
-    [Range(1, 1)]
+    [SerializeField, Range(1, 1)]
     private int _SecondaryMaxCapacity = 1;
     #endregion -------------------------------------------------------------------
 
@@ -116,7 +117,7 @@ public class Inventory : MonoBehaviour
     public List<Item> ConsumableItems;
 
     /// <summary> 소모품 최대 수용 한도 </summary>
-    [Range(1, 3)]
+    [SerializeField, Range(1, 3)]
     private int _ConsumableMaxCapacity = 3;
     #endregion -------------------------------------------------------------------
 
@@ -142,17 +143,23 @@ public class Inventory : MonoBehaviour
     {
         _inventoryUI = GetComponent<InventoryUI>();
 
-        ItemCapacity = SetInitalCapacity(_itemInitalCapacity);
-        PrimaryCapacity = SetInitalCapacity(_PrimaryMaxCapacity);
-        SecondaryCapacity = SetInitalCapacity(_SecondaryMaxCapacity);
-        ConsumableCapacity = SetInitalCapacity(_ConsumableMaxCapacity);
-
     }
 
     /// <summary> 프로세스가 시작되기 전에 실행되는 함수 </summary>
     private void Awake()
     {
+        ItemCapacity = SetInitalCapacity(_itemInitalCapacity);
+        PrimaryCapacity = SetInitalCapacity(_PrimaryMaxCapacity);
+        SecondaryCapacity = SetInitalCapacity(_SecondaryMaxCapacity);
+        ConsumableCapacity = SetInitalCapacity(_ConsumableMaxCapacity);
 
+
+        MyItems = new Item[_itemsMaxCapacity];
+
+        //SetItemCapacity(Items, _itemsMaxCapacity);
+        SetItemCapacity(PrimaryItems, _PrimaryMaxCapacity);
+        SetItemCapacity(SecondaryItems, _SecondaryMaxCapacity);
+        SetItemCapacity(ConsumableItems, _ConsumableMaxCapacity);
     }
     #endregion
 
@@ -222,13 +229,13 @@ public class Inventory : MonoBehaviour
             _inventoryUI.SetItemIcon(_slotUIList, Index, item.Data.ItemImage);
 
             // 1-1.아이템이 셀 수 있는 아이템인 경우
-            if (item is ConsumableItem con)
+            if (item is PotionItem con)
             {
                 // 1-1-1. 수량이 0인 경우, 아이템 제거
                 if (con.IsEmpty)
                 {
                     _item[Index] = null;
-                    RemoveIcon(_slotUIList);
+                    //RemoveIcon(_slotUIList);
                     return;
                 }
                 // 1-1-2. 수량 표시
@@ -248,7 +255,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            RemoveIcon(_slotUIList);
+            //RemoveIcon(_slotUIList);
         }
 
         // 로컬 함수 : 아이콘 제거하기
@@ -288,6 +295,14 @@ public class Inventory : MonoBehaviour
         return inital;
     }
 
+    void SetItemCapacity(List<Item>list, int Capacity)
+    {
+        for (int i = 0; i < Capacity; i++)
+        {
+            list.Add(null);
+        }
+    }
+
     /// <summary> 해당 슬롯이 아이템을 갖고 있는지 여부 </summary>
     public bool HasItem(int Index, int Capacity, List<Item> list)
     {
@@ -298,7 +313,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 해당 슬롯이 셀 수 있는 아이템인지 여부 </summary>
     public bool IsConsumableItem(int Index, int Capacity, List<Item> list)
     {
-        return HasItem(Index, Capacity, list) && list[Index] is ConsumableItem;
+        return HasItem(Index, Capacity, list) && list[Index] is PotionItem;
     }
 
     /// <summary> 
@@ -312,7 +327,7 @@ public class Inventory : MonoBehaviour
         if (!IsValidIndex(Index, Capacity)) return -1;
         if (list[Index] == null) return 0;
 
-        ConsumableItem con = list[Index] as ConsumableItem;
+        PotionItem con = list[Index] as PotionItem;
         if (con == null) return 1;
 
         return con.Amount;
@@ -354,7 +369,7 @@ public class Inventory : MonoBehaviour
     /// <para/> 넣는 데 실패한 잉여 아이템 개수 리턴
     /// <para/> 리턴이 0이면 넣는데 모두 성공했다는 의미
     /// </summary>
-    public int Add(ItemData itemdata, int Capacity, List<Item> ItemList, List<Slot>slotList, int amount = 1)
+    public int Add(ItemData itemdata, int Capacity, List<ItemData> ItemList, List<Slot>slotList, int amount = 1)
     {
         int index;
         // 1. 수량이 있는 아이템
@@ -369,7 +384,7 @@ public class Inventory : MonoBehaviour
                 if(findNextCountable)
                 {
                     index = FindCountableItemSlotIndex(ciData, Capacity, ItemList, index + 1);
-
+                    Debug.Log(index);
                     // 개수 여유 있는 기존재 슬롯이 더이상 없다고 판단되는 경우, 빈 슬롯부터 탐색 시작
                     if(index == -1)
                     {

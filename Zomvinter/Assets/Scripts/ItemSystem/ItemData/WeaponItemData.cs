@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item_Equipment_", menuName = "Inventory System/Item Data/Equipment/Weapon", order = 2)]
-public class WeaponItemData : EquipmentData
+public class WeaponItemData : EquipmentItemData
 {
     /// <summary> °ø°Ý·Â </summary>
     public int Damage => _damage;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EquipmentData : ItemData
+public abstract class EquipmentItemData : ItemData
 {
 
     public float MaxDurability => _maxDurability; // ³»±¸µµ

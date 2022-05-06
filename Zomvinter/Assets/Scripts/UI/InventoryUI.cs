@@ -49,15 +49,15 @@ public class InventoryUI : MonoBehaviour
     [SerializeField, Range(0, 10)]
     private int _horizontalSlotCount = 4; // 슬롯 가로 개수
     [SerializeField, Range(0, 10)]
-    private int _verticalSlotCount = 11; // 슬롯 세로 개수
+    private int _verticalSlotCount = 10; // 슬롯 세로 개수
     [SerializeField] private float _slotMargin = 0.0f; // 한 슬롯의 상하좌우 여백
     [SerializeField] private float _contentAreaPadding = 20.0f; // 인벤토리 영역의 내부 여백
     [SerializeField, Range(25, 80)] private float _slotSize = 25.0f; // 각 슬롯의 크기
 
     [Space]
-    [SerializeField] private bool _showTolltip = true;
-    [SerializeField] private bool _showHighlist = true;
-    [SerializeField] private bool _showRemovingPopup = true;
+    //[SerializeField] private bool _showTolltip = true;
+    //[SerializeField] private bool _showHighlist = true;
+    //[SerializeField] private bool _showRemovingPopup = true;
 
     [Header("Connected Objects")]
     /// <summary> 슬롯들이 위치할 영역 </summary>
@@ -90,16 +90,16 @@ public class InventoryUI : MonoBehaviour
 
     #region 슬롯
     /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> ItemSlots = new List<Slot>();
+    public List<Slot> ItemSlots;
 
     /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> PrimarySlots = new List<Slot>();
+    public List<Slot> PrimarySlots;
 
     /// <summary> Slot�� ���� �� ���� </summary>
     public List<Slot> SecondarySlots;
 
     /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> ConsumableSlots = new List<Slot>();
+    public List<Slot> ConsumableSlots;
 
     /// <summary> Slot을 담을 공간 </summary>
     public Slot HelmetSlot;
@@ -311,16 +311,16 @@ public class InventoryUI : MonoBehaviour
             switch (_currentFilterOption)
             {
                 case FilterOption.Primary:
-                    isFiltered = (itemData is EquipmentData);
+                    isFiltered = (itemData is EquipmentItemData);
                     break;
                 case FilterOption.Secondary:
-                    isFiltered = (itemData is EquipmentData);
+                    isFiltered = (itemData is EquipmentItemData);
                     break;
                 case FilterOption.Helmet:
-                    isFiltered = (itemData is EquipmentData);
+                    isFiltered = (itemData is EquipmentItemData);
                     break;
                 case FilterOption.Bodyarmor:
-                    isFiltered = (itemData is EquipmentData);
+                    isFiltered = (itemData is EquipmentItemData);
                     break;
                 case FilterOption.Backpack:
                     isFiltered = (itemData is CountableItemData);
@@ -342,7 +342,7 @@ public class InventoryUI : MonoBehaviour
         int Secondary = _inventory.SecondaryCapacity;
         int Consumable = _inventory.ConsumableCapacity;
 
-        SetBag(Backpack, ItemSlots, _inventory.Items);
+        //SetBag(Backpack, ItemSlots, _inventory.Items);
         SetBag(Primary, PrimarySlots, _inventory.PrimaryItems);
         SetBag(Secondary, SecondarySlots, _inventory.SecondaryItems);
         SetBag(Consumable, ConsumableSlots, _inventory.ConsumableItems);

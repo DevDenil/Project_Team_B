@@ -175,7 +175,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                     DropPos, Quaternion.identity);
             }
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
-            this.gameObject.GetComponentInParent<Inventory>().Items.RemoveAt(CurIndex);
+            //this.gameObject.GetComponentInParent<Inventory>().Items.RemoveAt(CurIndex);
             //this.GetComponent<SlotItem>().image.sprite = null;
             this.GetComponent<SlotItem>()._amountText.text = null;
             //this.GetComponentInParent<Inventory>().RefreshList();

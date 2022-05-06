@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponItem : Equipment
+public class WeaponItem : EquipmentItem
 {
-    [SerializeField]
-    public WeaponItem(WeaponItemData data) : base(data) { }
-
-    public WeaponItemData ItemData
+    public WeaponItem(WeaponItemData data) : base(data) 
     {
-        get { return ItemData; }
-        set { ItemData = value; }
+        
     }
 }
