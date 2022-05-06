@@ -25,6 +25,4 @@ public abstract class ItemData : ScriptableObject
     private GameObject _itemPrefab;
     [SerializeField]
     private string _itemTooltip;
-
-    public abstract Item CreateItem();
 }

@@ -9,8 +9,4 @@ public class PotionItemData : CountableItemData
     /// <summary> 효과량(회복량 등) </summary>
     public float Value => _value;
     [SerializeField] private float _value;
-    public override Item CreateItem()
-    {
-        return new PotionItem(this);
-    }
 }
