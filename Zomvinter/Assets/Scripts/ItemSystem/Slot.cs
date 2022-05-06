@@ -68,9 +68,9 @@ public class Slot : MonoBehaviour, IDropHandler
         }
         else
         {
-            _slotImage.color = InaccessibleSlotColor;
-            SlotItem.HideIcon();
-            SlotItem.HideText();
+            //_slotImage.color = InaccessibleSlotColor;
+            //SlotItem.HideIcon();
+            //SlotItem.HideText();
         }
 
         _isAccessibleSlot = value;
@@ -138,7 +138,6 @@ public class Slot : MonoBehaviour, IDropHandler
     {
         SlotItem item = eventData.pointerDrag.GetComponent<SlotItem>();
         Slot itemSlot = eventData.pointerDrag.GetComponentInParent<Slot>();
-        Debug.Log(item.CurIndex);
         if (item != null)
         {
             if (itemSlot.SlotState == ItemType.Primary)

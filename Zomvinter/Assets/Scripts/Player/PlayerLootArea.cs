@@ -11,6 +11,7 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> 내 인벤토리UI 스크립트 변수 </summary>
     [SerializeField]
     Inventory myInventory;
+    InventoryUI _inventoryUI;
 
     public List<GameObject> LootableItems = new List<GameObject>();
 
@@ -43,8 +44,9 @@ public class PlayerLootArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            Item ItemData = LootableItems[0].GetComponent<Item>();
-            //myInventory.AddItem(ItemData);
+            WeaponItem ItemData = LootableItems[0].GetComponent<WeaponItem>();
+            Debug.Log(ItemData.Data);
+            myInventory.Add(ItemData.Data, myInventory.ItemCapacity, myInventory.Items, _inventoryUI.ItemSlots);
 
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6528395730179686398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -89,7 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbd55b5275329c49a0332054f112664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotIndex: 0
   SlotState: 3
 --- !u!1 &5320272475428136108
 GameObject:
@@ -144,8 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurParent: {fileID: 0}
   CurIndex: 0
-  image: {fileID: 2911432018421318283}
-  text: {fileID: 7367918335091478975}
+  _iconImage: {fileID: 0}
+  _amountText: {fileID: 0}
   _itemProperty: {fileID: 0}
 --- !u!222 &4293004702183719891
 CanvasRenderer:

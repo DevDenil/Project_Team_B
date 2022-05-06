@@ -1,56 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+/*
+    [ê¸°ëŠ¥ - ì—ë””í„° ì „ìš©]
+    - ê²Œì„ ì‹œì‘ ì‹œ ë™ì ìœ¼ë¡œ ìƒì„±ë  ìŠ¬ë¡¯ ë¯¸ë¦¬ë³´ê¸°(ê°œìˆ˜, í¬ê¸° ë¯¸ë¦¬ë³´ê¸° ê°€ëŠ¥)
+
+    [ê¸°ëŠ¥ - ìœ ì € ì¸í„°í˜ì´ìŠ¤]
+    - ìŠ¬ë¡¯ì— ë§ˆìš°ìŠ¤ ì˜¬ë¦¬ê¸°
+      - ì‚¬ìš© ê°€ëŠ¥ ìŠ¬ë¡¯ : í•˜ì´ë¼ì´íŠ¸ ì´ë¯¸ì§€ í‘œì‹œ
+      - ì•„ì´í…œ ì¡´ì¬ ìŠ¬ë¡¯ : ì•„ì´í…œ ì •ë³´ íˆ´íŒ í‘œì‹œ
+
+    - ë“œë˜ê·¸ ì•¤ ë“œë¡­
+      - ì•„ì´í…œ ì¡´ì¬ ìŠ¬ë¡¯ -> ì•„ì´í…œ ì¡´ì¬ ìŠ¬ë¡¯ : ë‘ ì•„ì´í…œ ìœ„ì¹˜ êµí™˜
+      - ì•„ì´í…œ ì¡´ì¬ ìŠ¬ë¡¯ -> ì•„ì´í…œ ë¯¸ì¡´ì¬ ìŠ¬ë¡¯ : ì•„ì´í…œ ìœ„ì¹˜ ë³€ê²½
+        - Shift ë˜ëŠ” Ctrl ëˆ„ë¥¸ ìƒíƒœì¼ ê²½ìš° : ì…€ ìˆ˜ ìˆëŠ” ì•„ì´í…œ ìˆ˜ëŸ‰ ë‚˜ëˆ„ê¸°
+      - ì•„ì´í…œ ì¡´ì¬ ìŠ¬ë¡¯ -> UI ë°”ê¹¥ : ì•„ì´í…œ ë²„ë¦¬ê¸°
+
+    - ìŠ¬ë¡¯ ìš°í´ë¦­
+      - ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´í…œì¼ ê²½ìš° : ì•„ì´í…œ ì‚¬ìš©
+
+    - ê¸°ëŠ¥ ë²„íŠ¼(ì¢Œì¸¡ ìƒë‹¨)
+      - Trim : ì•ì—ì„œë¶€í„° ë¹ˆ ì¹¸ ì—†ì´ ì•„ì´í…œ ì±„ìš°ê¸°
+      - Sort : ì •í•´ì§„ ê°€ì¤‘ì¹˜ëŒ€ë¡œ ì•„ì´í…œ ì •ë ¬
+
+    - í•„í„° ë²„íŠ¼(ìš°ì¸¡ ìƒë‹¨)
+      - [A] : ëª¨ë“  ì•„ì´í…œ í•„í„°ë§
+      - [E] : ì¥ë¹„ ì•„ì´í…œ í•„í„°ë§
+      - [P] : ì†Œë¹„ ì•„ì´í…œ í•„í„°ë§
+      * í•„í„°ë§ì—ì„œ ì œì™¸ëœ ì•„ì´í…œ ìŠ¬ë¡¯ë“¤ì€ ì¡°ì‘ ë¶ˆê°€
+      * 
+    [ê¸°ëŠ¥ - ê¸°íƒ€]
+    - InvertMouse(bool) : ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­/ìš°í´ë¦­ ë°˜ì „ ì—¬ë¶€ ì„¤ì •
+
+    // ë‚ ì§œ : 2020-05-03
+
+*/
 
 public class InventoryUI : MonoBehaviour
 {
-    /* ±¸Çö ÇÒ ±â´É
-        [±â´É - ¿¡µğÅÍ Àü¿ë]
-        - °ÔÀÓ ½ÃÀÛ ½Ã µ¿ÀûÀ¸·Î »ı¼ºµÉ ½½·Ô ¹Ì¸®º¸±â(°³¼ö, Å©±â ¹Ì¸®º¸±â °¡´É)
-
-        [±â´É - À¯Àú ÀÎÅÍÆäÀÌ½º]
-        - ½½·Ô¿¡ ¸¶¿ì½º ¿Ã¸®±â
-          - »ç¿ë °¡´É ½½·Ô : ÇÏÀÌ¶óÀÌÆ® ÀÌ¹ÌÁö Ç¥½Ã
-          - ¾ÆÀÌÅÛ Á¸Àç ½½·Ô : ¾ÆÀÌÅÛ Á¤º¸ ÅøÆÁ Ç¥½Ã
-
-        - µå·¡±× ¾Ø µå·Ó
-          - ¾ÆÀÌÅÛ Á¸Àç ½½·Ô -> ¾ÆÀÌÅÛ Á¸Àç ½½·Ô : µÎ ¾ÆÀÌÅÛ À§Ä¡ ±³È¯
-          - ¾ÆÀÌÅÛ Á¸Àç ½½·Ô -> ¾ÆÀÌÅÛ ¹ÌÁ¸Àç ½½·Ô : ¾ÆÀÌÅÛ À§Ä¡ º¯°æ
-            - Shift ¶Ç´Â Ctrl ´©¸¥ »óÅÂÀÏ °æ¿ì : ¼¿ ¼ö ÀÖ´Â ¾ÆÀÌÅÛ ¼ö·® ³ª´©±â
-          - ¾ÆÀÌÅÛ Á¸Àç ½½·Ô -> UI ¹Ù±ù : ¾ÆÀÌÅÛ ¹ö¸®±â
-
-        - ½½·Ô ¿ìÅ¬¸¯
-          - »ç¿ë °¡´ÉÇÑ ¾ÆÀÌÅÛÀÏ °æ¿ì : ¾ÆÀÌÅÛ »ç¿ë
-
-        - ±â´É ¹öÆ°(ÁÂÃø »ó´Ü)
-          - Trim : ¾Õ¿¡¼­ºÎÅÍ ºó Ä­ ¾øÀÌ ¾ÆÀÌÅÛ Ã¤¿ì±â
-          - Sort : Á¤ÇØÁø °¡ÁßÄ¡´ë·Î ¾ÆÀÌÅÛ Á¤·Ä
-
-        - ÇÊÅÍ ¹öÆ°(¿ìÃø »ó´Ü)
-          - [A] : ¸ğµç ¾ÆÀÌÅÛ ÇÊÅÍ¸µ
-          - [E] : Àåºñ ¾ÆÀÌÅÛ ÇÊÅÍ¸µ
-          - [P] : ¼Òºñ ¾ÆÀÌÅÛ ÇÊÅÍ¸µ
-
-          * ÇÊÅÍ¸µ¿¡¼­ Á¦¿ÜµÈ ¾ÆÀÌÅÛ ½½·ÔµéÀº Á¶ÀÛ ºÒ°¡
-
-        [±â´É - ±âÅ¸]
-        - InvertMouse(bool) : ¸¶¿ì½º ÁÂÅ¬¸¯/¿ìÅ¬¸¯ ¹İÀü ¿©ºÎ ¼³Á¤
-
-        ³¯Â¥ : 2022-05-04
-    */
-
-
-    /// <summary> ½½·Ô¿¡ ¾ÆÀÌÅÛ µî·Ï </summary>
-
-
-
-
-
     /***********************************************************************
     *                               Option Field
     ***********************************************************************/
     #region
+    [Header("Options")]
+    [SerializeField, Range(0, 10)]
+    private int _horizontalSlotCount = 4; // ìŠ¬ë¡¯ ê°€ë¡œ ê°œìˆ˜
+    [SerializeField, Range(0, 10)]
+    private int _verticalSlotCount = 11; // ìŠ¬ë¡¯ ì„¸ë¡œ ê°œìˆ˜
+    [SerializeField] private float _slotMargin = 0.0f; // í•œ ìŠ¬ë¡¯ì˜ ìƒí•˜ì¢Œìš° ì—¬ë°±
+    [SerializeField] private float _contentAreaPadding = 20.0f; // ì¸ë²¤í† ë¦¬ ì˜ì—­ì˜ ë‚´ë¶€ ì—¬ë°±
+    [SerializeField, Range(25, 80)] private float _slotSize = 25.0f; // ê° ìŠ¬ë¡¯ì˜ í¬ê¸°
+
+    [Space]
+    [SerializeField] private bool _showTolltip = true;
+    [SerializeField] private bool _showHighlist = true;
+    [SerializeField] private bool _showRemovingPopup = true;
+
+    [Header("Connected Objects")]
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform ItemBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform PrimaryBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform SecondaryBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform ConsumableBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform EquipmentBag;
+
+    [SerializeField] private GameObject _slotUiPrefab;     // ìŠ¬ë¡¯ì˜ ì›ë³¸ í”„ë¦¬íŒ¹
+    //[SerializeField] private ItemTooltipUI _itemTooltip;   // ì•„ì´í…œ ì •ë³´ë¥¼ ë³´ì—¬ì¤„ íˆ´íŒ UI
+    //[SerializeField] private InventoryPopupUI _popup;      // íŒì—… UI ê´€ë¦¬ ê°ì²´
+
+    [Header("Buttons")]
+    //[SerializeField] private Button _trimButton;
+    //[SerializeField] private Button _sortButton;
 
     #endregion
 
@@ -58,19 +85,32 @@ public class InventoryUI : MonoBehaviour
     *                               Private Fields
     ***********************************************************************/
     #region
-    /// <summary> ¿¬°áµÈ ÀÎº¥Åä¸® </summary>
+    /// <summary> ì—°ê²°ëœ ì¸ë²¤í† ë¦¬ </summary>
     private Inventory _inventory;
 
-    /// <summary> SlotÀ» ¸ğ¾Æ³õ´Â ¿ÀºêÁ§Æ® </summary>
-    private Transform ItemBag;
-    /// <summary> SlotÀ» ¸ğ¾Æ³õ´Â ¿ÀºêÁ§Æ® </summary>
-    private Transform PrimaryBag;
-    /// <summary> SlotÀ» ¸ğ¾Æ³õ´Â ¿ÀºêÁ§Æ® </summary>
-    private Transform SecondaryBag;
-    /// <summary> SlotÀ» ¸ğ¾Æ³õ´Â ¿ÀºêÁ§Æ® </summary>
-    private Transform ConsumableBag;
-    /// <summary> SlotÀ» ¸ğ¾Æ³õ´Â ¿ÀºêÁ§Æ® </summary>
-    private Transform EquipmentBag;
+    #region ìŠ¬ë¡¯
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<Slot> ItemSlots = new List<Slot>();
+
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<Slot> PrimarySlots = new List<Slot>();
+
+    /// <summary> Slotï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ </summary>
+    public List<Slot> SecondarySlots;
+
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<Slot> ConsumableSlots = new List<Slot>();
+
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot HelmetSlot;
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot BodyArmorSlot;
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot BackpackSlot;
+    #endregion
+    private GraphicRaycaster _gr; // ìº”ë²„ìŠ¤ ë‚´ì˜ ì˜¤ë¸Œì íŠ¸
+    private PointerEventData _ped;
+    private List<RaycastResult> _rrList;
 
 
     private enum FilterOption
@@ -81,45 +121,25 @@ public class InventoryUI : MonoBehaviour
 
     #endregion
 
-    
-
-    /***********************************************************************
-    *                               Public Fields
-    ***********************************************************************/
-    #region
-    /// <summary> SlotµéÀ» ÀúÀå ÇÒ ¸®½ºÆ® </summary>
-    public List<Slot> ItemSlots = new List<Slot>();
-
-    /// <summary> SlotµéÀ» ÀúÀå ÇÒ ¸®½ºÆ® </summary>
-    public List<Slot> PirmarySlots = new List<Slot>();
-
-    /// <summary> SlotµéÀ» ÀúÀå ÇÒ ¸®½ºÆ® </summary>
-    public List<Slot> ConsumableSlots = new List<Slot>();
-
-    /// <summary> SlotÀ» ÀúÀå ÇÒ º¯¼ö </summary>
-    public Slot SecondarySlots;
-
-    /// <summary> SlotÀ» ÀúÀå ÇÒ º¯¼ö </summary>
-    public Slot HelmetSlot;
-
-    /// <summary> SlotÀ» ÀúÀå ÇÒ º¯¼ö </summary>
-    public Slot BodyArmorSlot;
-
-    /// <summary> SlotÀ» ÀúÀå ÇÒ º¯¼ö </summary>
-    public Slot BackpackSlot;
-    #endregion
-    
     /***********************************************************************
     *                               Unity Events
     ***********************************************************************/
     #region
-    private void Awake()
+
+    private void OnValidate()
     {
+        
         FindBag(out ItemBag, "BagBackpack");
         FindBag(out PrimaryBag, "BagPrimary");
         FindBag(out SecondaryBag, "BagSecondary");
         FindBag(out ConsumableBag, "BagExpand");
         FindBag(out EquipmentBag, "EquipmentBag");
+    }
+
+    private void Awake()
+    {
+        Init();
+        InitSlots();
     }
     private void Update()
     {
@@ -128,15 +148,103 @@ public class InventoryUI : MonoBehaviour
     #endregion
 
     /***********************************************************************
+    *                               Init Methods
+    ***********************************************************************/
+    #region
+    private void Init()
+    {
+        TryGetComponent(out _gr);
+        if (_gr == null) _gr = gameObject.AddComponent<GraphicRaycaster>();
+
+        // Graphic Raycaster
+        _ped = new PointerEventData(EventSystem.current);
+        _rrList = new List<RaycastResult>(10);
+
+        // Item Tooltip UI
+        //if(_itemTooltip == null)
+        //{
+        //    // ì¸ìŠ¤í™í„°ì—ì„œ ì•„ì´í…œ íˆ´íŒ UIë¥¼ ì§ì ‘ ì§€ì •í•˜ì§€ ì•Šì•„ ìì‹ì—ì„œ ë°œê²¬í•˜ì—¬ ì´ˆê¸°í™”
+        //    _itemTooltip = GetComponentInChildren<ItemTooltipUI>();
+        //}
+    }
+
+    private void InitSlots()
+    {
+        // ìŠ¬ë¡¯ í”„ë¦¬íŒ¹ ì„¤ì •
+        _slotUiPrefab.TryGetComponent(out RectTransform slotRect);
+        slotRect.sizeDelta = new Vector2(_slotSize, _slotSize); // ìŠ¬ë¡¯ ì‚¬ì´ì¦ˆ ì„¤ì •
+
+        _slotUiPrefab.TryGetComponent(out Slot itemSlot);
+        if (itemSlot == null) _slotUiPrefab.AddComponent<Slot>(); // ìŠ¬ë¡¯ì— Slot ìŠ¤í¬ë¦½íŠ¸ ë¶€ì°©
+
+        _slotUiPrefab.SetActive(false);
+
+        // --
+        Vector2 beginPos = new Vector2(_contentAreaPadding, -_contentAreaPadding);
+        Vector2 curPos = beginPos;
+
+        ItemSlots = new List<Slot>(_verticalSlotCount * _horizontalSlotCount);
+
+        // ìŠ¬ë¡¯ ë™ì  ìƒì„±
+        for(int j = 0; j < _verticalSlotCount; j++)
+        {
+            for(int i = 0; i < _horizontalSlotCount; i++)
+            {
+                int slotIndex = (_horizontalSlotCount * j) + i; // ì¸ë±ìŠ¤ëŠ” 0ë¶€í„° ì‹œì‘
+
+                var slotRT = CloneSlot(ItemBag);
+                slotRT.pivot = new Vector2(0.0f, 1.0f); // Left Top
+                slotRT.anchoredPosition = curPos;
+                slotRT.gameObject.SetActive(true);
+                slotRT.gameObject.name = $"Item Slot [{slotIndex}]";
+
+                var slotUI = slotRT.GetComponent<Slot>();
+                slotUI.SetSlotIndex(slotIndex);
+                ItemSlots.Add(slotUI);
+
+                // Next X Pos
+                curPos.x += (_slotMargin + _slotSize);
+            }
+            // Next Line
+            curPos.x = beginPos.x;
+            curPos.y = (_slotMargin + _slotSize);
+        }
+
+        // ìŠ¬ë¡¯ í”„ë¦¬íŒ¹ - í”„ë¦¬íŒ¹ì´ ì•„ë‹Œ ê²½ìš° íŒŒê´´
+        if (_slotUiPrefab.scene.rootCount != 0) Destroy(_slotUiPrefab);
+
+        RectTransform CloneSlot(Transform Bag)
+        {
+            GameObject slotGo = Instantiate(_slotUiPrefab);
+            RectTransform rt = slotGo.GetComponent<RectTransform>();
+            rt.SetParent(Bag);
+
+            return rt;
+        }
+    }
+    #endregion
+
+    /***********************************************************************
+    *                               Public Fields
+    ***********************************************************************/
+    #region
+    
+    #endregion
+
+    /***********************************************************************
     *                               Private Methods
     ***********************************************************************/
     #region
-    /// <summary> ½½·ÔµéÀ» ´ã°í ÀÖ´Â °¡¹æÀ» Ã£´Â ÇÔ¼ö </summary>
-    /// <param name="Bag">°¡¹æÀ» ÀúÀåÇÒ ÀÎÀÚ</param>
-    /// <param name="name">°¡¹æÀÇ ÀÌ¸§</param>
+    /// <summary> Slotë“¤ì„ ë³´ê´€í•˜ëŠ” Bag íƒìƒ‰í•˜ì—¬ ì§€ì • </summary>
+    /// <param name="Bag">ìŠ¬ë¡¯ì„ ë³´ê´€í•  Bag</param>
+    /// <param name="name">Bagì˜ ì´ë¦„</param>
     void FindBag(out Transform Bag, string name)
     {
         Bag = this.transform.Find(name);
+        if(Bag == null)
+        {
+            Bag = this.GetComponentInChildren<GridLayoutGroup>().transform;
+        }
     }
     #endregion
 
@@ -145,35 +253,30 @@ public class InventoryUI : MonoBehaviour
     *                               Public Methods
     ***********************************************************************/
     #region
-    /// <summary> ÀÎº¥Åä¸® ÂüÁ¶ µî·Ï (Inventory.cs¿¡¼­ Á÷Á¢ È£Ãâ) </summary>
+    /// <summary> ì¸ë²¤í† ë¦¬ ì°¸ì¡° ë“±ë¡ (ì¸ë²¤í† ë¦¬ì—ì„œ ì§ì ‘ í˜¸ì¶œ) </summary>
     public void SetInventoryReference(Inventory inventory)
     {
         _inventory = inventory;
     }
 
-    /// <summary> ½½·Ô¿¡ ¾ÆÀÌÅÛ ¾ÆÀÌÄÜ µî·Ï </summary>
+    /// <summary> ìŠ¬ë¡¯ì— ì•„ì´í…œ ì•„ì´ì½˜ ë“±ë¡ </summary>
     public void SetItemIcon(List<Slot> _slotUIList, int index, Sprite icon)
     {
         //EditorLog($"Set Item Icon : Slot [{index}]");
 
         _slotUIList[index].SetItem(icon);
     }
-    /// <summary> ÇØ´ç ½½·ÔÀÇ ¾ÆÀÌÅÛ °³¼ö ÅØ½ºÆ® ÁöÁ¤ </summary>
+
+    /// <summary> í•´ë‹¹ ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°œìˆ˜ í…ìŠ¤íŠ¸ ì§€ì • </summary>
     public void SetItemAmountText(List<Slot> _slotUIList, int index, int amount)
     {
         //EditorLog($"Set Item Amount Text : Slot [{index}], Amount [{amount}]");
 
-        // NOTE : amount°¡ 1 ÀÌÇÏÀÏ °æ¿ì ÅØ½ºÆ® ¹ÌÇ¥½Ã
+        // NOTE : amountê°€ 1 ì´í•˜ì¼ ê²½ìš° í…ìŠ¤íŠ¸ ë¯¸í‘œì‹œ
         _slotUIList[index].SetItemAmount(amount);
     }
 
-    public void RemoveItem(List<Slot> _slotUIList, int index)
-    {
-        //EditorLog($"Remove Item : Slot [{index}]");
-
-        _slotUIList[index].SlotItem.RemoveItem();
-    }
-    /// <summary> ÇØ´ç ½½·ÔÀÇ ¾ÆÀÌÅÛ °³¼ö ÅØ½ºÆ® ÁöÁ¤ </summary>
+    /// <summary> í•´ë‹¹ ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°œìˆ˜ í…ìŠ¤íŠ¸ ì§€ì • </summary>
     public void HideItemAmountText(List<Slot> _slotUIList, int index)
     {
         //EditorLog($"Hide Item Amount Text : Slot [{index}]");
@@ -181,7 +284,15 @@ public class InventoryUI : MonoBehaviour
         _slotUIList[index].SetItemAmount(1);
     }
 
-    /// <summary> Á¢±Ù °¡´ÉÇÑ ½½·Ô ¹üÀ§ ¼³Á¤ </summary>
+    /// <summary> ìŠ¬ë¡¯ì—ì„œ ì•„ì´í…œ ì•„ì´ì½˜ ì œê±°, ê°œìˆ˜ í…ìŠ¤íŠ¸ ìˆ¨ê¸°ê¸° </summary>
+    public void RemoveItem(List<Slot> _slotUIList, int index)
+    {
+        //EditorLog($"Remove Item : Slot [{index}]");
+
+        _slotUIList[index].SlotItem.RemoveItem();
+    }
+
+    /// <summary> ì ‘ê·¼ ê°€ëŠ¥í•œ ìŠ¬ë¡¯ ë²”ìœ„ ì„¤ì • </summary>
     public void SetAccessibleSlotRange(int accessibleSlotCount, List<Slot>_slotUIList)
     {
         for (int i = 0; i < _slotUIList.Count; i++)
@@ -190,12 +301,12 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    /// <summary> Æ¯Á¤ ½½·ÔÀÇ ÇÊÅÍ »óÅÂ ¾÷µ¥ÀÌÆ® </summary>
+    /// <summary> íŠ¹ì • ìŠ¬ë¡¯ì˜ í•„í„° ìƒíƒœ ì—…ë°ì´íŠ¸ </summary>
     public void UpdateSlotFilterState(List<Slot> _slotUIList, int index, ItemData itemData)
     {
         bool isFiltered = true;
 
-        // nullÀÎ ½½·ÔÀº Å¸ÀÔ °Ë»ç ¾øÀÌ ÇÊÅÍ È°¼ºÈ­
+        // nullì¸ ìŠ¬ë¡¯ì€ íƒ€ì… ê²€ì‚¬ ì—†ì´ í•„í„° í™œì„±í™”
         if (itemData != null)
             switch (_currentFilterOption)
             {
@@ -212,15 +323,39 @@ public class InventoryUI : MonoBehaviour
                     isFiltered = (itemData is EquipmentData);
                     break;
                 case FilterOption.Backpack:
-                    isFiltered = (itemData is EquipmentData);
+                    isFiltered = (itemData is CountableItemData);
                     break;
 
                 case FilterOption.Expand:
-                    isFiltered = (itemData is ConsumableData);
+                    isFiltered = (itemData is CountableItemData);
                     break;
             }
 
         _slotUIList[index].SetItemAccessibleState(isFiltered);
+    }
+
+    /// <summary> ëª¨ë“  ìŠ¬ë¡¯ í•„í„° ìƒíƒœ ì—…ë°ì´íŠ¸ </summary>
+    public void UpdateAllSlotFilters(int Capacity)
+    {
+        int Backpack = _inventory.ItemCapacity;
+        int Primary = _inventory.PrimaryCapacity;
+        int Secondary = _inventory.SecondaryCapacity;
+        int Consumable = _inventory.ConsumableCapacity;
+
+        SetBag(Backpack, ItemSlots, _inventory.Items);
+        SetBag(Primary, PrimarySlots, _inventory.PrimaryItems);
+        SetBag(Secondary, SecondarySlots, _inventory.SecondaryItems);
+        SetBag(Consumable, ConsumableSlots, _inventory.ConsumableItems);
+
+        // ë¡œì»¬ í•¨ìˆ˜
+        void SetBag(int Bag, List<Slot>slotList, List<Item>itemList)
+        {
+            for (int i = 0; i < Bag; i++)
+            {
+                ItemData data = _inventory.GetItemData(i, Capacity, itemList);
+                UpdateSlotFilterState(slotList, i, data);
+            }
+        }
     }
     #endregion
 }

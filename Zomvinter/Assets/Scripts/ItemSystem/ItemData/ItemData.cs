@@ -14,7 +14,7 @@ public abstract class ItemData : ScriptableObject
     public string ItemTooltip => _itemTooltip; // 아이템 설명
 
     [SerializeField]
-    private ItemType _type;
+    private ItemType _type = ItemType.Any;
     [SerializeField]
     private int _id;
     [SerializeField]
