@@ -7,7 +7,7 @@ public class GameTime : GameUtil
 {
     
     public Text TestTime;
-    public float TimeScale; // 시간 흐름 조정
+    public float TimeScale;// 시간 흐름 조정
     public time gameTime;
     public int day;
     // Start is called before the first frame update
@@ -16,7 +16,7 @@ public class GameTime : GameUtil
         day = gameTime.day;
         gameTime.Gametime = 0.0f;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
