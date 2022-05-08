@@ -5,7 +5,11 @@ using UnityEngine;
 /// <summary> 수량 아이템 - 포션 아이템 </summary>
 public class PotionItem : CountableItem
 {
-    public PotionItem(PotionItemData data, int amount = 1) : base(data, amount) { }
+    public PotionItemData PotionData;
+    public PotionItem(PotionItemData data, int amount = 1) : base(data, amount) 
+    {
+        PotionData = data;
+    }
 
     public bool Use()
     {
@@ -14,6 +18,8 @@ public class PotionItem : CountableItem
 
         return true;
     }
+
+    /* --------------------------------------------------------------------------------- */
 
     protected override CountableItem Clone(int amount)
     {

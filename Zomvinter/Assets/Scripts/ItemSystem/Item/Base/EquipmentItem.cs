@@ -8,6 +8,8 @@ public abstract class EquipmentItem : Item
     public EquipmentItemData EquipmentData { get; private set; }
 
     /// <summary> 현재 내구도 </summary>
+    private float _durability;
+
     public float Durability
     {
         get => _durability;
@@ -20,11 +22,10 @@ public abstract class EquipmentItem : Item
             _durability = value;
         }
     }
-    private float _durability;
 
     public EquipmentItem(EquipmentItemData data, int amount = 1) : base(data)
     {
-        EquipmentData = data; ;
+        EquipmentData = data;
         Durability = data.MaxDurability;
     }
 

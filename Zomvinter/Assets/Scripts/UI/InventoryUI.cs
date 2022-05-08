@@ -49,7 +49,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField, Range(0, 10)]
     private int _horizontalSlotCount = 4; // 슬롯 가로 개수
     [SerializeField, Range(0, 10)]
-    private int _verticalSlotCount = 10; // 슬롯 세로 개수
+    private int _verticalSlotCount = 12; // 슬롯 세로 개수
     [SerializeField] private float _slotMargin = 0.0f; // 한 슬롯의 상하좌우 여백
     [SerializeField] private float _contentAreaPadding = 20.0f; // 인벤토리 영역의 내부 여백
     [SerializeField, Range(25, 80)] private float _slotSize = 25.0f; // 각 슬롯의 크기
@@ -128,18 +128,18 @@ public class InventoryUI : MonoBehaviour
 
     private void OnValidate()
     {
-        
         FindBag(out ItemBag, "BagBackpack");
         FindBag(out PrimaryBag, "BagPrimary");
         FindBag(out SecondaryBag, "BagSecondary");
         FindBag(out ConsumableBag, "BagExpand");
         FindBag(out EquipmentBag, "EquipmentBag");
+
+        Init();
+        InitSlots();
     }
 
     private void Awake()
     {
-        Init();
-        InitSlots();
     }
     private void Update()
     {
@@ -170,6 +170,7 @@ public class InventoryUI : MonoBehaviour
 
     private void InitSlots()
     {
+        int VerticalCount = 4 / _horizontalSlotCount;
         // 슬롯 프리팹 설정
         _slotUiPrefab.TryGetComponent(out RectTransform slotRect);
         slotRect.sizeDelta = new Vector2(_slotSize, _slotSize); // 슬롯 사이즈 설정
@@ -186,11 +187,11 @@ public class InventoryUI : MonoBehaviour
         ItemSlots = new List<Slot>(_verticalSlotCount * _horizontalSlotCount);
 
         // 슬롯 동적 생성
-        for(int j = 0; j < _verticalSlotCount; j++)
+        for(int j = 0; j < VerticalCount; j++)
         {
             for(int i = 0; i < _horizontalSlotCount; i++)
             {
-                int slotIndex = (_horizontalSlotCount * j) + i; // 인덱스는 0부터 시작
+                int slotIndex = (_verticalSlotCount * j) + i; // 인덱스는 0부터 시작
 
                 var slotRT = CloneSlot(ItemBag);
                 slotRT.pivot = new Vector2(0.0f, 1.0f); // Left Top
@@ -199,7 +200,7 @@ public class InventoryUI : MonoBehaviour
                 slotRT.gameObject.name = $"Item Slot [{slotIndex}]";
 
                 var slotUI = slotRT.GetComponent<Slot>();
-                slotUI.SetSlotIndex(slotIndex);
+                slotUI.SetIndex(slotIndex);
                 ItemSlots.Add(slotUI);
 
                 // Next X Pos
@@ -289,7 +290,7 @@ public class InventoryUI : MonoBehaviour
     {
         //EditorLog($"Remove Item : Slot [{index}]");
 
-        _slotUIList[index].SlotItem.RemoveItem();
+        _slotUIList[index].RemoveItem();
     }
 
     /// <summary> 접근 가능한 슬롯 범위 설정 </summary>
@@ -297,7 +298,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < _slotUIList.Count; i++)
         {
-            _slotUIList[i].SetSlotAccessibleState(i < accessibleSlotCount);
+            _slotUIList[i].SetSlotAccessState(i < accessibleSlotCount);
         }
     }
 
@@ -331,7 +332,7 @@ public class InventoryUI : MonoBehaviour
                     break;
             }
 
-        _slotUIList[index].SetItemAccessibleState(isFiltered);
+        _slotUIList[index].SetItemAccessState(isFiltered);
     }
 
     /// <summary> 모든 슬롯 필터 상태 업데이트 </summary>
@@ -342,7 +343,7 @@ public class InventoryUI : MonoBehaviour
         int Secondary = _inventory.SecondaryCapacity;
         int Consumable = _inventory.ConsumableCapacity;
 
-        //SetBag(Backpack, ItemSlots, _inventory.Items);
+        SetBag(Backpack, ItemSlots, _inventory.Items);
         SetBag(Primary, PrimarySlots, _inventory.PrimaryItems);
         SetBag(Secondary, SecondarySlots, _inventory.SecondaryItems);
         SetBag(Consumable, ConsumableSlots, _inventory.ConsumableItems);

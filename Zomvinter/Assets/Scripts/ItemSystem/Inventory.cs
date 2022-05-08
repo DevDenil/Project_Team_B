@@ -60,19 +60,19 @@ public class Inventory : MonoBehaviour
 
     /// <summary> 백팩 수용 한도 </summary>
     [SerializeField]
-    public int ItemCapacity { get; private set; }
+    public int ItemCapacity { get; set; }
 
     /// <summary> 아이템 수용 한도 </summary>
     [SerializeField]
-    public int PrimaryCapacity { get; private set; }
+    public int PrimaryCapacity { get; set; }
 
     /// <summary> 보조무기 수용 한도 </summary>
     [SerializeField]
-    public int SecondaryCapacity { get; private set; }
+    public int SecondaryCapacity { get; set; }
 
     /// <summary> 소모품 수용 한도 </summary>
     [SerializeField]
-    public int ConsumableCapacity { get; private set; }
+    public int ConsumableCapacity { get; set; }
     #endregion
     /***********************************************************************
     *                               Private Fields
@@ -82,10 +82,9 @@ public class Inventory : MonoBehaviour
     private InventoryUI _inventoryUI;
 
     #region 가방
-    [SerializeField] private Item[] MyItems;
 
     /// <summary> 백팩 아이템 목록 리스트 </summary>
-    public List<ItemData> Items;
+    public List<Item> Items;
     /// <summary> 백팩 초기 수용 한도 </summary>
     [SerializeField, Range(4, 48)]
     private int _itemInitalCapacity = 4;
@@ -99,7 +98,7 @@ public class Inventory : MonoBehaviour
     public List<Item> PrimaryItems;
 
     /// <summary> 아이템 최대 수용 한도 </summary>
-    [SerializeField,Range(1, 2)]
+    [SerializeField,Range(2, 2)]
     private int _PrimaryMaxCapacity = 2;
     #endregion -------------------------------------------------------------------
 
@@ -130,6 +129,9 @@ public class Inventory : MonoBehaviour
 
     /// <summary> 가방에 저장 될 아이템 </summary>
     public Item BackpackItem = null;
+
+    public WeaponItem Weapon = null;
+    public Item DB = null;
     #endregion -------------------------------------------------------------------
 
     #endregion
@@ -138,28 +140,50 @@ public class Inventory : MonoBehaviour
     *                               Unity Events
     ***********************************************************************/
     #region
+
+    
+
     /// <summary> 에디터 상에서 실행 되는 함수 </summary>
     private void OnValidate()
     {
         _inventoryUI = GetComponent<InventoryUI>();
 
+        ItemCapacity = SetInitalCapacity(_itemInitalCapacity);
+        PrimaryCapacity = SetInitalCapacity(_PrimaryMaxCapacity);
+        SecondaryCapacity = SetInitalCapacity(_SecondaryMaxCapacity);
+        ConsumableCapacity = SetInitalCapacity(_ConsumableMaxCapacity);
     }
 
     /// <summary> 프로세스가 시작되기 전에 실행되는 함수 </summary>
     private void Awake()
     {
-        ItemCapacity = SetInitalCapacity(_itemInitalCapacity);
-        PrimaryCapacity = SetInitalCapacity(_PrimaryMaxCapacity);
-        SecondaryCapacity = SetInitalCapacity(_SecondaryMaxCapacity);
-        ConsumableCapacity = SetInitalCapacity(_ConsumableMaxCapacity);
+        InitSlot(Items, ItemCapacity);
+        InitSlot(PrimaryItems, PrimaryCapacity);
+        InitSlot(SecondaryItems, SecondaryCapacity);
+        InitSlot(ConsumableItems, ConsumableCapacity);
 
 
-        MyItems = new Item[_itemsMaxCapacity];
+        if (DB is WeaponItem)
+        {
 
-        //SetItemCapacity(Items, _itemsMaxCapacity);
-        SetItemCapacity(PrimaryItems, _PrimaryMaxCapacity);
-        SetItemCapacity(SecondaryItems, _SecondaryMaxCapacity);
-        SetItemCapacity(ConsumableItems, _ConsumableMaxCapacity);
+            Debug.Log("WP");
+        }
+        if (DB is ArmorItem)
+        {
+
+            Debug.Log("AR");
+        }
+        if (DB is PotionItem)
+        {
+
+            Debug.Log("PT");
+        }
+
+        //Debug.Log(Weapon.WeaponData.ItemName);
+        //PotionItem item = DB.gameObject.GetComponent<PotionItem>();
+        //Debug.Log(item.PotionData.ItemName);
+        UpdateSlot(0, Items.Count, Items, _inventoryUI.ItemSlots);
+        //UpdateAllSlot(Items.Count, Items, _inventoryUI.ItemSlots);
     }
     #endregion
 
@@ -171,6 +195,22 @@ public class Inventory : MonoBehaviour
     *                               Private Methods
     ***********************************************************************/
     #region
+
+    private void InitSlot(List<Item> list, int Capacity)
+    {
+        if (list.Count <= 0)
+        {
+            int i = 0;
+            for (; i < Capacity && i < list.Count; i++)
+            {
+                for (; i < Capacity; i++)
+                {
+                    list.Add(null);
+                }
+            }
+        }
+    }
+
     /// <summary> 인덱스가 수용 범위 내에 있는지 검사 </summary>
     private bool IsValidIndex(int Index, int Capacity)
     {
@@ -221,28 +261,44 @@ public class Inventory : MonoBehaviour
         if (!IsValidIndex(Index, Capacity)) return;
 
         Item item = _item[Index];
+        
 
         // 1.아이템이 슬롯에 존재하는 경우
         if (item != null)
         {
             //아이콘 등록
-            _inventoryUI.SetItemIcon(_slotUIList, Index, item.Data.ItemImage);
+            if (item is WeaponItem)
+            {
+                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<WeaponItem>().WeaponData.ItemImage);
+            }
+            if (item is ArmorItem)
+            {
+                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<ArmorItem>().ArmorData.ItemImage);
+            }
+            if (item is PotionItem)
+            {
+                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<PotionItem>().PotionData.ItemImage);
+            }
+            //_inventoryUI.SetItemIcon(_slotUIList, Index, item.Data.ItemImage);
 
             // 1-1.아이템이 셀 수 있는 아이템인 경우
             if (item is PotionItem con)
             {
                 // 1-1-1. 수량이 0인 경우, 아이템 제거
+                
                 if (con.IsEmpty)
                 {
                     _item[Index] = null;
-                    //RemoveIcon(_slotUIList);
+                    RemoveIcon(_slotUIList, Index);
                     return;
                 }
+                
                 // 1-1-2. 수량 표시
                 else
                 {
-                    _inventoryUI.SetItemAmountText(_slotUIList, Index, con.Amount);
+                    //_inventoryUI.SetItemAmountText(_slotUIList, Index, con.Amount);
                 }
+                
             }
             // 1-2. 셀 수 없는 아이템인 경우, 수량 텍스트 제거
             else
@@ -251,15 +307,27 @@ public class Inventory : MonoBehaviour
             }
 
             // 슬롯 필터 상태 업데이트
-            _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.Data);
+            if (item is WeaponItem)
+            {
+                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<WeaponItem>().WeaponData);
+            }
+            if (item is ArmorItem)
+            {
+                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<ArmorItem>().ArmorData);
+            }
+            if (item is PotionItem)
+            {
+                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<PotionItem>().PotionData);
+            }
+            //_inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.Data);
         }
         else
         {
-            //RemoveIcon(_slotUIList);
+            RemoveIcon(_slotUIList, Index);
         }
 
         // 로컬 함수 : 아이콘 제거하기
-        void RemoveIcon(List<Slot> _slotsUIList)
+        void RemoveIcon(List<Slot> _slotsUIList, int Index)
         {
             _inventoryUI.RemoveItem(_slotsUIList, Index);
             _inventoryUI.HideItemAmountText(_slotsUIList, Index); // 수량 텍스트 숨기기
@@ -267,7 +335,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 해당하는 인덱스의 슬롯들의 상태 및 UI 갱신 </summary>
-    private void UpdateSlot(int Capacity, List<Item>list, List<Slot>_slotUIList, params int[] indices)
+    private void UpdateSlot(int Capacity, List<Item> list, List<Slot>_slotUIList, params int[] indices)
     {
         foreach (var i in indices)
         {
@@ -276,7 +344,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 모든 슬롯들의 상태를 UI에 갱신 </summary>
-    private void UpdateAllSlot(int Capacity, List<Item>list, List<Slot> _slotUIList)
+    private void UpdateAllSlot(int Capacity, List<Item> list, List<Slot> _slotUIList)
     {
         for(int i = 0; i < Capacity; i++)
         {
@@ -293,14 +361,6 @@ public class Inventory : MonoBehaviour
     int SetInitalCapacity(int inital)
     {
         return inital;
-    }
-
-    void SetItemCapacity(List<Item>list, int Capacity)
-    {
-        for (int i = 0; i < Capacity; i++)
-        {
-            list.Add(null);
-        }
     }
 
     /// <summary> 해당 슬롯이 아이템을 갖고 있는지 여부 </summary>
@@ -322,15 +382,15 @@ public class Inventory : MonoBehaviour
     /// <para/> - 빈 슬롯 : 0 리턴
     /// <para/> - 셀 수 없는 아이템 : 1 리턴
     /// </summary>
-    public int GetCurrentAmount(int Index, int Capacity, List<Item> list)
+    public int GetCurrentAmount(int Index, int Capacity, List<ItemData> list)
     {
         if (!IsValidIndex(Index, Capacity)) return -1;
         if (list[Index] == null) return 0;
 
-        PotionItem con = list[Index] as PotionItem;
+        PotionItemData con = list[Index] as PotionItemData;
         if (con == null) return 1;
 
-        return con.Amount;
+        return con.MaxAmount;
     }
 
 
@@ -365,106 +425,106 @@ public class Inventory : MonoBehaviour
         _inventoryUI.SetInventoryReference(this);
     }
 
-    /// <summary> 인벤토리에 아이템 추가
-    /// <para/> 넣는 데 실패한 잉여 아이템 개수 리턴
-    /// <para/> 리턴이 0이면 넣는데 모두 성공했다는 의미
-    /// </summary>
-    public int Add(ItemData itemdata, int Capacity, List<ItemData> ItemList, List<Slot>slotList, int amount = 1)
-    {
-        int index;
-        // 1. 수량이 있는 아이템
-        if(itemdata is CountableItemData ciData)
-        {
-            bool findNextCountable = true;
-            index = -1;
+    ///// <summary> 인벤토리에 아이템 추가
+    ///// <para/> 넣는 데 실패한 잉여 아이템 개수 리턴
+    ///// <para/> 리턴이 0이면 넣는데 모두 성공했다는 의미
+    ///// </summary>
+    //public int Add(ItemData itemdata, int Capacity, List<ItemData> ItemList, List<Slot>slotList, int amount = 1)
+    //{
+    //    int index;
+    //    // 1. 수량이 있는 아이템
+    //    if(itemdata is CountableItemData ciData)
+    //    {
+    //        bool findNextCountable = true;
+    //        index = -1;
 
-            while(amount > 0)
-            {
-                // 1-1. 이미 해당 아이템이 인벤토리 내에 존재하고, 개수 여유 있는지 검사
-                if(findNextCountable)
-                {
-                    index = FindCountableItemSlotIndex(ciData, Capacity, ItemList, index + 1);
-                    Debug.Log(index);
-                    // 개수 여유 있는 기존재 슬롯이 더이상 없다고 판단되는 경우, 빈 슬롯부터 탐색 시작
-                    if(index == -1)
-                    {
-                        findNextCountable = false;
-                    }
-                    // 기존재 슬롯을 찾은 경우, 양 증가시키고 초과량 존재 시 amount에 초기화
-                    else
-                    {
-                        CountableItem ci = ItemList[index] as CountableItem;
-                        amount = ci.AddAmountAndGetExcess(amount);
+    //        while(amount > 0)
+    //        {
+    //            // 1-1. 이미 해당 아이템이 인벤토리 내에 존재하고, 개수 여유 있는지 검사
+    //            if(findNextCountable)
+    //            {
+    //                index = FindCountableItemSlotIndex(ciData, Capacity, ItemList, index + 1);
+    //                Debug.Log(index);
+    //                // 개수 여유 있는 기존재 슬롯이 더이상 없다고 판단되는 경우, 빈 슬롯부터 탐색 시작
+    //                if(index == -1)
+    //                {
+    //                    findNextCountable = false;
+    //                }
+    //                // 기존재 슬롯을 찾은 경우, 양 증가시키고 초과량 존재 시 amount에 초기화
+    //                else
+    //                {
+    //                    CountableItem ci = ItemList[index] as CountableItem;
+    //                    amount = ci.AddAmountAndGetExcess(amount);
 
-                        UpdateSlot(index, Capacity, ItemList, slotList);
-                    }
-                }
-                // 1-2. 빈 슬롯 탐색
-                else
-                {
-                    index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
+    //                    UpdateSlot(index, Capacity, ItemList, slotList);
+    //                }
+    //            }
+    //            // 1-2. 빈 슬롯 탐색
+    //            else
+    //            {
+    //                index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
 
-                    // 빈 슬롯조차 없는 경우 종료
-                    if(index == -1)
-                    {
-                        break;
-                    }
-                    // 빈 슬롯 발견 시, 슬롯에 아이템 추가 및 잉여량 계산
-                    else
-                    {
-                        CountableItem ci = ciData.CreateItem() as CountableItem;
-                        ci.SetAmount(amount);
+    //                // 빈 슬롯조차 없는 경우 종료
+    //                if(index == -1)
+    //                {
+    //                    break;
+    //                }
+    //                // 빈 슬롯 발견 시, 슬롯에 아이템 추가 및 잉여량 계산
+    //                else
+    //                {
+    //                    CountableItem ci = ciData.CreateItem() as CountableItem;
+    //                    ci.SetAmount(amount);
 
-                        // 슬롯에 추가
-                        ItemList[index] = ci;
+    //                    // 슬롯에 추가
+    //                    ItemList[index] = ci;
 
-                        // 남은 개수 계산
-                        amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
+    //                    // 남은 개수 계산
+    //                    amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
 
-                        UpdateSlot(index, Capacity, ItemList, slotList);
-                    }
-                }
-            }
-        }
-        // 2. 수량이 없는 아이템
-        else
-        {
-            // 2-1. 1개만 넣는 경우, 간단히 수행
-            if(amount == 1)
-            {
-                index = FindEmptySlotIndex(ItemList, Capacity);
+    //                    UpdateSlot(index, Capacity, ItemList, slotList);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    // 2. 수량이 없는 아이템
+    //    else
+    //    {
+    //        // 2-1. 1개만 넣는 경우, 간단히 수행
+    //        if(amount == 1)
+    //        {
+    //            index = FindEmptySlotIndex(ItemList, Capacity);
 
-                if(index != -1)
-                {
-                    // 아이템을 생성하여 슬롯에 추가
-                    ItemList[index] = itemdata.CreateItem();
-                    amount = 0;
+    //            if(index != -1)
+    //            {
+    //                // 아이템을 생성하여 슬롯에 추가
+    //                ItemList[index] = itemdata.CreateItem();
+    //                amount = 0;
 
-                    UpdateSlot(index, Capacity, ItemList, slotList);
-                }
-            }
+    //                UpdateSlot(index, Capacity, ItemList, slotList);
+    //            }
+    //        }
 
-            // 2-2. 2개 이상의 수량이 없는 아이템을 동시에 추가하는 경우
-            index = -1;
-            for(; amount > 0; amount--)
-            {
-                // 아이템 넣은 인덱스의 다음 인덱스부터 슬롯 탐색
-                index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
+    //        // 2-2. 2개 이상의 수량이 없는 아이템을 동시에 추가하는 경우
+    //        index = -1;
+    //        for(; amount > 0; amount--)
+    //        {
+    //            // 아이템 넣은 인덱스의 다음 인덱스부터 슬롯 탐색
+    //            index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
 
-                // 다 넣지 못한 경우 루프 종료
-                if (index == -1)
-                {
-                    break;
-                }
+    //            // 다 넣지 못한 경우 루프 종료
+    //            if (index == -1)
+    //            {
+    //                break;
+    //            }
 
-                // 아이템을 생성하여 슬롯에 추가
-                ItemList[index] = itemdata.CreateItem();
+    //            // 아이템을 생성하여 슬롯에 추가
+    //            ItemList[index] = itemdata.CreateItem();
 
-                UpdateSlot(index, Capacity, ItemList, slotList);
-            }
-        }
-        return amount;
-    }
+    //            UpdateSlot(index, Capacity, ItemList, slotList);
+    //        }
+    //    }
+    //    return amount;
+    //}
 
     /// <summary> 모든 슬롯 UI에 접근 가능 여부 업데이트 </summary>
     public void UpdateAccessibleStatesAll()

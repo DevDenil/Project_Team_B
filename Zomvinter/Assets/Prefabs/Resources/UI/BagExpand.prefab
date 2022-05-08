@@ -309,8 +309,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 40, y: 40}
-  m_SizeDelta: {x: 40, y: 35}
+  m_AnchoredPosition: {x: -4, y: 19.25}
+  m_SizeDelta: {x: 25, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4734085112121871040
 CanvasRenderer:
@@ -362,7 +362,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbd55b5275329c49a0332054f112664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotIndex: 0
+  _padding: 1
+  _iconImage: {fileID: 2501649925788805434}
+  _amountText: {fileID: 5258451598779766647}
   SlotState: 2
 --- !u!1 &4734085112202821244
 GameObject:
@@ -438,7 +440,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 25}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6680021591727379228
 CanvasRenderer:
@@ -462,7 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -492,9 +494,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurParent: {fileID: 0}
   CurIndex: 0
-  image: {fileID: 2501649925788805434}
-  text: {fileID: 5258451598779766647}
-  _itemProperty: {fileID: 0}
 --- !u!1 &5561904298631157545
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +530,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 25}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6319887153454640283
 CanvasRenderer:
@@ -555,7 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -585,9 +584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurParent: {fileID: 0}
   CurIndex: 0
-  image: {fileID: 8941271921542536178}
-  text: {fileID: 2055681177992782693}
-  _itemProperty: {fileID: 0}
 --- !u!1 &5803862768584609167
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,8 +621,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 35}
+  m_AnchoredPosition: {x: 22, y: 19.75}
+  m_SizeDelta: {x: 25, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1825786013057671838
 CanvasRenderer:
@@ -678,7 +674,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbd55b5275329c49a0332054f112664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotIndex: 0
+  _padding: 1
+  _iconImage: {fileID: 4079597803319461866}
+  _amountText: {fileID: 5609294143867970552}
   SlotState: 2
 --- !u!1 &6327082571964327656
 GameObject:
@@ -716,7 +714,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 25}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4308230606812389028
 CanvasRenderer:
@@ -740,7 +738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -770,9 +768,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurParent: {fileID: 0}
   CurIndex: 0
-  image: {fileID: 4079597803319461866}
-  text: {fileID: 5609294143867970552}
-  _itemProperty: {fileID: 0}
 --- !u!1 &8584094101224326372
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,8 +805,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 40, y: 0}
-  m_SizeDelta: {x: 40, y: 35}
+  m_AnchoredPosition: {x: 48, y: 19.75}
+  m_SizeDelta: {x: 25, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5395258070864268160
 CanvasRenderer:
@@ -863,7 +858,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbd55b5275329c49a0332054f112664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotIndex: 0
+  _padding: 1
+  _iconImage: {fileID: 8941271921542536178}
+  _amountText: {fileID: 2055681177992782693}
   SlotState: 2
 --- !u!1 &8701185691232729854
 GameObject:

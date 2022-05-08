@@ -45,13 +45,13 @@ public class PlayerLootArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            ItemData ItemData = LootableItems[0].GetComponent<AKM>().SendItemInfo();
-            Debug.Log(ItemData.ItemName);
-            Debug.Log(ItemData.ItemPrefab);
-            Debug.Log(myInventory.ItemCapacity);
-            Debug.Log(myInventory.Items);
-            Debug.Log(_inventoryUI.ItemSlots);
-            myInventory.Add(ItemData, myInventory.ItemCapacity, myInventory.Items, _inventoryUI.ItemSlots, 1);
+            //ItemData ItemData = LootableItems[0].GetComponent<AKM>().SendItemInfo();
+            //Debug.Log(ItemData.ItemName);
+            //Debug.Log(ItemData.ItemPrefab);
+            //Debug.Log(myInventory.ItemCapacity);
+            //Debug.Log(myInventory.Items);
+            //Debug.Log(_inventoryUI.ItemSlots);
+            //myInventory.Add(ItemData, myInventory.ItemCapacity, myInventory.Items, _inventoryUI.ItemSlots, 1);
 
             Destroy(LootableItems[0]);
             LootableItems.RemoveAt(0);

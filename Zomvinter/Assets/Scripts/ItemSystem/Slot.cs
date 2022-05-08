@@ -7,32 +7,65 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour, IDropHandler
 {
     /***********************************************************************
+*                               Option Fields
+***********************************************************************/
+    #region .
+    [Tooltip("슬롯 내에서 아이콘과 슬롯 사이의 여백")]
+    [SerializeField] private float _padding = 1.0f;
+
+    [Tooltip("아이템 아이콘 이미지")]
+    [SerializeField] private Image _iconImage;
+
+    [Tooltip("아이템 개수 텍스트")]
+    [SerializeField] private TMPro.TMP_Text _amountText;
+    #endregion
+
+    /***********************************************************************
     *                               Properties
     ***********************************************************************/
     #region 프로퍼티
-    Inventory _Inventory => GetComponentInParent<Inventory>();
     /// <summary> 슬롯의 인덱스 </summary>
+    [SerializeField]
     public int SlotIndex { get; private set; }
 
-    public SlotItem SlotItem => GetComponentInChildren<SlotItem>();
+    public ItemData _item;
+
+    public ItemData ItemProperties
+    {
+        get { return _item; }
+        set { _item = value; }
+    }
+
+    /// <summary> 슬롯의 타입 </summary>
+    public ItemType SlotState;
 
     /// <summary> 슬롯이 아이템을 보유하고 있는지 여부 </summary>
-    public bool HasItem => SlotItem.ItemProperty != null;
+    public bool HasItem => ItemProperties != null;
 
     /// <summary> 접근 가능한 슬롯인지 여부 </summary>
     public bool IsAccessible => _isAccessibleSlot && _isAccessibleItem;
-
-    [SerializeField]
-    public ItemType SlotState;
     #endregion
     /***********************************************************************
     *                               Fields
     ***********************************************************************/
     #region 필드
-    private Image _slotImage; // 슬롯의 이미지
+    /// <summary> 인벤토리 </summary>
+    private Inventory _Inventory;
+    /// <summary> 인벤토리UI </summary>
+    private InventoryUI _InventoryUI;
+    /// <summary> 슬롯 </summary>
+    private SlotItem _slotItem;
 
-    // 현재 하이라이트 알파값
-    //private float _currentHLAlpha = 0.0f;
+    /// <summary> 슬롯 이미지 </summary>
+    private Image _slotImage;
+
+    private RectTransform _slotRect;
+    private RectTransform _iconRect;
+
+    [SerializeField]
+    private GameObject _iconGo;
+    [SerializeField]
+    private GameObject _textGo;
 
     /// <summary> 슬롯 접근가능 여부 </summary>
     private bool _isAccessibleSlot = true;
@@ -49,70 +82,231 @@ public class Slot : MonoBehaviour, IDropHandler
     *                               Unity Event
     ***********************************************************************/
     #region
+    private void OnValidate()
+    {
+        InitComponenet();
+        InitValue();
+    }
+
+    private void Awake()
+    {
+        Debug.Log(SlotIndex);
+    }
+
     #endregion
+
+    /***********************************************************************
+    *                               Private Methods
+    ***********************************************************************/
+    #region
+    /// <summary> 초기 설정 함수 </summary>
+    private void InitComponenet ()
+    {
+        // Scripts
+        _Inventory = GetComponentInParent<Inventory>();
+        _InventoryUI = GetComponentInParent<InventoryUI>();
+        _slotItem = GetComponentInChildren<SlotItem>();
+
+        // Rect
+        _amountText = GetComponentInChildren<TMPro.TMP_Text>();
+        _slotRect = GetComponent<RectTransform>();
+        _iconRect = _iconImage.rectTransform;
+
+        // Image
+        _slotImage = GetComponent<Image>();
+
+        // GameObject
+        _iconGo = _iconImage.gameObject;
+        _textGo = _amountText.gameObject;
+    }
+
+    private void InitValue()
+    {
+        // 1. Item Icon, Highlight Rect
+
+        switch (TypeCheck())
+        {
+            case 1:
+                
+            case 2:
+                _iconRect.pivot = new Vector2(0.5f, 0.5f); // 피벗은 중앙
+                _iconRect.anchoredPosition = new Vector2(0.0f, 15.0f); // 위치
+                _iconRect.sizeDelta = new Vector2(80.0f, 32.5f); // 사이즈
+                break;
+            case 3:
+                _iconRect.pivot = new Vector2(0.5f, 0.0f); // 피벗은 중앙
+                _iconRect.anchoredPosition = new Vector2(0.0f, 0.0f); // 위치
+                _iconRect.sizeDelta = new Vector2(25.0f, 25.0f); // 사이즈
+                break;
+        }
+
+        // 2. Image
+        _iconImage.raycastTarget = false;
+
+        // 3. Deactivate Icon
+        //HideIcon();
+
+        // 4. GetItem
+        switch (TypeCheck())
+        {
+            case 1:
+                //GetItemInfo(_Inventory.PrimaryItems);
+                break;
+            case 2:
+                //GetItemInfo(_Inventory.SecondaryItems);
+                break;
+            case 3:
+                //GetItemInfo(_Inventory.ConsumableItems);
+                break;
+            case 4:
+                //GetItemInfo(_Inventory.HelmetItem);
+                break;
+            case 5:
+                //GetItemInfo(_Inventory.BodyArmorItem);
+                break;
+            case 6:
+                //GetItemInfo(_Inventory.BackpackItem);
+                break;
+            case 7:
+                //GetItemInfo(_Inventory.Items);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void ShowIcon() => _iconGo.SetActive(true);
+    //private void HideIcon() => _iconGo.SetActive(false);
+
+    private void ShowText() => _textGo.SetActive(true);
+    private void HideText() => _textGo.SetActive(false);
+
+    private int TypeCheck()
+    {
+        if(SlotState == ItemType.Primary)
+        {
+            return 1;
+        }
+        else if (SlotState == ItemType.Secondary)
+        {
+            return 2;
+        }
+        else if( SlotState == ItemType.Expand)
+        {
+            return 3;
+        }
+        else if (SlotState == ItemType.Helmet)
+        {
+            return 4;
+        }
+        else if (SlotState == ItemType.Bodyarmor)
+        {
+            return 5;
+        }
+        else if (SlotState == ItemType.Backpack)
+        {
+            return 6;
+        }
+        else
+        {
+            return 7;
+        }
+    }
+
+    private void GetItemInfo(List<Item> list)
+    {
+        //if (list[SlotIndex].Data != null)
+        //{
+        //    ItemProperties = list[SlotIndex].Data;
+        //}
+    }
+    private void GetItemInfo(Item item)
+    {
+        //if (item != null)
+        //{
+        //    ItemProperties = item.Data;
+        //}
+    }
+    #endregion
+
     /***********************************************************************
     *                               Public Methods
     ***********************************************************************/
     #region Public 함수
-    public void SetSlotIndex(int index) => SlotIndex = index;
+    public int SetIndex(int index) => SlotIndex = index;
 
-    /// <summary> 슬롯 자체의 활성화/비활성화 여부 설정 </summary>
-    public void SetSlotAccessibleState(bool value)
+    /// <summary> 슬롯 자체의 활성화/비활성화 여부 제어 </summary>
+    public void SetSlotAccessState(bool value)
     {
         // 중복 처리는 지양
         if (_isAccessibleSlot == value) return;
 
         if (value)
         {
+            // 슬롯 이미지 색 활성화
             _slotImage.color = Color.black;
         }
         else
         {
-            //_slotImage.color = InaccessibleSlotColor;
-            //SlotItem.HideIcon();
-            //SlotItem.HideText();
+            // 아이템 이미지 색 활성화
+            _slotImage.color = InaccessibleSlotColor;
+            //HideIcon();
+            HideText();
         }
 
         _isAccessibleSlot = value;
-    }/// <summary> 아이템 활성화/비활성화 여부 설정 </summary>
-    public void SetItemAccessibleState(bool value)
+    }
+    
+    /// <summary> 아이템 활성화/비활성화 여부 제어 </summary>
+    public void SetItemAccessState(bool value)
     {
         // 중복 처리는 지양
         if (_isAccessibleItem == value) return;
 
         if (value)
         {
-            SlotItem._iconImage.color = Color.white;
-            SlotItem._amountText.color = Color.white;
+            Debug.Log("Filtered");
+            _iconImage.raycastTarget = true;
+            _iconImage.color = Color.white;
+            _amountText.color = Color.white;
+
         }
         else
         {
-            SlotItem._iconImage.color = InaccessibleIconColor;
-            SlotItem._amountText.color = InaccessibleIconColor;
+            Debug.Log("Filtered");
+            _iconImage.raycastTarget = false;
+            _iconImage.color = InaccessibleIconColor;
+            _amountText.color = InaccessibleIconColor;
         }
 
         _isAccessibleItem = value;
     }
     #endregion
 
-    private void Start()
-    {
-
-    }
-
-    public void SetItem(Sprite itemSprite)
+    /// <summary> 슬롯에 아이템 등록 </summary>
+    public void SetItem(Sprite sprite)
     {
         //if (!this.IsAccessible) return;
 
-        if (itemSprite != null)
+        if (sprite != null)
         {
-            SlotItem._iconImage.sprite = itemSprite;
-            SlotItem.ShowIcon();
+            _iconImage.sprite = sprite;
+            ShowIcon();
+            SetSlotAccessState(true);
+            SetItemAccessState(true);
         }
         else
         {
-            SlotItem.RemoveItem();
+            RemoveItem();
         }
+    }
+    
+    /// <summary> 슬롯에서 아이템 제거 </summary>
+    public void RemoveItem()
+    {
+        _iconImage.sprite = null;
+        //HideIcon();
+        HideText();
     }
 
     /// <summary> 아이템 개수 텍스트 설정(amount가 1 이하일 경우 텍스트 미표시) </summary>
@@ -121,11 +315,15 @@ public class Slot : MonoBehaviour, IDropHandler
         //if (!this.IsAccessible) return;
 
         if (HasItem && amount > 1)
-            SlotItem.ShowText();
+        {
+            ShowText();
+        }
         else
-            SlotItem.HideText();
+        {
+            HideText();
+        }
 
-        SlotItem._amountText.text = amount.ToString();
+        _amountText.text = amount.ToString();
     }
 
     /***********************************************************************
@@ -140,26 +338,9 @@ public class Slot : MonoBehaviour, IDropHandler
         Slot itemSlot = eventData.pointerDrag.GetComponentInParent<Slot>();
         if (item != null)
         {
-            if (itemSlot.SlotState == ItemType.Primary)
-            {
-                item.SwapItem(_Inventory.PrimaryItems, this.transform);
-            }
-            else if (itemSlot.SlotState == ItemType.Secondary)
-            {
-                item.SwapItem(_Inventory.SecondaryItems, this.transform);
-            }
-            else if (itemSlot.SlotState == ItemType.Expand)
-            {
-                item.SwapItem(_Inventory.ConsumableItems, this.transform);
-            }
-            else if(itemSlot.SlotState == ItemType.Any)
-            {
-                //item.SwapItem(_Inventory.Items, this.transform);
-            }
+            item.SwapItem(_Inventory.Items, this.transform);
             item.ChangeParent(this.transform);
-            //item.SetIndex();
         }
         this.GetComponentInChildren<SlotItem>().CurIndex = SlotIndex;
-        //_Inventory.RefreshList();
     }
 }

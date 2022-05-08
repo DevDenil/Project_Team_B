@@ -31,6 +31,8 @@ public abstract class CountableItem : Item
         Amount = Mathf.Clamp(amount, 0, MaxAmount);
     }
 
+    /* --------------------------------------------------------------------------------- */
+
     /// <summary> 개수 추가 및 최대치 초과량 반환(초과량 없을 경우 0) </summary>
     public int AddAmountAndGetExcess(int amount)
     {
