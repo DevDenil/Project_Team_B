@@ -13,7 +13,7 @@ public class Player : PlayerController, BattleSystem
     public List<GameObject> myItems = new List<GameObject>();
     public GameObject myInventory;
     private bool ActiveInv = false;
-
+    public GameObject myStatUI;
     //마우스 로테이트
     public Transform RotatePoint;
     //캐릭터 위 아래보기
@@ -113,6 +113,7 @@ public class Player : PlayerController, BattleSystem
                 {
                     ActiveInv = !ActiveInv;
                     myInventory.SetActive(ActiveInv);
+                    myStatUI.SetActive(ActiveInv);
                 }
                 if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
                 {

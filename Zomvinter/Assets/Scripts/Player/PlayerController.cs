@@ -46,8 +46,7 @@ public class PlayerController : MonoBehaviour
         }
         bool IsRun = myAnim.GetBool("IsRun");
         this.transform.Translate(pos * delta *(IsRun ? 1.3f : 1.0f), Space.World);
-        //this.transform.Rotate(transform.right);
-        //this.transform.LookAt(this.transform.position + pos) ;
+
         //구면 선형보간 , 내 로테이션값을 구면 선형보간하여 부드럽게 돌아가게 함
         if(!Mathf.Approximately(pos.magnitude, 0.0f))
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.LookRotation(pos),Time.deltaTime*10.0f);
