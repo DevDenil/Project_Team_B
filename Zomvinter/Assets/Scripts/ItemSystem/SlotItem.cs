@@ -330,8 +330,15 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
             if (this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab != null)
             {
-                Instantiate(this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab,
+                ItemData item = this.gameObject.GetComponentInParent<Slot>().ItemProperties;
+                GameObject obj = Instantiate(this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab,
                     DropPos, Quaternion.identity);
+                if(item.ItemType == ItemType.Expand)
+                {
+                    obj.AddComponent<PotionItem>();
+                    obj.GetComponent<PotionItem>().PotionData = (PotionItemData)item;
+                }
+                Vector3 myVec = this.transform.position;
             }
 
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
