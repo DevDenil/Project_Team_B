@@ -365,7 +365,11 @@ MonoBehaviour:
   _padding: 1
   _iconImage: {fileID: 2501649925788805434}
   _amountText: {fileID: 5258451598779766647}
+  SlotIndex: 0
+  _item: {fileID: 0}
   SlotState: 2
+  _iconGo: {fileID: 5146684592608012910}
+  _textGo: {fileID: 8701185691232729854}
 --- !u!1 &4734085112202821244
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,11 +441,11 @@ RectTransform:
   m_Father: {fileID: 4734085112121871042}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -4.75}
   m_SizeDelta: {x: 25, y: 25}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6680021591727379228
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -464,7 +468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -527,11 +531,11 @@ RectTransform:
   m_Father: {fileID: 5005241608646712991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -5.25}
   m_SizeDelta: {x: 25, y: 25}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6319887153454640283
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -554,7 +558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -677,7 +681,11 @@ MonoBehaviour:
   _padding: 1
   _iconImage: {fileID: 4079597803319461866}
   _amountText: {fileID: 5609294143867970552}
+  SlotIndex: 0
+  _item: {fileID: 0}
   SlotState: 2
+  _iconGo: {fileID: 6327082571964327656}
+  _textGo: {fileID: 645863219641476532}
 --- !u!1 &6327082571964327656
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,11 +719,11 @@ RectTransform:
   m_Father: {fileID: 8610521301371564347}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -5.25}
   m_SizeDelta: {x: 25, y: 25}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4308230606812389028
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -738,7 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -861,7 +869,11 @@ MonoBehaviour:
   _padding: 1
   _iconImage: {fileID: 8941271921542536178}
   _amountText: {fileID: 2055681177992782693}
+  SlotIndex: 0
+  _item: {fileID: 0}
   SlotState: 2
+  _iconGo: {fileID: 5561904298631157545}
+  _textGo: {fileID: 1660316431345721053}
 --- !u!1 &8701185691232729854
 GameObject:
   m_ObjectHideFlags: 0

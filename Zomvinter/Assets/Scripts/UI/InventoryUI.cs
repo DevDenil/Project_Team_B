@@ -59,17 +59,6 @@ public class InventoryUI : MonoBehaviour
     //[SerializeField] private bool _showHighlist = true;
     //[SerializeField] private bool _showRemovingPopup = true;
 
-    [Header("Connected Objects")]
-    /// <summary> 슬롯들이 위치할 영역 </summary>
-    [SerializeField] private Transform ItemBag;
-    /// <summary> 슬롯들이 위치할 영역 </summary>
-    [SerializeField] private Transform PrimaryBag;
-    /// <summary> 슬롯들이 위치할 영역 </summary>
-    [SerializeField] private Transform SecondaryBag;
-    /// <summary> 슬롯들이 위치할 영역 </summary>
-    [SerializeField] private Transform ConsumableBag;
-    /// <summary> 슬롯들이 위치할 영역 </summary>
-    [SerializeField] private Transform EquipmentBag;
 
     [SerializeField] private GameObject _slotUiPrefab;     // 슬롯의 원본 프리팹
     //[SerializeField] private ItemTooltipUI _itemTooltip;   // 아이템 정보를 보여줄 툴팁 UI
@@ -88,26 +77,8 @@ public class InventoryUI : MonoBehaviour
     /// <summary> 연결된 인벤토리 </summary>
     private Inventory _inventory;
 
-    #region 슬롯
-    /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> ItemSlots;
+    
 
-    /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> PrimarySlots;
-
-    /// <summary> Slot�� ���� �� ���� </summary>
-    public List<Slot> SecondarySlots;
-
-    /// <summary> Slot을 담을 리스트 </summary>
-    public List<Slot> ConsumableSlots;
-
-    /// <summary> Slot을 담을 공간 </summary>
-    public Slot HelmetSlot;
-    /// <summary> Slot을 담을 공간 </summary>
-    public Slot BodyArmorSlot;
-    /// <summary> Slot을 담을 공간 </summary>
-    public Slot BackpackSlot;
-    #endregion
     private GraphicRaycaster _gr; // 캔버스 내의 오브젝트
     private PointerEventData _ped;
     private List<RaycastResult> _rrList;
@@ -128,22 +99,7 @@ public class InventoryUI : MonoBehaviour
 
     private void OnValidate()
     {
-        FindBag(out ItemBag, "BagBackpack");
-        FindBag(out PrimaryBag, "BagPrimary");
-        FindBag(out SecondaryBag, "BagSecondary");
-        FindBag(out ConsumableBag, "BagExpand");
-        FindBag(out EquipmentBag, "EquipmentBag");
-
         Init();
-        InitSlots();
-    }
-
-    private void Awake()
-    {
-    }
-    private void Update()
-    {
-
     }
     #endregion
 
@@ -167,62 +123,6 @@ public class InventoryUI : MonoBehaviour
         //    _itemTooltip = GetComponentInChildren<ItemTooltipUI>();
         //}
     }
-
-    private void InitSlots()
-    {
-        int VerticalCount = 4 / _horizontalSlotCount;
-        // 슬롯 프리팹 설정
-        _slotUiPrefab.TryGetComponent(out RectTransform slotRect);
-        slotRect.sizeDelta = new Vector2(_slotSize, _slotSize); // 슬롯 사이즈 설정
-
-        _slotUiPrefab.TryGetComponent(out Slot itemSlot);
-        if (itemSlot == null) _slotUiPrefab.AddComponent<Slot>(); // 슬롯에 Slot 스크립트 부착
-
-        _slotUiPrefab.SetActive(false);
-
-        // --
-        Vector2 beginPos = new Vector2(_contentAreaPadding, -_contentAreaPadding);
-        Vector2 curPos = beginPos;
-
-        ItemSlots = new List<Slot>(_verticalSlotCount * _horizontalSlotCount);
-
-        // 슬롯 동적 생성
-        for(int j = 0; j < VerticalCount; j++)
-        {
-            for(int i = 0; i < _horizontalSlotCount; i++)
-            {
-                int slotIndex = (_verticalSlotCount * j) + i; // 인덱스는 0부터 시작
-
-                var slotRT = CloneSlot(ItemBag);
-                slotRT.pivot = new Vector2(0.0f, 1.0f); // Left Top
-                slotRT.anchoredPosition = curPos;
-                slotRT.gameObject.SetActive(true);
-                slotRT.gameObject.name = $"Item Slot [{slotIndex}]";
-
-                var slotUI = slotRT.GetComponent<Slot>();
-                slotUI.SetIndex(slotIndex);
-                ItemSlots.Add(slotUI);
-
-                // Next X Pos
-                curPos.x += (_slotMargin + _slotSize);
-            }
-            // Next Line
-            curPos.x = beginPos.x;
-            curPos.y = (_slotMargin + _slotSize);
-        }
-
-        // 슬롯 프리팹 - 프리팹이 아닌 경우 파괴
-        if (_slotUiPrefab.scene.rootCount != 0) Destroy(_slotUiPrefab);
-
-        RectTransform CloneSlot(Transform Bag)
-        {
-            GameObject slotGo = Instantiate(_slotUiPrefab);
-            RectTransform rt = slotGo.GetComponent<RectTransform>();
-            rt.SetParent(Bag);
-
-            return rt;
-        }
-    }
     #endregion
 
     /***********************************************************************
@@ -236,17 +136,7 @@ public class InventoryUI : MonoBehaviour
     *                               Private Methods
     ***********************************************************************/
     #region
-    /// <summary> Slot들을 보관하는 Bag 탐색하여 지정 </summary>
-    /// <param name="Bag">슬롯을 보관할 Bag</param>
-    /// <param name="name">Bag의 이름</param>
-    void FindBag(out Transform Bag, string name)
-    {
-        Bag = this.transform.Find(name);
-        if(Bag == null)
-        {
-            Bag = this.GetComponentInChildren<GridLayoutGroup>().transform;
-        }
-    }
+
     #endregion
 
 
@@ -261,7 +151,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary> 슬롯에 아이템 아이콘 등록 </summary>
-    public void SetItemIcon(List<Slot> _slotUIList, int index, Sprite icon)
+    public void SetItemIcon(int index, Slot[] _slotUIList, Sprite icon)
     {
         //EditorLog($"Set Item Icon : Slot [{index}]");
 
@@ -269,7 +159,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary> 해당 슬롯의 아이템 개수 텍스트 지정 </summary>
-    public void SetItemAmountText(List<Slot> _slotUIList, int index, int amount)
+    public void SetItemAmountText(int index, Slot[] _slotUIList, int amount)
     {
         //EditorLog($"Set Item Amount Text : Slot [{index}], Amount [{amount}]");
 
@@ -278,7 +168,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary> 해당 슬롯의 아이템 개수 텍스트 지정 </summary>
-    public void HideItemAmountText(List<Slot> _slotUIList, int index)
+    public void HideItemAmountText(int index, List<Slot> _slotUIList)
     {
         //EditorLog($"Hide Item Amount Text : Slot [{index}]");
 
@@ -286,7 +176,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary> 슬롯에서 아이템 아이콘 제거, 개수 텍스트 숨기기 </summary>
-    public void RemoveItem(List<Slot> _slotUIList, int index)
+    public void RemoveItem(int index, List<Slot> _slotUIList)
     {
         //EditorLog($"Remove Item : Slot [{index}]");
 
@@ -294,9 +184,9 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary> 접근 가능한 슬롯 범위 설정 </summary>
-    public void SetAccessibleSlotRange(int accessibleSlotCount, List<Slot>_slotUIList)
+    public void SetAccessibleSlotRange(int accessibleSlotCount, Slot[]_slotUIList)
     {
-        for (int i = 0; i < _slotUIList.Count; i++)
+        for (int i = 0; i < _slotUIList.Length; i++)
         {
             _slotUIList[i].SetSlotAccessState(i < accessibleSlotCount);
         }
@@ -338,25 +228,7 @@ public class InventoryUI : MonoBehaviour
     /// <summary> 모든 슬롯 필터 상태 업데이트 </summary>
     public void UpdateAllSlotFilters(int Capacity)
     {
-        int Backpack = _inventory.ItemCapacity;
-        int Primary = _inventory.PrimaryCapacity;
-        int Secondary = _inventory.SecondaryCapacity;
-        int Consumable = _inventory.ConsumableCapacity;
 
-        SetBag(Backpack, ItemSlots, _inventory.Items);
-        SetBag(Primary, PrimarySlots, _inventory.PrimaryItems);
-        SetBag(Secondary, SecondarySlots, _inventory.SecondaryItems);
-        SetBag(Consumable, ConsumableSlots, _inventory.ConsumableItems);
-
-        // 로컬 함수
-        void SetBag(int Bag, List<Slot>slotList, List<Item>itemList)
-        {
-            for (int i = 0; i < Bag; i++)
-            {
-                ItemData data = _inventory.GetItemData(i, Capacity, itemList);
-                UpdateSlotFilterState(slotList, i, data);
-            }
-        }
     }
     #endregion
 }

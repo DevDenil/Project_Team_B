@@ -1,52 +1,52 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /*
-    [ItemÀÇ »ó¼Ó±¸Á¶]
+    [Itemì˜ ìƒì†êµ¬ì¡°]
     - Item
-        - Consumable : IUsableItem.Use() -> »ç¿ë ¹× ¼ö·® 1 ¼Ò¸ğ
+        - Consumable : IUsableItem.Use() -> ì‚¬ìš© ë° ìˆ˜ëŸ‰ 1 ì†Œëª¨
 
         - EquipmentItem
             - WeaponItem
             - ArmorItem
 
-    [ItemDataÀÇ »ó¼Ó±¸Á¶]
-      (ItemData´Â ÇØ´ç ¾ÆÀÌÅÛÀÌ °øÅëÀ¸·Î °¡Áú µ¥ÀÌÅÍ ÇÊµå ¸ğÀ½)
-      (°³Ã¼¸¶´Ù ´Ş¶óÁ®¾ß ÇÏ´Â ÇöÀç ³»±¸µµ, °­È­µµ µîÀº Item Å¬·¡½º¿¡¼­ °ü¸®)
+    [ItemDataì˜ ìƒì†êµ¬ì¡°]
+      (ItemDataëŠ” í•´ë‹¹ ì•„ì´í…œì´ ê³µí†µìœ¼ë¡œ ê°€ì§ˆ ë°ì´í„° í•„ë“œ ëª¨ìŒ)
+      (ê°œì²´ë§ˆë‹¤ ë‹¬ë¼ì ¸ì•¼ í•˜ëŠ” í˜„ì¬ ë‚´êµ¬ë„, ê°•í™”ë„ ë“±ì€ Item í´ë˜ìŠ¤ì—ì„œ ê´€ë¦¬)
 
     - ItemData
-        - ConsumableData : È¿°ú·®(Value : È¸º¹·®, °ø°İ·Â µî¿¡ »ç¿ë)
+        - ConsumableData : íš¨ê³¼ëŸ‰(Value : íšŒë³µëŸ‰, ê³µê²©ë ¥ ë“±ì— ì‚¬ìš©)
 
-        - EquipmentData : ÃÖ´ë ³»±¸µµ
-            - WeaponData : ±âº» °ø°İ·Â
-            - ArmorData : ±âº» ¹æ¾î·Â
+        - EquipmentData : ìµœëŒ€ ë‚´êµ¬ë„
+            - WeaponData : ê¸°ë³¸ ê³µê²©ë ¥
+            - ArmorData : ê¸°ë³¸ ë°©ì–´ë ¥
 */
 
 /*
     [API]
-    - bool HasItem(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ´ÂÁö ¿©ºÎ
-    - bool IsCountableItem(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛÀÌ ¼¿ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö ¿©ºÎ
-    - int GetCurrentAmount(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛ ¼ö·®
-        - -1 : Àß¸øµÈ ÀÎµ¦½º
-        -  0 : ºó ½½·Ô
-        -  1 : ¼¿ ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÌ°Å³ª ¼ö·® 1
-    - ItemData GetItemData(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛ Á¤º¸
-    - string GetItemName(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛ ÀÌ¸§
+    - bool HasItem(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ìŠ¬ë¡¯ì— ì•„ì´í…œì´ ì¡´ì¬í•˜ëŠ”ì§€ ì—¬ë¶€
+    - bool IsCountableItem(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œì´ ì…€ ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ ì—¬ë¶€
+    - int GetCurrentAmount(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œ ìˆ˜ëŸ‰
+        - -1 : ì˜ëª»ëœ ì¸ë±ìŠ¤
+        -  0 : ë¹ˆ ìŠ¬ë¡¯
+        -  1 : ì…€ ìˆ˜ ì—†ëŠ” ì•„ì´í…œì´ê±°ë‚˜ ìˆ˜ëŸ‰ 1
+    - ItemData GetItemData(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œ ì •ë³´
+    - string GetItemName(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œ ì´ë¦„
 
-    - int Add(ItemData, int) : ÇØ´ç Å¸ÀÔÀÇ ¾ÆÀÌÅÛÀ» ÁöÁ¤ÇÑ °³¼ö¸¸Å­ ÀÎº¥Åä¸®¿¡ Ãß°¡
-        - ÀÚ¸® ºÎÁ·À¸·Î ¸ø³ÖÀº °³¼ö¸¸Å­ ¸®ÅÏ(0ÀÌ¸é ¸ğµÎ Ãß°¡ ¼º°øÇß´Ù´Â ÀÇ¹Ì)
-    - void Remove(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ½½·Ô¿¡ ÀÖ´Â ¾ÆÀÌÅÛ Á¦°Å
-    - void Swap(int, int) : µÎ ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛ À§Ä¡ ¼­·Î ¹Ù²Ù±â
+    - int Add(ItemData, int) : í•´ë‹¹ íƒ€ì…ì˜ ì•„ì´í…œì„ ì§€ì •í•œ ê°œìˆ˜ë§Œí¼ ì¸ë²¤í† ë¦¬ì— ì¶”ê°€
+        - ìë¦¬ ë¶€ì¡±ìœ¼ë¡œ ëª»ë„£ì€ ê°œìˆ˜ë§Œí¼ ë¦¬í„´(0ì´ë©´ ëª¨ë‘ ì¶”ê°€ ì„±ê³µí–ˆë‹¤ëŠ” ì˜ë¯¸)
+    - void Remove(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ìŠ¬ë¡¯ì— ìˆëŠ” ì•„ì´í…œ ì œê±°
+    - void Swap(int, int) : ë‘ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œ ìœ„ì¹˜ ì„œë¡œ ë°”ê¾¸ê¸°
     - void SeparateAmount(int a, int b, int amount)
-        - a ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛÀÌ ¼¿ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÏ °æ¿ì, amount¸¸Å­ ºĞ¸®ÇÏ¿© b ÀÎµ¦½º·Î º¹Á¦
-    - void Use(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛ »ç¿ë
-    - void UpdateSlot(int) : ÇØ´ç ÀÎµ¦½ºÀÇ ½½·Ô »óÅÂ ¹× UI °»½Å
-    - void UpdateAllSlot() : ¸ğµç ½½·Ô »óÅÂ ¹× UI °»½Å
-    - void UpdateAccessibleStatesAll() : ¸ğµç ½½·Ô UI¿¡ Á¢±Ù °¡´É ¿©ºÎ °»½Å
-    - void TrimAll() : ¾Õ¿¡¼­ºÎÅÍ ¾ÆÀÌÅÛ ½½·Ô Ã¤¿ì±â
-    - void SortAll() : ¾Õ¿¡¼­ºÎÅÍ ¾ÆÀÌÅÛ ½½·Ô Ã¤¿ì¸é¼­ Á¤·Ä
+        - a ì¸ë±ìŠ¤ì˜ ì•„ì´í…œì´ ì…€ ìˆ˜ ìˆëŠ” ì•„ì´í…œì¼ ê²½ìš°, amountë§Œí¼ ë¶„ë¦¬í•˜ì—¬ b ì¸ë±ìŠ¤ë¡œ ë³µì œ
+    - void Use(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ì•„ì´í…œ ì‚¬ìš©
+    - void UpdateSlot(int) : í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ìŠ¬ë¡¯ ìƒíƒœ ë° UI ê°±ì‹ 
+    - void UpdateAllSlot() : ëª¨ë“  ìŠ¬ë¡¯ ìƒíƒœ ë° UI ê°±ì‹ 
+    - void UpdateAccessibleStatesAll() : ëª¨ë“  ìŠ¬ë¡¯ UIì— ì ‘ê·¼ ê°€ëŠ¥ ì—¬ë¶€ ê°±ì‹ 
+    - void TrimAll() : ì•ì—ì„œë¶€í„° ì•„ì´í…œ ìŠ¬ë¡¯ ì±„ìš°ê¸°
+    - void SortAll() : ì•ì—ì„œë¶€í„° ì•„ì´í…œ ìŠ¬ë¡¯ ì±„ìš°ë©´ì„œ ì •ë ¬
 
-// ³¯Â¥ : 2021-03-07 PM 7:33:52
+// ë‚ ì§œ : 2021-03-07 PM 7:33:52
 */
 
 public class Inventory : MonoBehaviour
@@ -55,135 +55,140 @@ public class Inventory : MonoBehaviour
     *                               Public Properties
     ***********************************************************************/
     #region
-    /// <summary> ³» ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡ </summary>
+    /// <summary> ë‚´ í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ </summary>
     public Transform myPlayerPos;
 
-    /// <summary> ¹éÆÑ ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ë°±íŒ© ìˆ˜ìš© í•œë„ </summary>
     [SerializeField]
     public int ItemCapacity { get; set; }
 
-    /// <summary> ¾ÆÀÌÅÛ ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ì•„ì´í…œ ìˆ˜ìš© í•œë„ </summary>
     [SerializeField]
     public int PrimaryCapacity { get; set; }
 
-    /// <summary> º¸Á¶¹«±â ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ë³´ì¡°ë¬´ê¸° ìˆ˜ìš© í•œë„ </summary>
     [SerializeField]
     public int SecondaryCapacity { get; set; }
 
-    /// <summary> ¼Ò¸ğÇ° ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ì†Œëª¨í’ˆ ìˆ˜ìš© í•œë„ </summary>
     [SerializeField]
     public int ConsumableCapacity { get; set; }
+
     #endregion
     /***********************************************************************
     *                               Private Fields
     ***********************************************************************/
     #region
-    /// <summary> ¿¬°áµÈ InventoryUI ½ºÅ©¸³Æ® </summary>
+    /// <summary> ì—°ê²°ëœ InventoryUI ìŠ¤í¬ë¦½íŠ¸ </summary>
+    [SerializeField]
     private InventoryUI _inventoryUI;
 
-    #region °¡¹æ
+    #region ê°€ë°©
 
-    /// <summary> ¹éÆÑ ¾ÆÀÌÅÛ ¸ñ·Ï ¸®½ºÆ® </summary>
-    public List<Item> Items;
-    /// <summary> ¹éÆÑ ÃÊ±â ¼ö¿ë ÇÑµµ </summary>
-    [SerializeField, Range(4, 48)]
-    private int _itemInitalCapacity = 4;
-    /// <summary> ¹éÆÑ ÃÖ´ë ¼ö¿ë ÇÑµµ </summary>
-    [Range(4, 48)]
-    private int _itemsMaxCapacity = 48;
+    /// <summary> ë°±íŒ© ì•„ì´í…œ ëª©ë¡ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<ItemData> Items;
+    /// <summary> ë°±íŒ© ìµœëŒ€ ìˆ˜ìš© í•œë„ </summary>
+    [Range(4, 16)]
+    private int _itemsMaxCapacity = 16;
     #endregion -------------------------------------------------------------------
 
-    #region ÁÖ¹«±â
-    /// <summary> ÁÖ ¹«±â ¾ÆÀÌÅÛ ¸ñ·Ï ¸®½ºÆ® </summary>
-    public List<Item> PrimaryItems;
+    #region ì£¼ë¬´ê¸°
+    /// <summary> ì£¼ ë¬´ê¸° ì•„ì´í…œ ëª©ë¡ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<ItemData> PrimaryItems;
 
-    /// <summary> ¾ÆÀÌÅÛ ÃÖ´ë ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ì•„ì´í…œ ìµœëŒ€ ìˆ˜ìš© í•œë„ </summary>
     [SerializeField,Range(2, 2)]
     private int _PrimaryMaxCapacity = 2;
     #endregion -------------------------------------------------------------------
 
-    #region º¸Á¶¹«±â
-    /// <summary> º¸Á¶ ¹«±â ¾ÆÀÌÅÛ ¸ñ·Ï ¸®½ºÆ® </summary>
-    public List<Item> SecondaryItems;
+    #region ë³´ì¡°ë¬´ê¸°
+    /// <summary> ë³´ì¡° ë¬´ê¸° ì•„ì´í…œ ëª©ë¡ ë¦¬ìŠ¤íŠ¸ </summary>
+    public ItemData SecondaryItems;
 
-    /// <summary> º¸Á¶¹«±â ÃÖ´ë ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ë³´ì¡°ë¬´ê¸° ìµœëŒ€ ìˆ˜ìš© í•œë„ </summary>
     [SerializeField, Range(1, 1)]
     private int _SecondaryMaxCapacity = 1;
     #endregion -------------------------------------------------------------------
 
-    #region ¼Ò¸ğÇ°
-    /// <summary> ¼Ò¸ğÇ° ¾ÆÀÌÅÛ ¸ñ·Ï ¸®½ºÆ® </summary>
-    public List<Item> ConsumableItems;
+    #region ì†Œëª¨í’ˆ
+    /// <summary> ì†Œëª¨í’ˆ ì•„ì´í…œ ëª©ë¡ ë¦¬ìŠ¤íŠ¸ </summary>
+    public List<ItemData> ConsumableItems;
 
-    /// <summary> ¼Ò¸ğÇ° ÃÖ´ë ¼ö¿ë ÇÑµµ </summary>
+    /// <summary> ì†Œëª¨í’ˆ ìµœëŒ€ ìˆ˜ìš© í•œë„ </summary>
     [SerializeField, Range(1, 3)]
     private int _ConsumableMaxCapacity = 3;
     #endregion -------------------------------------------------------------------
 
-    #region Àåºñ
-    /// <summary> Çï¸ä¿¡ ÀúÀå µÉ ¾ÆÀÌÅÛ </summary>
-    public Item HelmetItem = null;
+    #region ì¥ë¹„
+    /// <summary> í—¬ë©§ì— ì €ì¥ ë  ì•„ì´í…œ </summary>
+    public ItemData HelmetItem = null;
 
-    /// <summary> ¹æ¾î±¸¿¡ ÀúÀå µÉ ¾ÆÀÌÅÛ </summary>
-    public Item BodyArmorItem = null;
+    /// <summary> ë°©ì–´êµ¬ì— ì €ì¥ ë  ì•„ì´í…œ </summary>
+    public ItemData BodyArmorItem = null;
 
-    /// <summary> °¡¹æ¿¡ ÀúÀå µÉ ¾ÆÀÌÅÛ </summary>
-    public Item BackpackItem = null;
+    /// <summary> ê°€ë°©ì— ì €ì¥ ë  ì•„ì´í…œ </summary>
+    public ItemData BackpackItem = null;
 
-    public WeaponItem Weapon = null;
-    public Item DB = null;
     #endregion -------------------------------------------------------------------
 
+    #region ìŠ¬ë¡¯
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public Slot[] ItemSlots;
+
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public Slot[] PrimarySlots;
+
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot[] SecondarySlots;
+
+    /// <summary> Slotì„ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ </summary>
+    public Slot[] ConsumableSlots;
+
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot[] HelmetSlot;
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot[] BodyArmorSlot;
+    /// <summary> Slotì„ ë‹´ì„ ê³µê°„ </summary>
+    public Slot[] BackpackSlot;
     #endregion
+
+    #region
+    [Header("Connected Objects")]
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform ItemBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform PrimaryBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform SecondaryBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform ConsumableBag;
+    /// <summary> ìŠ¬ë¡¯ë“¤ì´ ìœ„ì¹˜í•  ì˜ì—­ </summary>
+    [SerializeField] private Transform EquipmentBag;
+    #endregion
+
+#endregion
 
     /***********************************************************************
     *                               Unity Events
     ***********************************************************************/
     #region
 
-    
 
-    /// <summary> ¿¡µğÅÍ »ó¿¡¼­ ½ÇÇà µÇ´Â ÇÔ¼ö </summary>
+
+    /// <summary> ì—ë””í„° ìƒì—ì„œ ì‹¤í–‰ ë˜ëŠ” í•¨ìˆ˜ </summary>
     private void OnValidate()
     {
-        _inventoryUI = GetComponent<InventoryUI>();
+        ConnectUI(GetComponent<InventoryUI>());
 
-        ItemCapacity = SetInitalCapacity(_itemInitalCapacity);
+        ItemCapacity = SetInitalCapacity(_itemsMaxCapacity);
         PrimaryCapacity = SetInitalCapacity(_PrimaryMaxCapacity);
         SecondaryCapacity = SetInitalCapacity(_SecondaryMaxCapacity);
         ConsumableCapacity = SetInitalCapacity(_ConsumableMaxCapacity);
-    }
 
-    /// <summary> ÇÁ·Î¼¼½º°¡ ½ÃÀÛµÇ±â Àü¿¡ ½ÇÇàµÇ´Â ÇÔ¼ö </summary>
-    private void Awake()
-    {
-        InitSlot(Items, ItemCapacity);
-        InitSlot(PrimaryItems, PrimaryCapacity);
-        InitSlot(SecondaryItems, SecondaryCapacity);
-        InitSlot(ConsumableItems, ConsumableCapacity);
-
-
-        if (DB is WeaponItem)
-        {
-
-            Debug.Log("WP");
-        }
-        if (DB is ArmorItem)
-        {
-
-            Debug.Log("AR");
-        }
-        if (DB is PotionItem)
-        {
-
-            Debug.Log("PT");
-        }
-
-        //Debug.Log(Weapon.WeaponData.ItemName);
-        //PotionItem item = DB.gameObject.GetComponent<PotionItem>();
-        //Debug.Log(item.PotionData.ItemName);
-        UpdateSlot(0, Items.Count, Items, _inventoryUI.ItemSlots);
-        //UpdateAllSlot(Items.Count, Items, _inventoryUI.ItemSlots);
+        InitSlot(out ItemSlots, ItemBag);
+        InitSlot(out PrimarySlots, PrimaryBag);
+        InitSlot(out SecondarySlots, SecondaryBag);
+        InitSlot(out ConsumableSlots, ConsumableBag);
     }
     #endregion
 
@@ -191,34 +196,132 @@ public class Inventory : MonoBehaviour
     {
         UpdateAccessibleStatesAll();
     }
+
+    private void Update()
+    {
+        UpdateAllSlotData(Items, ItemSlots);
+        UpdateAllSlotIcon(ItemSlots);
+        UpdateAllSlotData(PrimaryItems, PrimarySlots);
+        UpdateAllSlotIcon(PrimarySlots);
+        UpdateSlotData(SecondaryItems, SecondarySlots);
+        UpdateAllSlotIcon(SecondarySlots);
+        UpdateAllSlotData(ConsumableItems, ConsumableSlots);
+        UpdateAllSlotIcon(ConsumableSlots);
+        UpdateSlotData(HelmetItem, HelmetSlot);
+        UpdateAllSlotIcon(HelmetSlot);
+        UpdateSlotData(BodyArmorItem, BodyArmorSlot);
+        UpdateAllSlotIcon(BodyArmorSlot);
+        UpdateSlotData(BackpackItem, BackpackSlot);
+        UpdateAllSlotIcon(BackpackSlot);
+    }
     /***********************************************************************
     *                               Private Methods
     ***********************************************************************/
     #region
-
-    private void InitSlot(List<Item> list, int Capacity)
+    /// <summary> Bagì— ìˆëŠ” ìŠ¬ë¡¯ì„ ì°¾ì•„ì„œ Slotë°°ì—´ì— í• ë‹¹ </summary>
+    private void InitSlot(out Slot[] _slotList, Transform Bag)
     {
-        if (list.Count <= 0)
+        _slotList = Bag.GetComponentsInChildren<Slot>();
+        InitSlotIndex(_slotList);
+    }
+
+    /// <summary> Slotì— ì¸ë±ìŠ¤ í• ë‹¹ </summary>
+    private void InitSlotIndex(Slot[] _slotList)
+    {
+        for(int i = 0; i < _slotList.Length; i++)
         {
-            int i = 0;
-            for (; i < Capacity && i < list.Count; i++)
-            {
-                for (; i < Capacity; i++)
-                {
-                    list.Add(null);
-                }
-            }
+            _slotList[i].SlotIndex = i;
         }
     }
 
-    /// <summary> ÀÎµ¦½º°¡ ¼ö¿ë ¹üÀ§ ³»¿¡ ÀÖ´ÂÁö °Ë»ç </summary>
+    /// <summary> ì¸ë±ìŠ¤ê°€ ìˆ˜ìš© ë²”ìœ„ ë‚´ì— ìˆëŠ”ì§€ ê²€ì‚¬ </summary>
     private bool IsValidIndex(int Index, int Capacity)
     {
         return Index >= 0 && Index < Capacity;
     }
 
-    /// <summary> ¾Õ¿¡¼­ºÎÅÍ ºñ¾îÀÖ´Â ½½·Ô ÀÎµ¦½º Å½»ö </summary>
-    private int FindEmptySlotIndex(List<Item> list, int Capacity, int StartIndex = 0)
+    
+
+    /// <summary> ì•ì—ì„œë¶€í„° ê°œìˆ˜ ì—¬ìœ ê°€ ìˆëŠ” Countable ì•„ì´í…œì˜ ìŠ¬ë¡¯ ì¸ë±ìŠ¤ íƒìƒ‰ </summary>
+    private int FindCountableItemSlotIndex(CountableItemData target, int Capacity, List<Item>list, int startIndex = 0)
+    {
+        for(int i = startIndex; i< Capacity; i++)
+        {
+            var current = list[i];
+            if (current == null) continue;
+
+            // ì•„ì´í…œ ì¢…ë¥˜ ì¼ì¹˜, ê°œìˆ˜ ì—¬ìœ  í™•ì¸
+            if(current.Data == target && current is CountableItem ci)
+            {
+                if (!ci.IsMax) return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary> í•´ë‹¹í•˜ëŠ” ì¸ë±ìŠ¤ì˜ ìŠ¬ë¡¯ ìƒíƒœ ë° UI ê°±ì‹  </summary>
+    private void UpdateAllSlotData(List<ItemData> list, Slot[] slotList)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] != null)
+            {
+                ItemData item = list[i];
+
+                slotList[i].ItemProperties = item;
+            }
+            else
+            {
+                slotList[i].ItemProperties = null;
+            }
+        }
+    }
+
+    private void UpdateSlotData(ItemData item, Slot[] slotList)
+    {
+        for (int i = 0; i < slotList.Length; i++)
+        {
+            if (item != null)
+            {
+
+                slotList[i].ItemProperties = item;
+            }
+            else
+            {
+                slotList[i].ItemProperties = null;
+            }
+        }
+    }
+    /// <summary> í•´ë‹¹í•˜ëŠ” ì¸ë±ìŠ¤ì˜ ìŠ¬ë¡¯ ìƒíƒœ ë° UI ê°±ì‹  </summary>
+    private void UpdateAllSlotIcon(Slot[] _slotList)
+    {
+        for(int i = 0; i < _slotList.Length; i++)
+        {
+            if (_slotList[i].ItemProperties != null)
+            {
+                _slotList[i].SetItem(_slotList[i].ItemProperties.ItemImage);
+            }
+            else
+            {
+                _slotList[i].SetItem(null);
+            }
+        }
+    }
+
+    #endregion
+    /***********************************************************************
+    *                               Check & Getter Methods
+    ***********************************************************************/
+    #region
+    /// <summary> ê°€ë°© ì´ˆê¸°ìš©ëŸ‰ ì„¤ì • í•¨ìˆ˜ </summary>
+    int SetInitalCapacity(int inital)
+    {
+        return inital;
+    }
+    
+    /// <summary> ì•ì—ì„œë¶€í„° ë¹„ì–´ìˆëŠ” ìŠ¬ë¡¯ ì¸ë±ìŠ¤ íƒìƒ‰ </summary>
+    public int FindEmptySlotIndex(List<ItemData> list, int Capacity, int StartIndex = 0)
     {
         for (int i = StartIndex; i < Capacity; i++)
         {
@@ -230,157 +333,49 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-    /// <summary> ÀÎº¥Åä¸®°¡ ²Ë Ã¡´ÂÁö Å½»ö </summary>
-    private bool isFull(List<Item> list, int Capacity)
+    /// <summary> ì¸ë²¤í† ë¦¬ê°€ ê½‰ ì°¼ëŠ”ì§€ íƒìƒ‰ </summary>
+    public bool isFull(List<ItemData> list)
     {
-        if (list.Count <= Capacity) return true;
-        else return false;
-    }
-
-    /// <summary> ¾Õ¿¡¼­ºÎÅÍ °³¼ö ¿©À¯°¡ ÀÖ´Â Countable ¾ÆÀÌÅÛÀÇ ½½·Ô ÀÎµ¦½º Å½»ö </summary>
-    private int FindCountableItemSlotIndex(CountableItemData target, int Capacity, List<Item>list, int startIndex = 0)
-    {
-        for(int i = startIndex; i< Capacity; i++)
+        bool Full = false;
+        for (int i = 0; i < list.Capacity; i++)
         {
-            var current = list[i];
-            if (current == null) continue;
-
-            // ¾ÆÀÌÅÛ Á¾·ù ÀÏÄ¡, °³¼ö ¿©À¯ È®ÀÎ
-            if(current.Data == target && current is CountableItem ci)
+            if (list[i] == null)
             {
-                if (!ci.IsMax) return i;
+                Full = false;
+                break;
             }
-        }
-
-        return -1;
-    }
-
-    /// <summary> ÇØ´çÇÏ´Â ÀÎµ¦½ºÀÇ ½½·Ô »óÅÂ ¹× UI °»½Å </summary>
-    public void UpdateSlot(int Index, int Capacity, List<Item> _item, List<Slot> _slotUIList)
-    {
-        if (!IsValidIndex(Index, Capacity)) return;
-
-        Item item = _item[Index];
-        
-
-        // 1.¾ÆÀÌÅÛÀÌ ½½·Ô¿¡ Á¸ÀçÇÏ´Â °æ¿ì
-        if (item != null)
-        {
-            //¾ÆÀÌÄÜ µî·Ï
-            if (item is WeaponItem)
-            {
-                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<WeaponItem>().WeaponData.ItemImage);
-            }
-            if (item is ArmorItem)
-            {
-                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<ArmorItem>().ArmorData.ItemImage);
-            }
-            if (item is PotionItem)
-            {
-                _inventoryUI.SetItemIcon(_slotUIList, Index, item.gameObject.GetComponent<PotionItem>().PotionData.ItemImage);
-            }
-            //_inventoryUI.SetItemIcon(_slotUIList, Index, item.Data.ItemImage);
-
-            // 1-1.¾ÆÀÌÅÛÀÌ ¼¿ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎ °æ¿ì
-            if (item is PotionItem con)
-            {
-                // 1-1-1. ¼ö·®ÀÌ 0ÀÎ °æ¿ì, ¾ÆÀÌÅÛ Á¦°Å
-                
-                if (con.IsEmpty)
-                {
-                    _item[Index] = null;
-                    RemoveIcon(_slotUIList, Index);
-                    return;
-                }
-                
-                // 1-1-2. ¼ö·® Ç¥½Ã
-                else
-                {
-                    //_inventoryUI.SetItemAmountText(_slotUIList, Index, con.Amount);
-                }
-                
-            }
-            // 1-2. ¼¿ ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÎ °æ¿ì, ¼ö·® ÅØ½ºÆ® Á¦°Å
             else
             {
-                _inventoryUI.HideItemAmountText(_slotUIList, Index);
+                Full = true;
             }
-
-            // ½½·Ô ÇÊÅÍ »óÅÂ ¾÷µ¥ÀÌÆ®
-            if (item is WeaponItem)
-            {
-                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<WeaponItem>().WeaponData);
-            }
-            if (item is ArmorItem)
-            {
-                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<ArmorItem>().ArmorData);
-            }
-            if (item is PotionItem)
-            {
-                _inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.gameObject.GetComponent<PotionItem>().PotionData);
-            }
-            //_inventoryUI.UpdateSlotFilterState(_slotUIList, Index, item.Data);
         }
-        else
-        {
-            RemoveIcon(_slotUIList, Index);
-        }
-
-        // ·ÎÄÃ ÇÔ¼ö : ¾ÆÀÌÄÜ Á¦°ÅÇÏ±â
-        void RemoveIcon(List<Slot> _slotsUIList, int Index)
-        {
-            _inventoryUI.RemoveItem(_slotsUIList, Index);
-            _inventoryUI.HideItemAmountText(_slotsUIList, Index); // ¼ö·® ÅØ½ºÆ® ¼û±â±â
-        }
+        return Full;
     }
 
-    /// <summary> ÇØ´çÇÏ´Â ÀÎµ¦½ºÀÇ ½½·ÔµéÀÇ »óÅÂ ¹× UI °»½Å </summary>
-    private void UpdateSlot(int Capacity, List<Item> list, List<Slot>_slotUIList, params int[] indices)
+    public bool isFull(ItemData item)
     {
-        foreach (var i in indices)
-        {
-            UpdateSlot(i, Capacity, list, _slotUIList);
-        }
+        if (item == null) return false;
+        else return true;
     }
 
-    /// <summary> ¸ğµç ½½·ÔµéÀÇ »óÅÂ¸¦ UI¿¡ °»½Å </summary>
-    private void UpdateAllSlot(int Capacity, List<Item> list, List<Slot> _slotUIList)
-    {
-        for(int i = 0; i < Capacity; i++)
-        {
-            UpdateSlot(i, Capacity, list, _slotUIList);
-        }
-    }
-
-    #endregion
-    /***********************************************************************
-    *                               Check & Getter Methods
-    ***********************************************************************/
-    #region
-    /// <summary> °¡¹æ ÃÊ±â¿ë·® ¼³Á¤ ÇÔ¼ö </summary>
-    int SetInitalCapacity(int inital)
-    {
-        return inital;
-    }
-
-    /// <summary> ÇØ´ç ½½·ÔÀÌ ¾ÆÀÌÅÛÀ» °®°í ÀÖ´ÂÁö ¿©ºÎ </summary>
+    /// <summary> í•´ë‹¹ ìŠ¬ë¡¯ì´ ì•„ì´í…œì„ ê°–ê³  ìˆëŠ”ì§€ ì—¬ë¶€ </summary>
     public bool HasItem(int Index, int Capacity, List<Item> list)
     {
         return IsValidIndex(Index, Capacity) && list[Index] != null;
     }
 
 
-    /// <summary> ÇØ´ç ½½·ÔÀÌ ¼¿ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö ¿©ºÎ </summary>
+    /// <summary> í•´ë‹¹ ìŠ¬ë¡¯ì´ ì…€ ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ ì—¬ë¶€ </summary>
     public bool IsConsumableItem(int Index, int Capacity, List<Item> list)
     {
         return HasItem(Index, Capacity, list) && list[Index] is PotionItem;
     }
 
     /// <summary> 
-    /// ÇØ´ç ½½·ÔÀÇ ÇöÀç ¾ÆÀÌÅÛ °³¼ö ¸®ÅÏ
-    /// <para/> - Àß¸øµÈ ÀÎµ¦½º : -1 ¸®ÅÏ
-    /// <para/> - ºó ½½·Ô : 0 ¸®ÅÏ
-    /// <para/> - ¼¿ ¼ö ¾ø´Â ¾ÆÀÌÅÛ : 1 ¸®ÅÏ
+    /// í•´ë‹¹ ìŠ¬ë¡¯ì˜ í˜„ì¬ ì•„ì´í…œ ê°œìˆ˜ ë¦¬í„´
+    /// <para/> - ì˜ëª»ëœ ì¸ë±ìŠ¤ : -1 ë¦¬í„´
+    /// <para/> - ë¹ˆ ìŠ¬ë¡¯ : 0 ë¦¬í„´
+    /// <para/> - ì…€ ìˆ˜ ì—†ëŠ” ì•„ì´í…œ : 1 ë¦¬í„´
     /// </summary>
     public int GetCurrentAmount(int Index, int Capacity, List<ItemData> list)
     {
@@ -393,31 +388,12 @@ public class Inventory : MonoBehaviour
         return con.MaxAmount;
     }
 
-
-    /// <summary> ÇØ´ç ½½·ÔÀÇ ¾ÆÀÌÅÛ Á¤º¸ ¸®ÅÏ </summary>
-    public ItemData GetItemData (int Index, int Capacity, List<Item> list)
-    {
-        if (!IsValidIndex(Index, Capacity)) return null;
-        if (list[Index] == null) return null;
-
-        return list[Index].Data;
-    }
-
-    /// <summary> ÇØ´ç ½½·ÔÀÇ ¾ÆÀÌÅÛ ÀÌ¸§ ¸®ÅÏ </summary>
-    public string GetItemName(int Index, int Capacity, List<Item> list)
-    {
-        if (!IsValidIndex(Index, Capacity)) return "";
-        if (list[Index] == null) return "";
-
-        return list[Index].Data.ItemName;
-    }
-
     #endregion
 
     /***********************************************************************
     *                               Public Methods
     ***********************************************************************/
-    #region Public ÇÔ¼ö
+    #region Public í•¨ìˆ˜
 
     public void ConnectUI(InventoryUI inventoryUI)
     {
@@ -425,341 +401,16 @@ public class Inventory : MonoBehaviour
         _inventoryUI.SetInventoryReference(this);
     }
 
-    ///// <summary> ÀÎº¥Åä¸®¿¡ ¾ÆÀÌÅÛ Ãß°¡
-    ///// <para/> ³Ö´Â µ¥ ½ÇÆĞÇÑ À×¿© ¾ÆÀÌÅÛ °³¼ö ¸®ÅÏ
-    ///// <para/> ¸®ÅÏÀÌ 0ÀÌ¸é ³Ö´Âµ¥ ¸ğµÎ ¼º°øÇß´Ù´Â ÀÇ¹Ì
-    ///// </summary>
-    //public int Add(ItemData itemdata, int Capacity, List<ItemData> ItemList, List<Slot>slotList, int amount = 1)
-    //{
-    //    int index;
-    //    // 1. ¼ö·®ÀÌ ÀÖ´Â ¾ÆÀÌÅÛ
-    //    if(itemdata is CountableItemData ciData)
-    //    {
-    //        bool findNextCountable = true;
-    //        index = -1;
-
-    //        while(amount > 0)
-    //        {
-    //            // 1-1. ÀÌ¹Ì ÇØ´ç ¾ÆÀÌÅÛÀÌ ÀÎº¥Åä¸® ³»¿¡ Á¸ÀçÇÏ°í, °³¼ö ¿©À¯ ÀÖ´ÂÁö °Ë»ç
-    //            if(findNextCountable)
-    //            {
-    //                index = FindCountableItemSlotIndex(ciData, Capacity, ItemList, index + 1);
-    //                Debug.Log(index);
-    //                // °³¼ö ¿©À¯ ÀÖ´Â ±âÁ¸Àç ½½·ÔÀÌ ´õÀÌ»ó ¾ø´Ù°í ÆÇ´ÜµÇ´Â °æ¿ì, ºó ½½·ÔºÎÅÍ Å½»ö ½ÃÀÛ
-    //                if(index == -1)
-    //                {
-    //                    findNextCountable = false;
-    //                }
-    //                // ±âÁ¸Àç ½½·ÔÀ» Ã£Àº °æ¿ì, ¾ç Áõ°¡½ÃÅ°°í ÃÊ°ú·® Á¸Àç ½Ã amount¿¡ ÃÊ±âÈ­
-    //                else
-    //                {
-    //                    CountableItem ci = ItemList[index] as CountableItem;
-    //                    amount = ci.AddAmountAndGetExcess(amount);
-
-    //                    UpdateSlot(index, Capacity, ItemList, slotList);
-    //                }
-    //            }
-    //            // 1-2. ºó ½½·Ô Å½»ö
-    //            else
-    //            {
-    //                index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
-
-    //                // ºó ½½·ÔÁ¶Â÷ ¾ø´Â °æ¿ì Á¾·á
-    //                if(index == -1)
-    //                {
-    //                    break;
-    //                }
-    //                // ºó ½½·Ô ¹ß°ß ½Ã, ½½·Ô¿¡ ¾ÆÀÌÅÛ Ãß°¡ ¹× À×¿©·® °è»ê
-    //                else
-    //                {
-    //                    CountableItem ci = ciData.CreateItem() as CountableItem;
-    //                    ci.SetAmount(amount);
-
-    //                    // ½½·Ô¿¡ Ãß°¡
-    //                    ItemList[index] = ci;
-
-    //                    // ³²Àº °³¼ö °è»ê
-    //                    amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
-
-    //                    UpdateSlot(index, Capacity, ItemList, slotList);
-    //                }
-    //            }
-    //        }
-    //    }
-    //    // 2. ¼ö·®ÀÌ ¾ø´Â ¾ÆÀÌÅÛ
-    //    else
-    //    {
-    //        // 2-1. 1°³¸¸ ³Ö´Â °æ¿ì, °£´ÜÈ÷ ¼öÇà
-    //        if(amount == 1)
-    //        {
-    //            index = FindEmptySlotIndex(ItemList, Capacity);
-
-    //            if(index != -1)
-    //            {
-    //                // ¾ÆÀÌÅÛÀ» »ı¼ºÇÏ¿© ½½·Ô¿¡ Ãß°¡
-    //                ItemList[index] = itemdata.CreateItem();
-    //                amount = 0;
-
-    //                UpdateSlot(index, Capacity, ItemList, slotList);
-    //            }
-    //        }
-
-    //        // 2-2. 2°³ ÀÌ»óÀÇ ¼ö·®ÀÌ ¾ø´Â ¾ÆÀÌÅÛÀ» µ¿½Ã¿¡ Ãß°¡ÇÏ´Â °æ¿ì
-    //        index = -1;
-    //        for(; amount > 0; amount--)
-    //        {
-    //            // ¾ÆÀÌÅÛ ³ÖÀº ÀÎµ¦½ºÀÇ ´ÙÀ½ ÀÎµ¦½ººÎÅÍ ½½·Ô Å½»ö
-    //            index = FindEmptySlotIndex(ItemList, Capacity, index + 1);
-
-    //            // ´Ù ³ÖÁö ¸øÇÑ °æ¿ì ·çÇÁ Á¾·á
-    //            if (index == -1)
-    //            {
-    //                break;
-    //            }
-
-    //            // ¾ÆÀÌÅÛÀ» »ı¼ºÇÏ¿© ½½·Ô¿¡ Ãß°¡
-    //            ItemList[index] = itemdata.CreateItem();
-
-    //            UpdateSlot(index, Capacity, ItemList, slotList);
-    //        }
-    //    }
-    //    return amount;
-    //}
-
-    /// <summary> ¸ğµç ½½·Ô UI¿¡ Á¢±Ù °¡´É ¿©ºÎ ¾÷µ¥ÀÌÆ® </summary>
+    /// <summary> ëª¨ë“  ìŠ¬ë¡¯ UIì— ì ‘ê·¼ ê°€ëŠ¥ ì—¬ë¶€ ì—…ë°ì´íŠ¸ </summary>
     public void UpdateAccessibleStatesAll()
     {
-        _inventoryUI.SetAccessibleSlotRange(ItemCapacity, _inventoryUI.ItemSlots);
-        _inventoryUI.SetAccessibleSlotRange(PrimaryCapacity, _inventoryUI.PrimarySlots);
-        _inventoryUI.SetAccessibleSlotRange(ConsumableCapacity, _inventoryUI.ConsumableSlots);
+        _inventoryUI.SetAccessibleSlotRange(ItemCapacity, ItemSlots);
+        _inventoryUI.SetAccessibleSlotRange(PrimaryCapacity, PrimarySlots);
+        _inventoryUI.SetAccessibleSlotRange(SecondaryCapacity, SecondarySlots);
+        _inventoryUI.SetAccessibleSlotRange(ConsumableCapacity, ConsumableSlots);
+        // í—¬ë©§
+        // ë°©ì–´êµ¬
+        // ê°€ë°©
     }
-
-    
-
- 
-    #endregion
-
-
-    /***********************************************************************
-    *                               Old Methods
-    ***********************************************************************/
-    #region
-    /*
-    
-
-    /// <summary> ¸ğµç Bag¿¡ ¾ÆÀÌÅÛ Á¤º¸, ÀÎµ¦½º »õ·Î°íÄ§ </summary>
-    public void RefreshList()
-    {
-        RefreshSlot(ItemSlots, Items);
-        //RefreshSlot(PrimarySlots, PrimaryItems);
-        //RefreshSlot(ConsumableSlots, ConsumableItems);
-        //RefreshSlot(SecondarySlots, SecondaryItems);
-        //RefreshSlot(HelmetSlot, HelmetItem);
-        //RefreshSlot(BodyArmorSlot, BodyArmorItem);
-        //RefreshSlot(BackpackSlot, BackpackItem);
-    }
-
-    /// <summary> ¾ÆÀÌÅÛ ¸ñ·Ï, ÀÎµ¦½º »õ·Î°íÄ§ </summary>
-    public void RefreshSlot(Slot[] Bag, List<Item> items)
-    {
-        for (int i = 0; i < Bag.Length; i++)
-        {
-            if (items[i] != null)
-            {
-                Bag[i].SlotIndex = i;
-                Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = items[i];
-                Debug.Log(items[i].Data);
-            }
-            else
-            {
-                Bag[i].SlotIndex = i;
-                Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = null;
-            }
-        }
-        int i = 0;
-        for (; i < items.Count && i < Bag.Length; i++)
-        {
-            Bag[i].SlotIndex = i;
-            Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = items[i];
-        }
-        for (; i < Bag.Length; i++)
-        {
-            Bag[i].SlotIndex = i;
-            Bag[i].GetComponentInChildren<SlotItem>().ItemProperty = null;
-        }
-    }
-
-    /// <summary> ¾ÆÀÌÅÛ Ãß°¡ ÇÔ¼ö </summary>
-    /// <param name="_item">Ãß°¡ µÉ ¾ÆÀÌÅÛ Á¤º¸</param>
-    public void AddItem(Item _item)
-    {
-        //¾ÆÀÌÅÛ Å¸ÀÔ °Ë»ç
-        switch (ItemClassifier(_item))
-        {
-            case 1:
-                if (SlotFillCheck(PrimaryItems))
-                {
-
-                    PrimaryItems[GetIndex(PrimaryItems)] = _item;
-                }
-                else
-                {
-                    Items[GetIndex(Items)] = _item;
-                }
-                break;
-            case 2:
-                if (SlotFillCheck(SecondaryItems))
-                {
-                    SecondaryItems[GetIndex(SecondaryItems)] = _item;
-                }
-                else
-                {
-                    Items[GetIndex(Items)] = _item;
-                }
-                break;
-            case 3:
-                if (SlotFillCheck(ConsumableItems))
-                {
-                    ConsumableItems[GetIndex(ConsumableItems)] = _item;
-                }
-                else
-                {
-                    Items[GetIndex(Items)] = _item;
-                }
-                break;
-            case 4:
-                if (SlotFillCheck(HelmetItem))
-                {
-                    HelmetItem = _item;
-                }
-                else
-                {
-                    Items.Add(_item);
-                }
-                break;
-            case 5:
-                if (SlotFillCheck(BodyArmorItem))
-                {
-                    BodyArmorItem = _item;
-                }
-                else
-                {
-                    Items.Add(_item);
-                }
-                break;
-            case 6:
-                if (SlotFillCheck(BackpackItem))
-                {
-                    BackpackItem = _item;
-                }
-                else
-                {
-                    Items.Add(_item);
-                }
-                break;
-            case 7:
-                if (SlotFillCheck(Items))
-                {
-                    Items[GetIndex(Items)] = _item;
-                }
-                else
-                {
-                    Vector3 DropPos = myPlayerPos.position;
-                    DropPos.y += 2.0f;
-                    GameObject obj = Instantiate(_item.Data.ItemPrefab,
-                            DropPos, Quaternion.identity);
-                    obj.GetComponent<Rigidbody>().AddForce(transform.up * 10.0f);
-                    Debug.Log("½½·ÔÀÌ °¡µæ Â÷ ÀÖ½À´Ï´Ù.");
-                }
-                break;
-            default:
-                break;
-        }
-        RefreshList();
-
-    }
-
-    /// <summary> ¾ÆÀÌÅÛ Å¸ÀÔ Ã¼Å© ÇÔ¼ö </summary>
-    public int ItemClassifier(Item _item)
-    {
-        if (_item.Data.ItemType == ItemType.Primary)
-        {
-            return 1;
-        }
-        else if (_item.Data.ItemType == ItemType.Secondary)
-        {
-            return 2;
-        }
-        else if (_item.Data.ItemType == ItemType.Expand)
-        {
-            return 3;
-        }
-        else if (_item.Data.ItemType == ItemType.Helmet)
-        {
-            return 4;
-        }
-        else if (_item.Data.ItemType == ItemType.Bodyarmor)
-        {
-            return 5;
-        }
-        else if (_item.Data.ItemType == ItemType.Backpack)
-        {
-            return 6;
-        }
-        else
-        {
-            return 7;
-        }
-    }
-
-    /// <summary> ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö </summary>
-    public bool SlotFillCheck (List<Item> Slot)
-    {
-        bool isStockable = false;
-        for(int i = 0; i < Slot.Count; i++)
-        {
-            if(Slot[i] == null)
-            {
-                isStockable = true;
-                break;
-            }
-        }
-        if(isStockable)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /// <summary> ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö overwrite </summary>
-    public bool SlotFillCheck(Item Slot)
-    {
-        bool isStockable = false;
-        if (Slot == null)
-        {
-            isStockable = true;
-        }
-        return isStockable;
-    }
-
-    /// <summary> ¾ÆÀÌÅÛÀÌ ¾ø´Â ½½·ÔÀÇ ÀÎµ¦½º¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö </summary>
-    public int GetIndex (List<Item> Slot)
-    {
-        int Index = 0;
-        for (int i = 0; i < Slot.Count; i++)
-        {
-            if (Slot[i] == null)
-            {
-                Index = i;
-                break;
-            }
-        }
-        return Index;
-    }
-    
-    */
     #endregion
 }

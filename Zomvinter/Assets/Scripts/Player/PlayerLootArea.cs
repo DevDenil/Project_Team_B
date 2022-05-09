@@ -45,18 +45,29 @@ public class PlayerLootArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            //ItemData ItemData = LootableItems[0].GetComponent<AKM>().SendItemInfo();
-            //Debug.Log(ItemData.ItemName);
-            //Debug.Log(ItemData.ItemPrefab);
-            //Debug.Log(myInventory.ItemCapacity);
-            //Debug.Log(myInventory.Items);
-            //Debug.Log(_inventoryUI.ItemSlots);
-            //myInventory.Add(ItemData, myInventory.ItemCapacity, myInventory.Items, _inventoryUI.ItemSlots, 1);
 
-            Destroy(LootableItems[0]);
-            LootableItems.RemoveAt(0);
-            Destroy(InstPickupUI);
-            //myInventory.GetComponent<Inventory>().RefreshList();
+            ItemData item = null;
+            if (LootableItems[0].GetComponent<WeaponItem>() is WeaponItem)
+            {
+                item = LootableItems[0].GetComponent<WeaponItem>().WeaponData;
+            }
+            else if (LootableItems[0].GetComponent<ArmorItem>() is ArmorItem)
+            {
+                item = LootableItems[0].GetComponent<ArmorItem>().ArmorData;
+            }
+            else if (LootableItems[0].GetComponent<PotionItem>() is PotionItem)
+            {
+                item = LootableItems[0].GetComponent<PotionItem>().PotionData;
+            }
+
+            int Index = myInventory.FindEmptySlotIndex(myInventory.Items, myInventory.Items.Count);
+            if (Index != -1)
+            {
+                myInventory.Items[Index] = item;
+                Destroy(LootableItems[0]);
+                LootableItems.RemoveAt(0);
+                Destroy(InstPickupUI);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)

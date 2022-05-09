@@ -93,7 +93,11 @@ MonoBehaviour:
   _padding: 1
   _iconImage: {fileID: 3157530896336833590}
   _amountText: {fileID: 3157530896235482894}
+  SlotIndex: 0
+  _item: {fileID: 0}
   SlotState: 0
+  _iconGo: {fileID: 3157530896336833592}
+  _textGo: {fileID: 3157530896235482896}
 --- !u!1 &3157530895290515746
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,10 +131,10 @@ RectTransform:
   m_Father: {fileID: 3157530895495390206}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 80, y: 32.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -7.5}
+  m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3157530895290515745
 CanvasRenderer:
@@ -154,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -277,7 +281,11 @@ MonoBehaviour:
   _padding: 1
   _iconImage: {fileID: 3157530895290515744}
   _amountText: {fileID: 3157530895916013163}
+  SlotIndex: 0
+  _item: {fileID: 0}
   SlotState: 0
+  _iconGo: {fileID: 3157530895290515746}
+  _textGo: {fileID: 3157530895916013165}
 --- !u!1 &3157530895626950788
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,10 +624,10 @@ RectTransform:
   m_Father: {fileID: 3157530895068636435}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 80, y: 32.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -7.5}
+  m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3157530896336833591
 CanvasRenderer:
@@ -643,7 +651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
