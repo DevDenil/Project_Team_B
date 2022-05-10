@@ -23,7 +23,8 @@ public class Player : PlayerController, BattleSystem
     //총알프리팹, 총알발사위치, 총알각도
     public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
     //총 획득시 생성하기 위한 boolcheck용 
-    public bool GunCheck1 = false; public bool GunCheck2 = false;
+    public bool GunCheck1 = false;
+    public bool GunCheck2 = false;
     //총 획득시 생성되는 위치의 부모 설정
     public Transform UnArmed1; public Transform UnArmed2; //플레이어 등 부분에 스폰되는 위치
     public Transform UnArmedGun1; public Transform UnArmedGun2; // 플레이어가 획득한 무기의 prefab을 사용해야함 
@@ -39,14 +40,12 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
-<<<<<<< HEAD
         
     }
     private void LateUpdate()
     {
         //보는 방향(y축) pos값 변경해야함
         //mySpine.localRotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pos), Time.deltaTime * 10.0f);
-=======
         if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
         {
             ActiveInv = !ActiveInv;
@@ -64,7 +63,6 @@ public class Player : PlayerController, BattleSystem
         //}
         //총 획득시 Guncheck true 만들기
         //if (GunCheck)
->>>>>>> 04_MiddleCheck
     }
     /*-----------------------------------------------------------------------------------------------*/
     //유한 상태 기계
@@ -104,21 +102,18 @@ public class Player : PlayerController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.ALIVE:
-<<<<<<< HEAD
                 if(!myAnim.GetBool("IsAiming")) Move();
                 if (Input.GetKeyDown(KeyCode.LeftShift)) myAnim.SetBool("IsRun", true); //달리기
                 if (Input.GetKeyUp(KeyCode.LeftShift)) myAnim.SetBool("IsRun", false); //달리기끝
                 //Rotation();
                 if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
-=======
                 Move();
                 Rotation();
-                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming") && GunCheck)
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))// && GunCheck)
                 { 
                     Fire(); 
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha1)  && !myAnim.GetBool("IsGun") &&GunCheck)
->>>>>>> 04_MiddleCheck
+                if (Input.GetKeyDown(KeyCode.Alpha1)  && !myAnim.GetBool("IsGun"))// && GunCheck)
                 {
                     Fire();
                 }
