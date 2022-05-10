@@ -39,12 +39,32 @@ public class Player : PlayerController, BattleSystem
     void Update()
     {
         StateProcess();
+<<<<<<< HEAD
         
     }
     private void LateUpdate()
     {
         //보는 방향(y축) pos값 변경해야함
         //mySpine.localRotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pos), Time.deltaTime * 10.0f);
+=======
+        if (Input.GetKeyDown(KeyCode.Tab) && myState != STATE.DEAD)
+        {
+            ActiveInv = !ActiveInv;
+            myInventory.SetActive(ActiveInv);
+        }
+        //if (myAnim.GetBool("IsGun") && Input.GetMouseButtonDown(1))
+        //{
+        //    myAnim.SetBool("IsAiming", true);
+        //    //Debug.Log("Q");
+        //    //myAnim.runtimeAnimatorController = Resources.Load("PlayerGun") as RuntimeAnimatorController;
+        //}
+        //if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
+        //{
+        //    myAnim.SetBool("IsAiming", false);
+        //}
+        //총 획득시 Guncheck true 만들기
+        //if (GunCheck)
+>>>>>>> 04_MiddleCheck
     }
     /*-----------------------------------------------------------------------------------------------*/
     //유한 상태 기계
@@ -84,11 +104,21 @@ public class Player : PlayerController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.ALIVE:
+<<<<<<< HEAD
                 if(!myAnim.GetBool("IsAiming")) Move();
                 if (Input.GetKeyDown(KeyCode.LeftShift)) myAnim.SetBool("IsRun", true); //달리기
                 if (Input.GetKeyUp(KeyCode.LeftShift)) myAnim.SetBool("IsRun", false); //달리기끝
                 //Rotation();
                 if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
+=======
+                Move();
+                Rotation();
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming") && GunCheck)
+                { 
+                    Fire(); 
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1)  && !myAnim.GetBool("IsGun") &&GunCheck)
+>>>>>>> 04_MiddleCheck
                 {
                     Fire();
                 }
@@ -156,10 +186,6 @@ public class Player : PlayerController, BattleSystem
 
     /*-----------------------------------------------------------------------------------------------*/
     // 배틀 시스템
-    public void TakeHit(float damage, RaycastHit hit)
-    {
-
-    }
     void OnAttack()
     {
         //base.BulletRotate(bulletRotate);

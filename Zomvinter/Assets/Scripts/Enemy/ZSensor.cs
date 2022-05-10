@@ -5,16 +5,17 @@ using UnityEngine.Events;
 
 public class ZSensor : MonoBehaviour
 {
-    //지역 변수
+    /// <summary> 미사용 딜리게이트 </summary>
     public UnityAction FindTarget = null;
-    //적인지 구분하는 레이어
+    /// <summary> 적 타겟 레이어마스크 </summary>
     public LayerMask myEnemyMask;
-    //타겟
+    /// <summary> 내 타겟 오브젝트 </summary>
     //public BattleSystem myTarget = null;
-    //반경 안에 들어온 적 목록
+    /// <summary> 내 타겟 오브젝트 </summary>
     public GameObject myEnemy = null;
-    /*-----------------------------------------------------------------------------------------------*/
-    //트리거 제어
+
+    /* 트리거 제어 함수 -----------------------------------------------------------------------------------------------*/
+
     private void OnTriggerEnter(Collider other)
     {
         //EnemyMask & (1 << other.gameObject.layer)) != 0

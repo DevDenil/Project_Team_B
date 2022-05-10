@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class PlayerLootArea : MonoBehaviour
 {
+    /// <summary> UI를 불러오기 위한 변수  </summary>
     [SerializeField]
     Canvas myCanvas;
+    /// <summary> 내 인벤토리UI 스크립트 변수 </summary>
     [SerializeField]
-    GameObject myInventory;
+    Inventory myInventory;
+    InventoryUI _inventoryUI;
 
     public List<GameObject> LootableItems = new List<GameObject>();
 
@@ -19,12 +22,14 @@ public class PlayerLootArea : MonoBehaviour
     [SerializeField]
     private LayerMask LootableLayerMask;
 
-    List<Item> lootItems;
 
     /// <summary> PickUp 팝업 UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
+<<<<<<< HEAD
     [SerializeField]
+=======
+>>>>>>> 04_MiddleCheck
     GameObject SearchingObj = null;
 
     /// <summary> Loot 팝업 UI </summary>
@@ -32,27 +37,61 @@ public class PlayerLootArea : MonoBehaviour
     GameObject InstLootUI = null;
     GameObject ItemTable = null;
 
+    /// <summary> 서칭 팝업 UI </summary>
+    GameObject ObjectUI = null;
+
     void Start()
     {
-        lootItems = myCanvas.GetComponentInChildren<Inventory>().items;
+        myInventory = myCanvas.GetComponentInChildren<Inventory>();
+        _inventoryUI = myCanvas.GetComponentInChildren<InventoryUI>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
         {
-            lootItems.Add(LootableItems[0].GetComponent<ItemData>().myProperties);
-            Destroy(LootableItems[0]);
-            LootableItems.RemoveAt(0);
-            Destroy(InstPickupUI);
-            myInventory.GetComponent<Inventory>().RefreshSlot();
+
+            ItemData item = null;
+            if (LootableItems[0].GetComponent<WeaponItem>() is WeaponItem)
+            {
+                item = LootableItems[0].GetComponent<WeaponItem>().WeaponData;
+            }
+            else if (LootableItems[0].GetComponent<ArmorItem>() is ArmorItem)
+            {
+                item = LootableItems[0].GetComponent<ArmorItem>().ArmorData;
+            }
+            else if (LootableItems[0].GetComponent<PotionItem>() is PotionItem)
+            {
+                item = LootableItems[0].GetComponent<PotionItem>().PotionData;
+            }
+
+            int Index = myInventory.FindEmptySlotIndex(myInventory.Items, myInventory.Items.Count);
+            if (Index != -1)
+            {
+                myInventory.Items[Index] = item;
+                Destroy(LootableItems[0]);
+                LootableItems.RemoveAt(0);
+                Destroy(InstPickupUI);
+            }
         }
+
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
+<<<<<<< HEAD
             if (ItemTable == null)
             {
                 if (InstLootUI != null) Destroy(InstLootUI);
                 if (SearchingObj == null && LootableObject != null)
+=======
+            if (ObjectUI == null)
+            {
+                if (InstLootUI != null)
+                {
+                    Destroy(InstLootUI);
+                    InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+                }
+                if(SearchingObj == null && LootableObject != null)
+>>>>>>> 04_MiddleCheck
                 {
                     SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
                     StartCoroutine(SearchingObject(SearchingObj));
@@ -60,10 +99,16 @@ public class PlayerLootArea : MonoBehaviour
             }
             else
             {
+<<<<<<< HEAD
                 Destroy(ItemTable);
                 ItemTable = null;
             }
             
+=======
+                Destroy(ObjectUI);
+                ObjectUI = null;
+            }
+>>>>>>> 04_MiddleCheck
         }
     }
     /*-----------------------------------------------------------------------------------------------*/
@@ -93,6 +138,7 @@ public class PlayerLootArea : MonoBehaviour
         LootableObject.Remove(other.gameObject);
         Destroy(InstLootUI);
         Destroy(SearchingObj);
+<<<<<<< HEAD
         Destroy(ItemTable);
     }
 
@@ -107,6 +153,22 @@ public class PlayerLootArea : MonoBehaviour
         Destroy(obj);
         SearchingObj = null;
         ItemTable = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
+=======
+        Destroy(ObjectUI);
+    }
+
+    IEnumerator SearchingObject(GameObject UI)
+    {
+        while (UI.gameObject.GetComponent<Slider>().value < 1.0f) 
+        {
+            UI.gameObject.GetComponent<Slider>().value += Time.deltaTime;
+
+            yield return null;
+        }
+        Destroy(UI);
+        SearchingObj = null;
+        ObjectUI = Instantiate(Resources.Load("UI/ItemTableUi"), GameObject.Find("Canvas").transform) as GameObject;
+>>>>>>> 04_MiddleCheck
         yield return null;
     }
 }

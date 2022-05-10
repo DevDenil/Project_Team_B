@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+<<<<<<< HEAD
 public class BulletCtrl : MonoBehaviour, BattleSystem
+=======
+public class BulletCtrl : Character, BattleSystem
+>>>>>>> 04_MiddleCheck
 {
 
     public LayerMask collisionMask;
