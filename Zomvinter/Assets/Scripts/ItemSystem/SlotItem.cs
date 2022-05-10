@@ -333,12 +333,16 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 ItemData item = this.gameObject.GetComponentInParent<Slot>().ItemProperties;
                 GameObject obj = Instantiate(this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab,
                     DropPos, Quaternion.identity);
-                if(item.ItemType == ItemType.Expand)
-                {
-                    obj.AddComponent<PotionItem>();
-                    obj.GetComponent<PotionItem>().PotionData = (PotionItemData)item;
-                }
-                Vector3 myVec = this.transform.position;
+                //if(item.ItemType == ItemType.Expand)
+                //{
+                //    obj.AddComponent<PotionItem>();
+                //    obj.GetComponent<PotionItem>().PotionData = (PotionItemData)item;
+                //}
+                //else if (item.ItemType == ItemType.Primary || item.ItemType == ItemType.Secondary)
+                //{
+                //    obj.AddComponent<WeaponItem>();
+                //    obj.GetComponent<WeaponItem>().WeaponData = (WeaponItemData)item;
+                //}
             }
 
             int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
