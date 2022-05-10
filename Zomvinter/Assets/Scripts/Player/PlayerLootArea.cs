@@ -26,10 +26,7 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
-<<<<<<< HEAD
     [SerializeField]
-=======
->>>>>>> 04_MiddleCheck
     GameObject SearchingObj = null;
 
     /// <summary> Loot ÆË¾÷ UI </summary>
@@ -77,12 +74,10 @@ public class PlayerLootArea : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
         {
-<<<<<<< HEAD
             if (ItemTable == null)
             {
                 if (InstLootUI != null) Destroy(InstLootUI);
                 if (SearchingObj == null && LootableObject != null)
-=======
             if (ObjectUI == null)
             {
                 if (InstLootUI != null)
@@ -91,7 +86,6 @@ public class PlayerLootArea : MonoBehaviour
                     InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
                 }
                 if(SearchingObj == null && LootableObject != null)
->>>>>>> 04_MiddleCheck
                 {
                     SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
                     StartCoroutine(SearchingObject(SearchingObj));
@@ -99,16 +93,13 @@ public class PlayerLootArea : MonoBehaviour
             }
             else
             {
-<<<<<<< HEAD
                 Destroy(ItemTable);
                 ItemTable = null;
             }
             
-=======
                 Destroy(ObjectUI);
                 ObjectUI = null;
             }
->>>>>>> 04_MiddleCheck
         }
     }
     /*-----------------------------------------------------------------------------------------------*/
@@ -138,7 +129,6 @@ public class PlayerLootArea : MonoBehaviour
         LootableObject.Remove(other.gameObject);
         Destroy(InstLootUI);
         Destroy(SearchingObj);
-<<<<<<< HEAD
         Destroy(ItemTable);
     }
 
@@ -153,22 +143,20 @@ public class PlayerLootArea : MonoBehaviour
         Destroy(obj);
         SearchingObj = null;
         ItemTable = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
-=======
         Destroy(ObjectUI);
     }
 
-    IEnumerator SearchingObject(GameObject UI)
-    {
-        while (UI.gameObject.GetComponent<Slider>().value < 1.0f) 
-        {
-            UI.gameObject.GetComponent<Slider>().value += Time.deltaTime;
+    //IEnumerator SearchingObject(GameObject UI)
+    //{
+    //    while (UI.gameObject.GetComponent<Slider>().value < 1.0f) 
+    //    {
+    //        UI.gameObject.GetComponent<Slider>().value += Time.deltaTime;
 
-            yield return null;
-        }
-        Destroy(UI);
-        SearchingObj = null;
-        ObjectUI = Instantiate(Resources.Load("UI/ItemTableUi"), GameObject.Find("Canvas").transform) as GameObject;
->>>>>>> 04_MiddleCheck
-        yield return null;
-    }
+    //        yield return null;
+    //    }
+    //    Destroy(UI);
+    //    SearchingObj = null;
+    //    ObjectUI = Instantiate(Resources.Load("UI/ItemTableUi"), GameObject.Find("Canvas").transform) as GameObject;
+    //    yield return null;
+    //}
 }
