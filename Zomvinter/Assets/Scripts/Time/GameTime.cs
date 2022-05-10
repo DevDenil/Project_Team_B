@@ -8,25 +8,21 @@ public class GameTime : GameUtil
     
     public Text TestTime;
     public float TimeScale;// 시간 흐름 조정
-    public time gameTime;
-    public int day;
     // Start is called before the first frame update
     void Start()
     {
-        day = gameTime.day;
-        gameTime.Gametime = 0.0f;
+        time.Gametime = 6.0f;
     }
     
     // Update is called once per frame
     void Update()
     {
-        day = gameTime.day;
-        gameTime.Gametime += TimeScale * Time.deltaTime;
-        TestTime.text = gameTime.Gametime.ToString("F2");
-        if(gameTime.Gametime >= 24.0f)
+        //time.Gametime += TimeScale * Time.deltaTime;
+        TestTime.text = Time.time.ToString("F2");
+        if(time.Gametime >= 24.0f)
         {
-            gameTime.day++;
-            gameTime.Gametime = 0.0f;
+            time.day++;
+            time.Gametime = 0.0f;
         }
     }
     

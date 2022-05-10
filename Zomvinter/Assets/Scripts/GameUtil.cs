@@ -11,8 +11,8 @@ public struct ROTATEDATA
 
 public struct time
 {
-    public int day;
-    public float Gametime;
+    public static int day;
+    public static float Gametime;
 }
 public class GameUtil : MonoBehaviour, IDamageable
 {
