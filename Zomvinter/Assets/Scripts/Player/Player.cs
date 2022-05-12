@@ -12,7 +12,7 @@ public class Player : PlayerController, BattleSystem
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
     public GameObject myInventory;
-    private bool ActiveInv = false;
+    private bool ActiveInv = true;
     public GameObject myStatUI;
     //마우스 로테이트
     public Transform RotatePoint;
