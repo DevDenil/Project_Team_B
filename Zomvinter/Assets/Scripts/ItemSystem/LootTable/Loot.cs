@@ -5,12 +5,12 @@ using UnityEngine;
 public class Loot : MonoBehaviour
 {
     [SerializeField]
-    private Item item;
+    private LootItem item;
 
     [SerializeField]
     private float dropChance;//랜덤 몇번 돌릴 것 인지 
 
-    public Item MyItem
+    public LootItem MyItem
     {
         get
         {
