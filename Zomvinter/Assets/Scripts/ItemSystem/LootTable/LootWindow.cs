@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class LootWindow : MonoBehaviour
 {
-    /*
     private static LootWindow instance;
+
     public static LootWindow MyInstance
     {
         get
@@ -14,51 +15,164 @@ public class LootWindow : MonoBehaviour
             {
                 instance = GameObject.FindObjectOfType<LootWindow>();
             }
-
             return instance;
         }
     }
-    // 알파값으로 LootWindow을 열거나 닫을 예정.
+
+
+    [SerializeField]
+    private LootButton[] lootButtons;
+
     private CanvasGroup canvasGroup;
 
-    // 드랍확률 계산 후 확정된 아이템
+    private List<List<Item>> pages = new List<List<Item>>();
+
     private List<Item> droppedLoot = new List<Item>();
 
-    public void CreatePages(List<Item> items)
-    {
-        List<Item> page = new List<Item>();
+    private int pageIndex = 0;
 
-        for (int i = 0, i < items.Count; i++)
-        {
-            page.Add(items[i]);
-            if(page.Count == 4 || i = Item.Count -1)
-            {
-                
-            }
-        }
-    }
-    // 현재 열려있는 상태인지 확인
+    [SerializeField]
+    private Text pageNumber;
+
+    [SerializeField]
+    private GameObject nextBtn, previousBtn;
+
+    /// <summary>
+    /// NOTE FOR DEBUGGING ONLY
+    /// </summary>
+    [SerializeField]
+    private Item[] items;
+
     public bool IsOpen
     {
         get { return canvasGroup.alpha > 0; }
-
     }
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
     }
+
+    public void CreatePages(List<Item> items)
+    {
+        if (!IsOpen)
+        {
+            List<Item> page = new List<Item>();
+
+            droppedLoot = items;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                page.Add(items[i]);
+
+                if (page.Count == 4 || i == items.Count - 1)
+                {
+                    pages.Add(page);
+                    page = new List<Item>();
+                }
+            }
+
+            AddLoot();
+
+            Open();
+        }
+
+
+    }
+
+    private void AddLoot()
+    {
+        if (pages.Count > 0)
+        {
+            //Handle page numbers
+            pageNumber.text = pageIndex + 1 + "/" + pages.Count;
+
+            //Handle next and prev buttons
+            previousBtn.SetActive(pageIndex > 0);
+            nextBtn.SetActive(pages.Count > 1 && pageIndex < pages.Count - 1);
+
+            for (int i = 0; i < pages[pageIndex].Count; i++)
+            {
+                if (pages[pageIndex][i] != null)
+                {
+                    ////Set the loot buttons icon
+                    //lootButtons[i].MyIcon.sprite = pages[pageIndex][i].MyIcon;
+
+                    //lootButtons[i].MyLoot = pages[pageIndex][i];
+
+                    ////Make sure the loot buttons is visible
+                    //lootButtons[i].gameObject.SetActive(true);
+
+                    //string title = string.Format("<color={0}>{1}</color>", QualityColor.MyColors[pages[pageIndex][i].MyQuality], pages[pageIndex][i].MyTitle);
+
+                    ////Set the title
+                    //lootButtons[i].MyTitle.text = title;
+                }
+
+            }
+        }
+
+
+
+    }
+
+    public void ClearButtons()
+    {
+        foreach (LootButton btn in lootButtons)
+        {
+            btn.gameObject.SetActive(false);
+        }
+    }
+
+    public void NextPage()
+    {
+        //we check if we have more pages
+        if (pageIndex < pages.Count - 1)
+        {
+            pageIndex++;
+            ClearButtons();
+            AddLoot();
+        }
+    }
+
+    public void PreviousPage()
+    {
+        //We are checking if we have more pages in the backwards direction
+        if (pageIndex > 0)
+        {
+            pageIndex--;
+            ClearButtons();
+            AddLoot();
+        }
+    }
+
+    public void TakeLoot(Item loot)
+    {
+        pages[pageIndex].Remove(loot);
+
+        droppedLoot.Remove(loot);
+
+        if (pages[pageIndex].Count == 0)
+        {
+            //Removes the empty page
+            pages.Remove(pages[pageIndex]);
+
+            if (pageIndex == pages.Count && pageIndex > 0)
+            {
+                pageIndex--;
+            }
+
+            AddLoot();
+        }
+    }
+
     public void Close()
     {
-        //LootWindow를 닫고 다시 열때 아이템이 계속 쌓이는걸 방지합니다.
         pages.Clear();
-        ClearButtons();
-
-        // 해당 게임오브젝트가 안보이도록 변경
         canvasGroup.alpha = 0;
-        // 해당 게임오브젝트가 클릭이 안되도록 변경
         canvasGroup.blocksRaycasts = false;
-
+        ClearButtons();
     }
 
     public void Open()
@@ -66,27 +180,4 @@ public class LootWindow : MonoBehaviour
         canvasGroup.alpha = 1;
         canvasGroup.blocksRaycasts = true;
     }
-    public void TakeLoot(Item item)
-    {
-        pages[pageIndex].Remove(item);
-
-        droppedLoot.Remove(item);
-
-        // 페이지에 아이템이 없다면
-        if (pages[pageIndex].Count == 0)
-        {
-            // 해당 페이지 삭제
-            pages.Remove(pages[pageIndex]);
-
-            // 마지막 페이지이고 페이지 번호가 0보다 크다.
-            if (pageIndex == pages.Count && pageIndex > 0)
-            {
-                pageIndex--;
-            }
-
-            // 페이지 갱신
-            AddLoot();
-        }
-    }
-    */
 }
