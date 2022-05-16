@@ -140,6 +140,8 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
                         ClickedSlot.ItemProperties = null;
                         _inventory.Items[ClickedSlot.SlotIndex] = null;
+
+
                     }
                     // 가득 찬 경우
                     else
@@ -236,6 +238,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 {
                     int Index = _inventory.FindEmptySlotIndex(_inventory.Items, _inventory.Items.Count);
                     _inventory.Items[Index] = ClickedSlot.ItemProperties;
+                    Debug.Log("보조무기 제거");
                     _inventory.SecondaryItems = null;
                 }
             }
