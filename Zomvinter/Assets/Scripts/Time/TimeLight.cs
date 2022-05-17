@@ -29,7 +29,7 @@ public class TimeLight : MonoBehaviour
     void Update()
     { 
         Intensity = Mathf.Clamp(Intensity, 0.0f, 25.0f);
-        NightLight.GetComponentInChildren<Light>().intensity = Intensity;
+        //NightLight.GetComponentInChildren<Light>().intensity = Intensity;
         this.transform.Rotate(Vector3.right, SunRotSpeed * Time.deltaTime);
         //this.transform.Rotate(Vector3.right, TimeScale * Time.deltaTime);
 
