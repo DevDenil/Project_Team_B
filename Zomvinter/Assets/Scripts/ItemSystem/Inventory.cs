@@ -74,6 +74,8 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     public int ConsumableCapacity { get; set; }
 
+    public int EquipmentCapacity { get; set; }
+
     #endregion
     /***********************************************************************
     *                               Private Fields
@@ -113,10 +115,13 @@ public class Inventory : MonoBehaviour
     #region 소모품
     /// <summary> 소모품 아이템 목록 리스트 </summary>
     public List<ItemData> ConsumableItems;
+    public List<ItemData> ArmorItems;
 
     /// <summary> 소모품 최대 수용 한도 </summary>
     [SerializeField, Range(1, 3)]
     private int _ConsumableMaxCapacity = 3;
+    [SerializeField, Range(1, 3)]
+    private int _ArmorItemsMaxCapacity = 3;
     #endregion -------------------------------------------------------------------
 
     #region 장비

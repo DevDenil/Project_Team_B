@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraArm : MonoBehaviour
 {
+    [SerializeField]
+    private float CameraMoveSpeed;
+    public Transform Target;
     public Transform PlayerCam;
     public Transform PlayerNightLight;
     Vector3 TargetRot;
@@ -17,8 +20,7 @@ public class CameraArm : MonoBehaviour
     float time = 0.0f;
     // Start is called before the first frame update
     void Start()
-    {
-        TargetRot = this.transform.rotation.eulerAngles;
+    { 
         time = Time.deltaTime + RotSpeed;
     }
 
@@ -49,8 +51,13 @@ public class CameraArm : MonoBehaviour
         LightZoomDist = Mathf.Lerp(LightZoomDist, TargetLightZoomDist, Time.deltaTime * ZoomSpeed);
         
         //Ä«¸Þ¶ó ÁÜÀÎ¾Æ¿ô
-        PlayerCam.localPosition = new Vector3(0.0f, 0.0f, ZoomDist);
+        PlayerCam.localPosition = new Vector3(0.0f, -ZoomDist, -1.0f);
         //Àú³á ½Ã¾ß ÁÜÀÎ¾Æ¿ô
         PlayerNightLight.localPosition = new Vector3(0.0f, 3.0f, LightZoomDist);
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = Vector3.Lerp(transform.position, Target.position, Time.deltaTime * CameraMoveSpeed);
     }
 }

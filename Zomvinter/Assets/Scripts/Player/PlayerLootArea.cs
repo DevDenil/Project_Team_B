@@ -32,6 +32,7 @@ public class PlayerLootArea : MonoBehaviour
     /// <summary> Loot ÆË¾÷ UI </summary>
     PickUpUI myLootUI = null;
     GameObject InstLootUI = null;
+    [SerializeField]
     GameObject ItemTable = null;
 
     /// <summary> ¼­Äª ÆË¾÷ UI </summary>
@@ -83,7 +84,6 @@ public class PlayerLootArea : MonoBehaviour
                 if (InstLootUI != null)
                 {
                     Destroy(InstLootUI);
-                    InstLootUI = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
                 }
                 if(SearchingObj == null && LootableObject != null)
                 {

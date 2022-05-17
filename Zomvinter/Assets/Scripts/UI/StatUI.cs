@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatUI : MonoBehaviour
+public class StatUI : Player
 {
     public GameObject Upbtn;
     public TMPro.TMP_Text SPtext;
@@ -13,8 +13,6 @@ public class StatUI : MonoBehaviour
     public Image[] HandicraftImage;
     public Image[] AgilityImage;
     public Image[] IntellectImage;
-    int StrengthLevel = 0;
-    int CadioLevel = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -55,30 +53,44 @@ public class StatUI : MonoBehaviour
         IntellectImage = o.GetComponentsInChildren<Image>();
     }
 
+    /* --------------------스텟 증가시 호출되는 함수 부분----------------------- */
     public void StrengthUp()
     {
-        ++StrengthLevel;
-        StrengthImage[StrengthLevel - 1].GetComponent<Image>().color = Color.red;
+        ++Stat.Strength;
+        Stat.MaxStamina += 10;
+        StrengthImage[Stat.Strength - 1].GetComponent<Image>().color = Color.red;
         --sp;
         SPtext.text = "SP : " + sp.ToString();
     }
     public void CadioUp()
     {
-        ++CadioLevel;
-        CadioImage[CadioLevel - 1].GetComponent<Image>().color = Color.red;
+        ++Stat.Cadio;
+        Stat.MaxHP += 20;
+        CadioImage[Stat.Cadio - 1].GetComponent<Image>().color = Color.red;
         --sp;
         SPtext.text = "SP : " + sp.ToString();
     }
     public void HandicraftUp()
     {
-        
+        ++Stat.Handicraft;
+        HandicraftImage[Stat.Handicraft - 1].GetComponent<Image>().color = Color.red;
+        --sp;
+        SPtext.text = "SP : " + sp.ToString();
     }
     public void AgilityUp()
     {
-       
+        ++Stat.Agility;
+        Stat.MoveSpeed += 0.5f;
+        AgilityImage[Stat.Agility - 1].GetComponent<Image>().color = Color.red;
+        --sp;
+        SPtext.text = "SP : " + sp.ToString();
     }
     public void IntellectUp()
     {
-        
+        ++Stat.Intellect;
+        IntellectImage[Stat.Intellect - 1].GetComponent<Image>().color = Color.red;
+        --sp;
+        SPtext.text = "SP : " + sp.ToString();
     }
+    /* -------------------------------------------------------------------------- */
 }

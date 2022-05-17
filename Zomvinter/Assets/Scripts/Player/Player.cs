@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+
 public class Player : PlayerController, BattleSystem
 {
+    //스텟 구조체
+    public static CharacterStat Stat;
+    public Transform Cam;
     /*-----------------------------------------------------------------------------------------------*/
     //지역 변수
-    public CharacterStat myStat;
     public LayerMask BulletLayer;//총알 도착지
     private Vector3 dir; // 총알 각도 
+    [SerializeField]
+    private float CycleSpeed; // 허기, 갈증 감소 속도
+    [SerializeField]
+    private float StaminaCycle; // 스테미나 감소 속도
     //인벤토리
     public List<GameObject> myItems = new List<GameObject>();
     public GameObject myInventory;
@@ -28,19 +35,36 @@ public class Player : PlayerController, BattleSystem
     //총 획득시 생성되는 위치의 부모 설정
     public Transform UnArmed1; public Transform UnArmed2; //플레이어 등 부분에 스폰되는 위치
     public Transform UnArmedGun1; public Transform UnArmedGun2; // 플레이어가 획득한 무기의 prefab을 사용해야함 
-
+    Coroutine aliveCycle = null;
+    Coroutine move = null;
     /*-----------------------------------------------------------------------------------------------*/
     //Unity
     void Start()
     {
+        RotatePoint = GetComponent<Transform>();
+        CycleSpeed = 1.0f;
+        Stat = new CharacterStat();
+        Stat.MaxHP = 100.0f; // 최대 체력
+        Stat.MaxHunger = 100.0f; // 최대 허기량
+        Stat.MaxStamina = 50.0f; // 최대 스테미나
+        Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
         ChangeState(STATE.CREATE);
+    }
+
+    // 캐릭터 수치가 0보다 작아지지 않고 최대 수치보다 커지지 않게 고정하는 함수
+    void DynamicStatClamp()
+    {
+        Stat.HP = Mathf.Clamp(Stat.HP, 0, Stat.MaxHP);
+        Stat.Hunger = Mathf.Clamp(Stat.Hunger, 0, Stat.MaxHunger);
+        Stat.Thirsty = Mathf.Clamp(Stat.Thirsty, 0, Stat.MaxThirsty);
+        Stat.Stamina = Mathf.Clamp(Stat.Stamina, 0, Stat.MaxStamina);
     }
 
     // Update is called once per frame
     void Update()
-    {
+    { 
+        DynamicStatClamp();
         StateProcess();
-        
     }
     private void LateUpdate()
     {
@@ -82,8 +106,8 @@ public class Player : PlayerController, BattleSystem
             case STATE.NONE:
                 break;
             case STATE.CREATE:
-                myStat.MoveSpeed = 3.0f;
                 ChangeState(STATE.ALIVE);
+                StatInitialize();
                 break;
             case STATE.ALIVE:
                 break;
@@ -102,18 +126,27 @@ public class Player : PlayerController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.ALIVE:
-                if(!myAnim.GetBool("IsAiming")) Move();
-                if (Input.GetKeyDown(KeyCode.LeftShift)) myAnim.SetBool("IsRun", true); //달리기
-                if (Input.GetKeyUp(KeyCode.LeftShift)) myAnim.SetBool("IsRun", false); //달리기끝
-                //Rotation();
-                if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming"))//&& GunCheck
-                Move();
-                Rotation();
-                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))// && GunCheck)
-                { 
-                    Fire(); 
+                float ZMove = Stat.MoveSpeed / 2;
+                AliveCoroutine();
+                //RotatePoint.transform.rotation = Quaternion.identity;
+
+                if (!myAnim.GetBool("IsAiming")) Move(Stat.MoveSpeed);
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    myAnim.SetBool("IsRun", true); //달리기
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha1)  && !myAnim.GetBool("IsGun"))// && GunCheck)
+                if (Input.GetKeyUp(KeyCode.LeftShift)) myAnim.SetBool("IsRun", false); //달리기끝
+         
+                /*if (Input.GetMouseButton(0) && myAnim.GetBool("IsAiming") && !myAnim.GetBool("IsGun"))
+                {  
+                    Move(ZMove);
+                    //Rotation();
+                }*/
+                if (Input.GetMouseButtonDown(0) && myAnim.GetBool("IsAiming"))// && GunCheck)
+                {
+                    Fire();
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1) && !myAnim.GetBool("IsGun"))// && GunCheck)
                 {
                     Fire();
                 }
@@ -144,12 +177,14 @@ public class Player : PlayerController, BattleSystem
                 {
                     StartAiming(); //로테이션 값 저장
                     myAnim.SetBool("IsAiming", true);
-                    //BulletRotCtrl();
+                    BulletRotCtrl();
                 }
                 if (myAnim.GetBool("IsGun") && Input.GetMouseButton(1))
                 {
-                    Rotate(RotatePoint);
-                    BulletRotate(bulletRotate);
+                    //float ZoomMove = Stat.MoveSpeed / 2;
+                    Move(Stat.MoveSpeed);
+                    Rotation();
+                    //BulletRotate(bulletRotate);
                 }
                 if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
                 {
@@ -167,15 +202,15 @@ public class Player : PlayerController, BattleSystem
         }
     }
 
-    void Move()
+    void Move(float MoveSpeed)
     {
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
-        base.Moving(pos, myStat.MoveSpeed, RotatePoint);
+        base.Moving(pos, MoveSpeed, Cam);
     }
     void Rotation()
     {
-        //base.Rotate(RotatePoint);
+        base.Rotate(RotatePoint);
     }
 
 
@@ -189,8 +224,8 @@ public class Player : PlayerController, BattleSystem
     public void OnDamage(float Damage)
     {
         if (myState == STATE.DEAD) return;
-        myStat.HP -= Damage;
-        if (myStat.HP <= 0) ChangeState(STATE.DEAD);
+        Stat.HP -= Damage;
+        if (Stat.HP <= 0) ChangeState(STATE.DEAD);
         else
         {
 
@@ -232,4 +267,63 @@ public class Player : PlayerController, BattleSystem
         if (GunCheck2 == false)
             if (UnArmedGun2 != null) Destroy(UnArmedGun2);
     }
+
+    void StatInitialize()
+    {
+        //초기 캐릭터 수치
+        Stat.HP = Stat.MaxHP;
+        Stat.AP = 0.0f;
+        Stat.DP = 5.0f;
+        Stat.MoveSpeed = 2.0f;
+        Stat.Hunger = Stat.MaxHunger;
+        Stat.Thirsty = Stat.MaxThirsty;
+        Stat.Stamina = Stat.MaxStamina;
+
+        //초기 캐릭터 능력치 레벨
+        Stat.Strength = 0;
+        Stat.Cadio = 0;
+        Stat.Handicraft = 0;
+        Stat.Agility = 0;
+        Stat.Intellect = 0;
+    }
+    void AliveCoroutine()
+    {
+        if (aliveCycle != null) return;
+        aliveCycle = StartCoroutine(AliveCycle());
+    }
+
+    IEnumerator AliveCycle()
+    {
+        while (Stat.HP > Mathf.Epsilon)
+        {
+            // 배고픔 수치 0일때
+            while(Stat.Hunger <= Mathf.Epsilon && Stat.Thirsty > Mathf.Epsilon)
+            {
+                Debug.Log(Stat.Thirsty);
+                Stat.HP -= CycleSpeed * 3;
+                Stat.Thirsty -= CycleSpeed;
+                yield return new WaitForSecondsRealtime(1.0f);
+            }
+            // 갈증 수치 0일때
+            while (Stat.Thirsty <= Mathf.Epsilon && Stat.Hunger > Mathf.Epsilon)
+            {
+                Stat.Hunger -= CycleSpeed;
+                Stat.Stamina += StaminaCycle / 2;
+                Stat.HP -= CycleSpeed;
+                yield return new WaitForSecondsRealtime(1.0f);
+            }
+            // 둘 다 0일때
+            while(Stat.Hunger <= Mathf.Epsilon && Stat.Thirsty <= Mathf.Epsilon)
+            {
+                Stat.HP -= CycleSpeed * 5;
+                yield return new WaitForSecondsRealtime(1.0f);
+            }
+            Stat.Hunger -= CycleSpeed;
+            Stat.Thirsty -= CycleSpeed * 2;
+            Stat.Stamina += StaminaCycle;
+            yield return new WaitForSecondsRealtime(1.0f);
+        }
+        yield return null;
+    }
+
 }
