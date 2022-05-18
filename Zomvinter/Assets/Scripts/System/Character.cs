@@ -18,12 +18,25 @@ struct MonsterData
 public struct CharacterStat
 {
     public float HP; //체력 Health Point
+    public float MaxHP;
     public float AP; //방어력 Armor Point
     public float DP; //공격력 Damage Point
     public float MoveSpeed;
     public float TurnSpeed;
-    public float Hunger; // 허기
-    public float Thirsty; // 갈증
+    public float Hunger;    // 허기
+    public float MaxHunger;
+    public float Thirsty;   // 갈증
+    public float MaxThirsty;
+    public float Stamina;   // 스테미나
+    public float MaxStamina;
+    public int Strength;
+    public int Cadio;
+    public int Handicraft;
+    public int Agility;
+    public int Intellect;
+    public float CycleSpeed; // 허기, 갈증 감소 속도
+    public float StaminaCycle; // 스테미나 감소 속도
+
 }
 
 /// <summary> 회전 연산 변수 구조체 </summary>
@@ -44,7 +57,7 @@ public class Character : MonoBehaviour
             if (_anim == null)
             {
                 _anim = GetComponent<Animator>();
-                if(_anim == null)
+                if (_anim == null)
                 {
                     _anim = GetComponentInChildren<Animator>();
                 }

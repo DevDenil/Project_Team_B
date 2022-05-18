@@ -9,7 +9,7 @@ public class TimeLight : MonoBehaviour
     CameraArm ZoomDist;
 
 
-    private float nightFogDensity = 0.13f; // 저녁 안개 수치 제한량
+    private float nightFogDensity = 1.0f; // 저녁 안개 수치 제한량
     public float FogDensity;
     public float currentFogDensity; // 현재 안개 수치
     public float Intensity; // 저녁 시야 밝기

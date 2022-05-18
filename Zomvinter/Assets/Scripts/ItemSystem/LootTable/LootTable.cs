@@ -111,9 +111,9 @@ public class LootTable : MonoBehaviour
             else if (RanNum == 4)
             {
                 // Potion 아이템 객체 생성 후 배열에 초기화
-                LootItem PotionItem = new LootItem();
-                PotionItem = PotionItem.PotionItem();
-                LootItems[Index] = PotionItem;
+                LootItem Ammo = new LootItem();
+                Ammo = Ammo.Ammo();
+                LootItems[Index] = Ammo;
             }
             else if (RanNum == 5)
             {
@@ -146,9 +146,9 @@ public class LootTable : MonoBehaviour
             else if (RanNum == 9)
             {
                 // Potion 아이템 객체 생성 후 배열에 초기화
-                LootItem PotionItem = new LootItem();
-                PotionItem = PotionItem.PotionItem2();
-                LootItems[Index] = PotionItem;
+                LootItem AKM = new LootItem();
+                AKM = AKM.AKM();
+                LootItems[Index] = AKM;
             }
         }
     }

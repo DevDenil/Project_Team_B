@@ -4,11 +4,11 @@ using UnityEngine;
 //아이템 속성값 저장하는곳 
 public enum TYPE
 {
-    Equipment, Potion, Ammo
+    Equipment, Potion, Ammo, Etc
 }
 public class LootItem
 {
-    
+    //값을 루트 테이블에서 사용함 
     public string ItemName;
     public Sprite ItemImage;
     public TYPE ItemType;
@@ -36,25 +36,25 @@ public class LootItem
         }
         return -1;
     }
-    public LootItem PotionItem()
+    public LootItem Ammo()
     {
-        LootItem PotionData = new LootItem();
-        PotionData.ItemName = "Healing Potion";
-        PotionData.ItemType = TYPE.Potion;
-        PotionData.ItemImage = Resources.Load<Sprite>("Potion");
-        PotionData.ItemValue = 10.0f;
+        LootItem Ammo = new LootItem();
+        Ammo.ItemName = "7.62mm";
+        Ammo.ItemType = TYPE.Ammo;
+        Ammo.ItemImage = Resources.Load<Sprite>("Ammo");
+        Ammo.ItemValue = 30.0f;
 
-        return PotionData;
+        return Ammo;
     }
-    public LootItem PotionItem2()
+    public LootItem AKM()
     {
-        LootItem PotionData = new LootItem();
-        PotionData.ItemName = "Elixir";
-        PotionData.ItemType = TYPE.Potion;
-        PotionData.ItemImage = Resources.Load<Sprite>("Elixir");
-        PotionData.ItemValue = 50.0f;
+        LootItem AKM = new LootItem();
+        AKM.ItemName = "AKM";
+        AKM.ItemType = TYPE.Equipment;
+        AKM.ItemImage = Resources.Load<Sprite>("AKM");
+        AKM.ItemValue = 50.0f;
 
-        return PotionData;
+        return AKM;
     }
 
     public LootItem WeaponItem()
