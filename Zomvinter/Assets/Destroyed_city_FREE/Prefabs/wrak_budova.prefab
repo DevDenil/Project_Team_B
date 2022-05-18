@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400000}
+  - component: {fileID: 2519161161155428010}
   m_Layer: 0
   m_Name: wrak_budova
   m_TagString: Untagged
@@ -34,6 +35,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2519161161155428010
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 31.680342, y: 42.067364, z: 100.42889}
+  m_Center: {x: -0.0000047683716, y: -0.0000047683725, z: 36.7}
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +237,7 @@ GameObject:
   - component: {fileID: 3300004}
   - component: {fileID: 2300004}
   - component: {fileID: 6400000}
+  - component: {fileID: 7786686577889838056}
   m_Layer: 0
   m_Name: bet_skelet
   m_TagString: Untagged
@@ -307,6 +322,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: e3c33f484ba1f9e4fb9e43d26361ed0a, type: 3}
+--- !u!65 &7786686577889838056
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 31.680342, y: 42.067364, z: 100.42889}
+  m_Center: {x: -0.0000047683716, y: -0.0000047683725, z: 36.7}
 --- !u!1 &100008
 GameObject:
   m_ObjectHideFlags: 0
