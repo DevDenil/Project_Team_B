@@ -1142,7 +1142,10 @@ AnimatorStateMachine:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DownBody
-  m_ChildStates: []
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: 6702435414268457969}
+    m_Position: {x: 260, y: -30, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1152,7 +1155,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 80, y: -30, z: 0}
   m_ExitPosition: {x: 490, y: -20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 0}
+  m_DefaultState: {fileID: 6702435414268457969}
 --- !u!206 &-592728230574600304
 BlendTree:
   m_ObjectHideFlags: 1
@@ -1223,7 +1226,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: pos.y
+  - m_Name: pos.z
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1390,7 +1393,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 8236c337c42daa942b4ec68a8d634ced, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 4153508372e4b114594af57ae411410b, type: 3}
     m_Threshold: 0.33333337
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
@@ -1398,7 +1401,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   m_BlendParameter: pos.x
-  m_BlendParameterY: pos.y
+  m_BlendParameterY: pos.z
   m_MinThreshold: 0
   m_MaxThreshold: 0.33333337
   m_UseAutomaticThresholds: 1
@@ -1492,7 +1495,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GetRifle
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2838540067586721520}
@@ -2116,6 +2119,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &6702435414268457969
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blend Tree
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 8929004483922721572}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &6884489096617135665
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2180,7 +2209,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 28a61d13e4f1127489ac7256b69f7af6, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: ed0e94dff97b0d3428f1c222405ca071, type: 3}
     m_Threshold: 0.25
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -2188,7 +2217,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 28a61d13e4f1127489ac7256b69f7af6, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 4a10221f9dbfcad44afafcd92ac30d39, type: 3}
     m_Threshold: 0.5
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
@@ -2204,7 +2233,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 28a61d13e4f1127489ac7256b69f7af6, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 04644044723774f4a92b5f1b3990dfdc, type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
@@ -2212,7 +2241,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   m_BlendParameter: pos.x
-  m_BlendParameterY: pos.y
+  m_BlendParameterY: pos.z
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
@@ -2294,3 +2323,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &8929004483922721572
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blend Tree
+  m_Childs: []
+  m_BlendParameter: pos.x
+  m_BlendParameterY: pos.x
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0

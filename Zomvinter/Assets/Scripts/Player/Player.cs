@@ -26,8 +26,16 @@ public class Player : PlayerController, BattleSystem
     #endregion
 
     #region 벡터 영역
+    //이동 벡터
+    Vector3 pos = Vector3.zero;
+    [SerializeField]
     // 카메라 암 축
-    private Transform Cam;
+    private Transform _cameraArm;
+    [SerializeField]
+    private bool Aimed;
+    #endregion
+
+    #region 이동 벡터 영역
     #endregion
 
     #region 유한 상태 기계 - 상태
@@ -38,25 +46,27 @@ public class Player : PlayerController, BattleSystem
     private Coroutine aliveCycle = null;
     #endregion
 
-
-    //마우스 로테이트
-    public Transform RotatePoint;
+    [SerializeField]
+    Transform HandSorket;
+    [SerializeField]
+    Transform BackLeftSorket;
+    [SerializeField]
+    Transform BackRightSorket;
 
     //캐릭터 위 아래보기
-    public Transform mySpine;
-    //이동 벡터
-    Vector3 pos = Vector3.zero;
+    Transform mySpine;
+
 
     //총알프리팹, 총알발사위치, 총알각도
-    public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
+    // public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
 
     //총 획득시 생성하기 위한 boolcheck용 
-    public bool GunCheck1 = false;
-    public bool GunCheck2 = false;
+    // public bool GunCheck1 = false;
+    // public bool GunCheck2 = false;
 
     //총 획득시 생성되는 위치의 부모 설정
-    public Transform UnArmed1; public Transform UnArmed2; //플레이어 등 부분에 스폰되는 위치
-    public Transform UnArmedGun1; public Transform UnArmedGun2; // 플레이어가 획득한 무기의 prefab을 사용해야함 
+    // public Transform UnArmed1; public Transform UnArmed2; //플레이어 등 부분에 스폰되는 위치
+    // public Transform UnArmedGun1; public Transform UnArmedGun2; // 플레이어가 획득한 무기의 prefab을 사용해야함 
 
     /***********************************************************************
     *                               Unity Events
@@ -70,8 +80,6 @@ public class Player : PlayerController, BattleSystem
 
     void Awake()
     {
-        // ???
-        RotatePoint = GetComponent<Transform>();
         // 구조체 변수 객채화
         Stat = new CharacterStat();
         InitScripts();
@@ -82,11 +90,17 @@ public class Player : PlayerController, BattleSystem
     { 
         StateProcess();
     }
+
+    private void FixedUpdate()
+    {
+        ///<summary> 이동 Input 메서드 </summary>
+        Move(Stat.MoveSpeed);
+    }
     #endregion
 
-     /***********************************************************************
-     *                               Finite-state machine
-     ***********************************************************************/
+    /***********************************************************************
+    *                               Finite-state machine
+    ***********************************************************************/
     #region 유한 상태 기계
     /// <summary> 상태 기계 상태 변환 함수 </summary>
     /// <param name="s">상태</param>
@@ -154,6 +168,7 @@ public class Player : PlayerController, BattleSystem
         Stat.AP = 0.0f;
         Stat.DP = 5.0f;
         Stat.MoveSpeed = 2.0f;
+        Stat.TurnSpeed = 180.0f;
         Stat.Hunger = Stat.MaxHunger;
         Stat.Thirsty = Stat.MaxThirsty;
         Stat.Stamina = Stat.MaxStamina;
@@ -184,32 +199,47 @@ public class Player : PlayerController, BattleSystem
     {
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
-        base.Moving(pos, MoveSpeed, Cam);
+        base.Moving(pos, MoveSpeed, _cameraArm);
+
+        if (!Aimed)
+        {
+            this.transform.rotation = Quaternion.Euler(0.0f, _cameraArm.eulerAngles.y, 0.0f);
+        }
+        else
+        {
+            Rotate(this.transform);
+        }
     }
-    void Rotation()
-    {
-        base.Rotate(Cam);
-    }
-    
+   
     private void GetWeapon() // 주무기 획득시 등에 스폰
     {
-        if (GunCheck1 == true)
-            Instantiate(UnArmedGun1, UnArmed1);
-        if (GunCheck2 == true)
-            Instantiate(UnArmedGun2, UnArmed2);
+        //if (GunCheck1 == true)
+        //    Instantiate(UnArmedGun1, UnArmed1);
+        //if (GunCheck2 == true)
+        //    Instantiate(UnArmedGun2, UnArmed2);
     }
     private void PutWeapon() // 주무기 버릴때 없앰
     {
-        if (GunCheck1 == false)
-            if (UnArmedGun1 != null) Destroy(UnArmedGun1);
-        if (GunCheck2 == false)
-            if (UnArmedGun2 != null) Destroy(UnArmedGun2);
+        //if (GunCheck1 == false)
+        //    if (UnArmedGun1 != null) Destroy(UnArmedGun1);
+        //if (GunCheck2 == false)
+        //    if (UnArmedGun2 != null) Destroy(UnArmedGun2);
     }
 
     private void AliveCoroutine()
     {
         if (aliveCycle != null) return;
         aliveCycle = StartCoroutine(AliveCycle());
+    }
+
+    private IEnumerator UpdateEquipment(GameObject obj)
+    {
+        while(myAnim.GetBool("isArmed"))
+        {
+            obj.transform.position = HandSorket.position;
+            obj.transform.rotation = HandSorket.rotation;
+            yield return null;
+        }
     }
     #endregion
 
@@ -227,10 +257,6 @@ public class Player : PlayerController, BattleSystem
     private void InputMethods()
     {
         #region 이동 Input Methods
-
-        ///<summary> 이동 Input 메서드 </summary>
-        if (!myAnim.GetBool("isAiming")) Move(Stat.MoveSpeed);
-
         ///<summary> 달리기 시작 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -266,10 +292,13 @@ public class Player : PlayerController, BattleSystem
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // 1. 착용중인 장비가 없는 경우
-            if (!myAnim.GetBool("isArmed"))
+            if (!myAnim.GetBool("isArmed") && _Inventory.PrimaryItems[0] != null)
             {
                 myAnim.SetTrigger("GetGun");
+                myAnim.SetBool("isArmed", true);
                 // 아이템 소켓
+                GameObject Gun = Instantiate(_Inventory.PrimaryItems[0].ItemPrefab, HandSorket.position, Quaternion.Euler(HandSorket.rotation.eulerAngles));
+                StartCoroutine(UpdateEquipment(Gun));
             }
             // 2. 착용중인 장비가 있는 경우
             else
@@ -297,17 +326,20 @@ public class Player : PlayerController, BattleSystem
         #endregion
 
         #region 조준 상태 Input Methods
+
         ///<summary> 조준 상태 Input 메서드 </summary>
         if (myAnim.GetBool("IsGun") && Input.GetMouseButton(1))
         {
+            Aimed = true;
             Move(Stat.MoveSpeed / 2);
-            Rotation();
+            // Rotation(Stat.TurnSpeed);
             myAnim.SetBool("IsAiming", true);
         }
 
         ///<summary> 조준 상태 해제 Input 메서드 </summary>
         if (myAnim.GetBool("IsGun") && Input.GetMouseButtonUp(1))
         {
+            Aimed = false;
             myAnim.SetBool("IsAiming", false);
         }
         #endregion
@@ -340,7 +372,7 @@ public class Player : PlayerController, BattleSystem
     }
     private void Fire()
     {
-        Instantiate(bullet, bulletStart.position, bulletRotate.rotation);
+        //Instantiate(bullet, bulletStart.position, bulletRotate.rotation);
     }
     #endregion
 
