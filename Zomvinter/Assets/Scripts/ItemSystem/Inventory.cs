@@ -289,7 +289,6 @@ public class Inventory : MonoBehaviour
         {
             if (item != null)
             {
-
                 slotList[i].ItemProperties = item;
             }
             else

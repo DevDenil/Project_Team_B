@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2027136632743861106}
   - component: {fileID: 6588249416496870232}
   - component: {fileID: 3701430935729308290}
+  - component: {fileID: 2152983808167299200}
   m_Layer: 8
   m_Name: BigCloset
   m_TagString: Untagged
@@ -58,6 +59,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b75bbbd550d214a8853964d0715b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2152983808167299200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027136632743861107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb9bf29b661125945b8dae84f1d266dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LootableObject: []
+  ItemDatas:
+  - {fileID: 11400000, guid: d6fd6460397d0b04090998a0e2b8f42e, type: 2}
+  - {fileID: 11400000, guid: 59b6858dc91a9ec4eb612211e51b52db, type: 2}
+  - {fileID: 11400000, guid: d49323a7991b20341b9b6c62af1b7e49, type: 2}
+  - {fileID: 11400000, guid: d6fd6460397d0b04090998a0e2b8f42e, type: 2}
+  items: []
+  LootableLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  tableSlot: []
 --- !u!1001 &2027136631768243758
 PrefabInstance:
   m_ObjectHideFlags: 0

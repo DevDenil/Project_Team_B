@@ -56,7 +56,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
     }
 
-    private void SetParent ()
+    private void SetParent()
     {
         CurParent = this.transform.parent;
     }

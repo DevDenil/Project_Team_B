@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 748617106632905606}
   - component: {fileID: 8531761581080358294}
   - component: {fileID: 7617045635974757269}
+  - component: {fileID: 1038335977080561334}
   m_Layer: 8
   m_Name: Box
   m_TagString: Untagged
@@ -44,8 +45,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &7617045635974757269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +59,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b75bbbd550d214a8853964d0715b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1038335977080561334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748617106632905625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb9bf29b661125945b8dae84f1d266dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LootableObject: []
+  ItemDatas:
+  - {fileID: 11400000, guid: 8d92fb8dd0990f4469f61d6bd6f316e7, type: 2}
+  - {fileID: 11400000, guid: d49323a7991b20341b9b6c62af1b7e49, type: 2}
+  - {fileID: 11400000, guid: d6fd6460397d0b04090998a0e2b8f42e, type: 2}
+  - {fileID: 11400000, guid: 59b6858dc91a9ec4eb612211e51b52db, type: 2}
+  items: []
+  LootableLayerMask:
+    serializedVersion: 2
+    m_Bits: 1280
+  tableSlot: []
 --- !u!1001 &748617106986846714
 PrefabInstance:
   m_ObjectHideFlags: 0

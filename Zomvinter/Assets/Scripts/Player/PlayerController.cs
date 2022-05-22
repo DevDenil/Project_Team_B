@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {   
         float delta = MoveSpeed * Time.deltaTime;
         myAnim.SetFloat("pos.x", pos.x);
-        myAnim.SetFloat("pos.z", pos.z);
+        myAnim.SetFloat("pos.y", pos.z);
         if (pos.magnitude > 1.0f)
         {
             pos.Normalize();
