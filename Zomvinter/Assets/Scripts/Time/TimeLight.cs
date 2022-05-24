@@ -9,7 +9,7 @@ public class TimeLight : MonoBehaviour
     CameraArm ZoomDist;
 
 
-    private float nightFogDensity = 1.0f; // 저녁 안개 수치 제한량
+    private float nightFogDensity = 0.16f; // 저녁 안개 수치 제한량
     public float FogDensity;
     public float currentFogDensity; // 현재 안개 수치
     public float Intensity; // 저녁 시야 밝기
@@ -27,9 +27,9 @@ public class TimeLight : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         Intensity = Mathf.Clamp(Intensity, 0.0f, 25.0f);
-        NightLight.GetComponentInChildren<Light>().intensity = Intensity;
+        //NightLight.GetComponentInChildren<Light>().intensity = Intensity;
         this.transform.Rotate(Vector3.right, SunRotSpeed * Time.deltaTime);
         //this.transform.Rotate(Vector3.right, TimeScale * Time.deltaTime);
 
@@ -47,25 +47,25 @@ public class TimeLight : MonoBehaviour
             this.transform.eulerAngles = new Vector3(-10.0f,-30.0f,0.0f);
         }
         */
-        if(this.transform.eulerAngles.x >= 170.0f)
+        if (this.transform.eulerAngles.x >= 170.0f)
         {
             IsNight = true;
         }
-        else if(this.transform.eulerAngles.x <= 2.0f)
+        else if (this.transform.eulerAngles.x <= 2.0f)
         {
             IsNight = false;
             time.day++;
         }
 
-        if(IsNight && Intensity < 35.0f)
+        if (IsNight && Intensity < 35.0f)
         {
             Intensity += 0.6f * Time.deltaTime;
         }
-        else if(!IsNight && Intensity > Mathf.Epsilon)
+        else if (!IsNight && Intensity > Mathf.Epsilon)
         {
             Intensity -= 0.8f * Time.deltaTime;
         }
-     
+
         if (IsNight)
         {
             if (currentFogDensity <= nightFogDensity)
@@ -84,7 +84,7 @@ public class TimeLight : MonoBehaviour
                 Intensity -= 1.0f * Time.deltaTime;
             }
         }
-        
-        
+
+
     }
 }
