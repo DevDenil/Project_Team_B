@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5128866721103129768}
   - component: {fileID: 1430464146496283105}
-  - component: {fileID: 6068091624923499191}
+  - component: {fileID: 266951792757273397}
   m_Layer: 8
   m_Name: Closet
   m_TagString: Untagged
@@ -46,7 +46,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.8
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &6068091624923499191
+--- !u!114 &266951792757273397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,9 +55,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5128866721103129770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19ba039ad9f091f4682dc92639471e2e, type: 3}
+  m_Script: {fileID: 11500000, guid: bb9bf29b661125945b8dae84f1d266dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LootableObject: []
+  ItemDatas:
+  - {fileID: 11400000, guid: d6fd6460397d0b04090998a0e2b8f42e, type: 2}
+  - {fileID: 11400000, guid: 59b6858dc91a9ec4eb612211e51b52db, type: 2}
+  - {fileID: 11400000, guid: 8d92fb8dd0990f4469f61d6bd6f316e7, type: 2}
+  - {fileID: 11400000, guid: d49323a7991b20341b9b6c62af1b7e49, type: 2}
+  items: []
+  LootableLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  tableSlot: []
 --- !u!1001 &5128866720307334339
 PrefabInstance:
   m_ObjectHideFlags: 0

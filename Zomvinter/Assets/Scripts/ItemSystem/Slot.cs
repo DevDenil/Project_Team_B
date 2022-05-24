@@ -27,6 +27,7 @@ public class Slot : MonoBehaviour, IDropHandler
     /// <summary> ΩΩ∑‘¿« ¿Œµ¶Ω∫ </summary>
     public int SlotIndex;
 
+    [SerializeField]
     public ItemData _item;
 
     public ItemData ItemProperties
