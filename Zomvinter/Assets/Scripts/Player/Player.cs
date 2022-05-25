@@ -28,6 +28,7 @@ public class Player : PlayerController, BattleSystem
     #region 벡터 영역
     //이동 벡터
     Vector3 pos = Vector3.zero;
+    Vector3 LookPos = Vector3.zero;
     [SerializeField]
     // 카메라 암 축
     private Transform _cameraArm;
@@ -57,8 +58,9 @@ public class Player : PlayerController, BattleSystem
     Transform mySpine;
 
     public bool isFirst = true;
-    Vector3 LastLook = Vector3.zero;
-    Transform MousePos;
+    [SerializeField]
+    Transform BaseTrans;
+    Vector3 LookDir = Vector3.zero;
 
     //총알프리팹, 총알발사위치, 총알각도
     // public Transform bullet; public Transform bulletStart; public Transform bulletRotate;
@@ -96,8 +98,7 @@ public class Player : PlayerController, BattleSystem
 
     private void FixedUpdate()
     {
-        // MousePos.position = Input.mousePosition;
-        LastLook = Input.mousePosition;
+        this.transform.LookAt(BaseTrans, Vector3.up);
         Move(Stat.MoveSpeed);
     }
     #endregion
@@ -204,7 +205,20 @@ public class Player : PlayerController, BattleSystem
     {
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
-        if(!myAnim.GetBool("isRun") && pos.z < 0)
+        LookPos.x = Input.GetAxis("Horizontal");
+        LookPos.y = Input.GetAxis("Vertical");
+
+
+        // Base Transform 방향 벡터 설정
+        Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(Physics.Raycast(mousePos, out RaycastHit hit, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            LookDir = new Vector3(hit.point.x, transform.position.y, hit.point.z) - BaseTrans.position;
+            BaseTrans.forward = LookDir.normalized;
+        }
+
+        // 뒤로 걷는 속도 조절
+        if (!myAnim.GetBool("isRun") && pos.z < 0)
         {
             Stat.MoveSpeed = 2.0f;
         }
@@ -212,20 +226,18 @@ public class Player : PlayerController, BattleSystem
         {
             Stat.MoveSpeed = 3.0f;
         }
-        //base.Moving(pos, MoveSpeed, MousePos);
         
-        // this.transform.rotation = Quaternion.Euler(LastLook);
         base.Moving(pos, MoveSpeed, _cameraArm);
+        // base.AnimMove(BaseTrans, LookPos, MoveSpeed, BaseTrans);
 
         if (!Aimed)
         {
-            //this.transform.rotation = Quaternion.Euler(0.0f, LastLook.y, 0.0f);
-            this.transform.rotation = Quaternion.Euler(0.0f, _cameraArm.eulerAngles.y, 0.0f);
+            // this.transform.rotation = Quaternion.Euler(0.0f, _cameraArm.eulerAngles.y, 0.0f);
+            base.Rotate(this.transform);
         }
         else
         {
-            this.transform.rotation = Quaternion.Euler(LastLook);
-            Rotate(this.transform);
+            base.Rotate(this.transform);
         }
     }
 
@@ -317,20 +329,34 @@ public class Player : PlayerController, BattleSystem
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             isFirst = true;
-            // 1. 착용중인 장비가 없는 경우
-            if (!myAnim.GetBool("isArmed") && _Inventory.PrimaryItems[0] != null)
+            // 1. 2번 슬롯에 아이템이 있는 경우
+            if (_Inventory.PrimaryItems[0] != null)
             {
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
-                Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject);
-            }
-            // 2. 착용중인 장비가 있는 경우
-            else
-            {
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
-                if()
-                Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject);
+                // 1-1. 착용중인 장비가 없는 경우
+                if (!myAnim.GetBool("isArmed"))
+                {
+                    myAnim.SetTrigger("GetGun");
+                    myAnim.SetBool("isArmed", true);
+                    if (BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject != null)
+                    {
+                        Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject);
+                    }
+                }
+                // 1-2. 착용중인 장비가 있는 경우
+                else
+                {
+                    myAnim.SetTrigger("GetGun");
+                    myAnim.SetBool("isArmed", true);
+                    if (BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject != null)
+                    {
+                        Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject);
+
+                        GameObject gun2 = Instantiate(_Inventory.PrimaryItems[1].ItemPrefab, BackRightSorket);
+                        Destroy(gun2.GetComponent<Rigidbody>());
+                        Destroy(gun2.GetComponent<BoxCollider>());
+                        gun2.transform.parent = BackRightSorket.transform;
+                    }
+                }
             }
 
             // 무기 변경 애니메이션 실행
@@ -340,17 +366,34 @@ public class Player : PlayerController, BattleSystem
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             isFirst = false;
-            // 1. 착용중인 장비가 없는 경우
-            if (!myAnim.GetBool("isArmed") && _Inventory.PrimaryItems[1] != null)
+            // 1. 2번 슬롯에 아이템이 있는 경우
+            if (_Inventory.PrimaryItems[1] != null)
             {
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
-            }
-            // 2. 착용중인 장비가 있는 경우
-            else
-            {
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
+                // 1-1. 착용중인 장비가 없는 경우
+                if (!myAnim.GetBool("isArmed"))
+                {
+                    myAnim.SetTrigger("GetGun");
+                    myAnim.SetBool("isArmed", true);
+                    if (BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject != null)
+                    {
+                        Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject);
+                    }
+                }
+                // 1-2. 착용중인 장비가 있는 경우
+                else
+                {
+                    myAnim.SetTrigger("GetGun");
+                    myAnim.SetBool("isArmed", true);
+                    if (BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject != null)
+                    {
+                        Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject);
+
+                        GameObject gun1 = Instantiate(_Inventory.PrimaryItems[1].ItemPrefab, BackLeftSorket);
+                        Destroy(gun1.GetComponent<Rigidbody>());
+                        Destroy(gun1.GetComponent<BoxCollider>());
+                        gun1.transform.parent = BackLeftSorket.transform;
+                    }
+                }
             }
 
             // 무기 변경 애니메이션 실행
@@ -396,7 +439,6 @@ public class Player : PlayerController, BattleSystem
         {
             Aimed = true;
             myAnim.SetBool("isAiming", true);
-            LastLook = this.transform.rotation.eulerAngles;
         }
 
         ///<summary> 조준 상태 해제 Input 메서드 </summary>
