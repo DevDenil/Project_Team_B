@@ -96,6 +96,8 @@ public class Player : PlayerController, BattleSystem
 
     private void FixedUpdate()
     {
+        // MousePos.position = Input.mousePosition;
+        LastLook = Input.mousePosition;
         Move(Stat.MoveSpeed);
     }
     #endregion
@@ -212,19 +214,18 @@ public class Player : PlayerController, BattleSystem
         }
         //base.Moving(pos, MoveSpeed, MousePos);
         
-        this.transform.rotation = Quaternion.Euler(LastLook);
+        // this.transform.rotation = Quaternion.Euler(LastLook);
         base.Moving(pos, MoveSpeed, _cameraArm);
 
         if (!Aimed)
         {
-            this.transform.rotation = Quaternion.Euler(LastLook);
-            // this.transform.rotation = Quaternion.Euler(0.0f, _cameraArm.eulerAngles.y, 0.0f);
-            Debug.Log(LastLook);
+            //this.transform.rotation = Quaternion.Euler(0.0f, LastLook.y, 0.0f);
+            this.transform.rotation = Quaternion.Euler(0.0f, _cameraArm.eulerAngles.y, 0.0f);
         }
         else
         {
+            this.transform.rotation = Quaternion.Euler(LastLook);
             Rotate(this.transform);
-            LastLook = this.transform.rotation.eulerAngles;
         }
     }
 
@@ -232,18 +233,18 @@ public class Player : PlayerController, BattleSystem
     {
         if(_Inventory.PrimaryItems[0] != null)
         {
-            GameObject gun1 = Instantiate(_Inventory.PrimaryItems[0].ItemPrefab);
-            gun1.transform.parent = BackLeftSorket.transform;
+            GameObject gun1 = Instantiate(_Inventory.PrimaryItems[0].ItemPrefab, BackLeftSorket);
             Destroy(gun1.GetComponent<Rigidbody>());
             Destroy(gun1.GetComponent<BoxCollider>());
+            gun1.transform.parent = BackLeftSorket.transform;
             //StartCoroutine(UpdateEquipment(gun1, BackLeftSorket));
         }
         if(_Inventory.PrimaryItems[1] != null)
         {
-            GameObject gun2 = Instantiate(_Inventory.PrimaryItems[1].ItemPrefab);
-            gun2.transform.parent = BackRightSorket.transform;
+            GameObject gun2 = Instantiate(_Inventory.PrimaryItems[1].ItemPrefab, BackRightSorket);
             Destroy(gun2.GetComponent<Rigidbody>());
             Destroy(gun2.GetComponent<BoxCollider>());
+            gun2.transform.parent = BackRightSorket.transform;
             //StartCoroutine(UpdateEquipment(gun2, BackRightSorket));
         }
     }
@@ -321,12 +322,54 @@ public class Player : PlayerController, BattleSystem
             {
                 myAnim.SetTrigger("GetGun");
                 myAnim.SetBool("isArmed", true);
+                Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject);
             }
             // 2. 착용중인 장비가 있는 경우
             else
             {
                 myAnim.SetTrigger("GetGun");
                 myAnim.SetBool("isArmed", true);
+                if()
+                Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject);
+            }
+
+            // 무기 변경 애니메이션 실행
+            myAnim.SetLayerWeight(1, 1.0f);
+        }
+        ///<summary> 주무기 장비 전환 Input 메서드 </summary>
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            isFirst = false;
+            // 1. 착용중인 장비가 없는 경우
+            if (!myAnim.GetBool("isArmed") && _Inventory.PrimaryItems[1] != null)
+            {
+                myAnim.SetTrigger("GetGun");
+                myAnim.SetBool("isArmed", true);
+            }
+            // 2. 착용중인 장비가 있는 경우
+            else
+            {
+                myAnim.SetTrigger("GetGun");
+                myAnim.SetBool("isArmed", true);
+            }
+
+            // 무기 변경 애니메이션 실행
+            myAnim.SetLayerWeight(1, 1.0f);
+        }
+        ///<summary> 보조무기 장비 전환 Input 메서드 </summary>
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            // 1. 착용중인 장비가 없는 경우
+            if (!myAnim.GetBool("isArmed") && _Inventory.SecondaryItems != null)
+            {
+                // 피스톨 뽑는 애니메이션
+                // 피스톨 장착 상태
+            }
+            // 2. 착용중인 장비가 있는 경우
+            else
+            {
+                // 피스톨 뽑는 애니메이션
+                // 피스톨 장착 상태
             }
 
             // 무기 변경 애니메이션 실행
