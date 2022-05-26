@@ -79,24 +79,24 @@ public class PlayerLootArea : MonoBehaviour
             {
                 if (InstLootUI != null) Destroy(InstLootUI);
                 if (SearchingObj == null && LootableObject != null)
-            if (ObjectUI == null)
-            {
-                if (InstLootUI != null)
-                {
-                    Destroy(InstLootUI);
-                }
-                if(SearchingObj == null && LootableObject != null)
-                {
-                    SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
-                    StartCoroutine(SearchingObject(SearchingObj));
-                }
-            }
-            else
-            {
-                Destroy(ItemTable);
-                ItemTable = null;
-            }
-            
+                    if (ObjectUI == null)
+                    {
+                        if (InstLootUI != null)
+                        {
+                            Destroy(InstLootUI);
+                        }
+                        if (SearchingObj == null && LootableObject != null)
+                        {
+                            SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
+                            StartCoroutine(SearchingObject(SearchingObj));
+                        }
+                    }
+                    else
+                    {
+                        Destroy(ItemTable);
+                        ItemTable = null;
+                    }
+
                 Destroy(ObjectUI);
                 ObjectUI = null;
             }
@@ -108,18 +108,21 @@ public class PlayerLootArea : MonoBehaviour
         if ((LootableLayerMask & (1 << other.gameObject.layer)) != 0)
         {
             LootableObject.Add(other.gameObject);
-
             if (InstLootUI == null) InstLootUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
             myLootUI = InstLootUI.GetComponent<PickUpUI>();
             myLootUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
+
         }
         if ((ItemLayerMask & (1 << other.gameObject.layer)) != 0)
         {
             LootableItems.Add(other.gameObject);
 
-            if(InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Pickup"), GameObject.Find("Canvas").transform) as GameObject;
-            myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
-            myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
+            if (other.GetComponent<Rigidbody>() != null)
+            {
+                if (InstPickupUI == null) InstPickupUI = Instantiate(Resources.Load("UI/Popup_Pickup"), GameObject.Find("Canvas").transform) as GameObject;
+                myPickUpUI = InstPickupUI.GetComponent<PickUpUI>();
+                myPickUpUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
+            }
         }
     }
     private void OnTriggerExit(Collider other)

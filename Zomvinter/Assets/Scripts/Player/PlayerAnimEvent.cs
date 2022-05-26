@@ -24,7 +24,7 @@ public class PlayerAnimEvent : MonoBehaviour
 
     private void Awake()
     {
-        _player = this.GetComponent<Player>();
+        _player = this.GetComponentInParent<Player>();
     }
 
     public void StartStabbing()

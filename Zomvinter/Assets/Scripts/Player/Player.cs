@@ -33,6 +33,9 @@ public class Player : PlayerController, BattleSystem
     // 카메라 암 축
     private Transform _cameraArm;
     [SerializeField]
+    // 모델 위치
+    private Transform _model;
+    [SerializeField]
     private bool Aimed = true;
     #endregion
 
@@ -98,8 +101,9 @@ public class Player : PlayerController, BattleSystem
 
     private void FixedUpdate()
     {
-        this.transform.LookAt(BaseTrans, Vector3.up);
         Move(Stat.MoveSpeed);
+        Debug.Log(pos.x);
+        Debug.Log(pos.z);
     }
     #endregion
 
@@ -205,9 +209,6 @@ public class Player : PlayerController, BattleSystem
     {
         pos.x = Input.GetAxis("Horizontal");
         pos.z = Input.GetAxis("Vertical");
-        LookPos.x = Input.GetAxis("Horizontal");
-        LookPos.y = Input.GetAxis("Vertical");
-
 
         // Base Transform 방향 벡터 설정
         Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -227,7 +228,7 @@ public class Player : PlayerController, BattleSystem
             Stat.MoveSpeed = 3.0f;
         }
         
-        base.Moving(pos, MoveSpeed, _cameraArm);
+        base.Moving(this.transform, pos, MoveSpeed, _cameraArm);
         // base.AnimMove(BaseTrans, LookPos, MoveSpeed, BaseTrans);
 
         if (!Aimed)
@@ -295,14 +296,38 @@ public class Player : PlayerController, BattleSystem
         ///<summary> 달리기 시작 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            myAnim.SetBool("IsRun", true); //달리기
+            myAnim.SetBool("isRun", true);
+            
+            // 스태미너 소모
+
+
+            // 1. 무장 상태일 때 달리는 경우
+            if(myAnim.GetBool("isArmed"))
+            {
+                Stat.MoveSpeed = 3.0f;
+            }
+            // 2. 비 무장 상태일 때 달리는 경우
+            else
+            {
+                Stat.MoveSpeed = 3.5f;
+            }
         }
 
         ///<summary> 달리기 취소 Input 메서드 </summary>
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            myAnim.SetBool("IsRun", false);
-            StackWeapon();
+            myAnim.SetBool("isRun", false);
+
+            // 1. 무장 상태일 때 걷는 경우
+            if (myAnim.GetBool("isArmed"))
+            {
+                Stat.MoveSpeed = 1.5f;
+            }
+            // 2. 비 무장 상태일 때 걷는 경우
+            else
+            {
+                Stat.MoveSpeed = 2.0f;
+            }
         }
         #endregion
 
@@ -322,8 +347,16 @@ public class Player : PlayerController, BattleSystem
         if (Input.GetKeyDown(KeyCode.V))
         {
             myAnim.SetTrigger("MeleeAttack");
+
+            //// 근접 공격 처리
         }
 
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            myAnim.SetTrigger("Reload");
+
+            //// 재장전 동작
+        }
 
         ///<summary> 주무기 장비 전환 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.Alpha1))

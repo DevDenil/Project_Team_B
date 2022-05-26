@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {    
+    [SerializeField]
     Animator _anim = null;
     protected Animator myAnim
     {
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     }
     
     /*-----------------------------------------------------------------------------------------------*/
-    protected void Moving(Vector3 pos, float moveSpeed, Transform CamTr)
+    protected void Moving(Transform Base, Vector3 pos, float moveSpeed, Transform CamTr)
     {   
         float delta = moveSpeed * Time.deltaTime;
 
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
         bool IsRun = myAnim.GetBool("IsRun");
 
-        this.transform.Translate(pos * delta, CamTr);
+        Base.Translate(pos * delta, CamTr);
     }
 
     protected void AnimMove(Transform Obj, Vector3 pos, float moveSpeed, Transform baseTrans)
