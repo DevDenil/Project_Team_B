@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             pos.Normalize();
         }
 
-        bool IsRun = myAnim.GetBool("IsRun");
+        bool IsRun = myAnim.GetBool("isRun");
 
         Base.Translate(pos * delta, CamTr);
     }
