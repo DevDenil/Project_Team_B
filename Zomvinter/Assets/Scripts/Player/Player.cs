@@ -296,7 +296,7 @@ public class Player : PlayerController, BattleSystem
             gun1.transform.parent = BackLeftSorket.transform; // 할당된 등 소켓에 자식으로 대입
         }
         // 2. 주 무장 2번 슬롯에 장비가 있고 / 등 소켓 2번에 장비가 없고 / 첫번째 무기를 사용중인 경우
-        if (_Inventory.PrimaryItems[1] != null && BackRightSorket.GetComponentInChildren<WeaponItem>() == null && isFirst)
+        if (_Inventory.PrimaryItems[1] != null && BackRightSorket.GetComponentInChildren<WeaponItem>() == null && !isSecond)
         {
             GameObject gun2 = Instantiate(_Inventory.PrimaryItems[1].ItemPrefab, BackRightSorket); //주무장 2에 있는 장비 생성
             Destroy(gun2.GetComponent<Rigidbody>()); // 충돌 가능성 있는 컴포넌트 삭제

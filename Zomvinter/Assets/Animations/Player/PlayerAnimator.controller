@@ -2729,7 +2729,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isArmed
+    m_ConditionEvent: isPistol
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3544449853669406691}
@@ -3045,7 +3045,7 @@ BlendTree:
     m_DirectBlendParameter: pos.x
     m_Mirror: 0
   m_BlendParameter: pos.x
-  m_BlendParameterY: pos.x
+  m_BlendParameterY: pos.z
   m_MinThreshold: 1
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
