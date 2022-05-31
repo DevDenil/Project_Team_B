@@ -31,11 +31,8 @@ public class PlayerController : MonoBehaviour
     
     /*-----------------------------------------------------------------------------------------------*/
     protected void Moving(Transform Base, Vector3 pos, float moveSpeed, Transform CamTr)
-    {   
-        float delta = moveSpeed * Time.deltaTime;
-
-        myAnim.SetFloat("pos.x", pos.x);
-        myAnim.SetFloat("pos.z", pos.z);
+    {        
+        float delta = moveSpeed * Time.deltaTime;       
 
         if (pos.magnitude > 1.0f)
         {
@@ -45,6 +42,9 @@ public class PlayerController : MonoBehaviour
         bool IsRun = myAnim.GetBool("isRun");
 
         Base.Translate(pos * delta, CamTr);
+        pos = this.transform.rotation * CamTr.rotation * pos;
+        myAnim.SetFloat("pos.x", pos.x);
+        myAnim.SetFloat("pos.z", pos.z);
     }
 
     protected void AnimMove(Transform Obj, Vector3 pos, float moveSpeed, Transform baseTrans)

@@ -14,7 +14,7 @@ public class PlayerAnimEvent : MonoBehaviour
     public event UnityAction PutGun = null;
     public event UnityAction GetPistol = null;
     public event UnityAction PutPistol = null;
-    public event UnityAction StartAim = null;// 총을 꺼낸 이후 
+    public event UnityAction AnimEnd = null;
 
     public Transform Knife; // 칼(근접무기)
 
@@ -98,7 +98,6 @@ public class PlayerAnimEvent : MonoBehaviour
         // 2. 무장 중이 아닌 경우
         else
         {
-            Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
             Destroy(_player.PistolGrip.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 허리에 있는 아이템 제거
             _player.GetPistol(); // 부무장 슬롯의 아이템을 Hand 소켓에 생성
             _player.UpdateBackWeapon(); // 백 소켓 업데이트
@@ -117,8 +116,9 @@ public class PlayerAnimEvent : MonoBehaviour
         _player.UpdateBackWeapon(); // 백 소켓 업데이트
     }
 
-    public void OnStartAim()
+    public void OnAnimEnd()
     {
-        StartAim?.Invoke();
+        AnimEnd?.Invoke();
+        _player.AnimEnd();
     }
 }
