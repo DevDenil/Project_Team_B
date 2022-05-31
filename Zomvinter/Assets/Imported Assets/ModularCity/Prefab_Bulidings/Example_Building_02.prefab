@@ -758,6 +758,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8156446051144357119}
+  - component: {fileID: 3952645627884431106}
+  - component: {fileID: 2349145696142978854}
   m_Layer: 0
   m_Name: Roof
   m_TagString: Untagged
@@ -808,6 +810,31 @@ Transform:
   m_Father: {fileID: 8823093468689237250}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3952645627884431106
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7591187638551153505}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 24.160898, y: 4.072638, z: 9.001728}
+  m_Center: {x: 2.4612494, y: 1.536319, z: -4.9868927}
+--- !u!114 &2349145696142978854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7591187638551153505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467f6c751b59ca34bb5c1ddd6b91111a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8823791596471221813
 GameObject:
   m_ObjectHideFlags: 0
