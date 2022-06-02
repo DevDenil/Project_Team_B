@@ -18,16 +18,17 @@ public class PlayerAnimEvent : MonoBehaviour
 
     public Transform Knife; // Ä®(±ÙÁ¢¹«±â)
 
-    private void OnValidate()
-    {
-        
-    }
-
+    /***********************************************************************
+    *                               Unity Events
+    ***********************************************************************/
     private void Awake()
     {
         _player = this.GetComponentInParent<Player>();
     }
 
+    /***********************************************************************
+    *                               Anim Events
+    ***********************************************************************/
     public void StartStabbing()
     {
         GetKnife?.Invoke();

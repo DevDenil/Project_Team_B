@@ -404,31 +404,35 @@ public class Player : PlayerController, BattleSystem
         ///<summary> 첫번째 주무기 장비 전환 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // 무기 변경 애니메이션 실행
-            myAnim.SetLayerWeight(1, 1.0f);
-
             // 1. 주무기 1번 슬롯에 아이템이 있고 등 소켓의 1번 슬롯에 아이템이 있는 경우
-            if (_Inventory.PrimaryItems[0] != null && BackLeftSorket.GetComponentInChildren<WeaponItem>() != null && !isFirst)
+            if (_Inventory.PrimaryItems[0] != null && !isFirst)
             {
-                isFirst = true;
-                isSecond = false;
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
+                isFirst = true; // 첫번째 주무기 true
+                isSecond = false; // 두번째 주무기 false
+
+                myAnim.SetLayerWeight(1, 1.0f); // 하체 애니메이션 레이어 가중치 증가
+
+                myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
+
+                if (!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태 체크
             }
         }
         ///<summary> 두번째 주무기 장비 전환 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // 무기 변경 애니메이션 실행
-            myAnim.SetLayerWeight(1, 1.0f);
 
             // 1. 2번 슬롯에 아이템이 있는 경우
-            if (_Inventory.PrimaryItems[1] != null && BackRightSorket.GetComponentInChildren<WeaponItem>() != null && !isSecond)
+            if (_Inventory.PrimaryItems[1] != null && !isSecond)
             {
-                isSecond = true;
-                isFirst = false;
-                myAnim.SetTrigger("GetGun");
-                myAnim.SetBool("isArmed", true);
+                isFirst = false; // 첫번째 주무기 false
+                isSecond = true; // 두번째 주무기 true
+
+                myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
+
+                myAnim.SetLayerWeight(1, 1.0f); // 하체 애니메이션 레이어 가중치 증가
+
+                if(!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태가 false 인 경우 true
             }
             
         }
