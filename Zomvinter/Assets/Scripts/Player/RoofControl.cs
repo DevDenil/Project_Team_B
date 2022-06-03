@@ -6,12 +6,18 @@ public class RoofControl : MonoBehaviour
 {
     public GameObject Roof;
     public LayerMask Player;
+    private List<GameObject> PlayerCheck = new List<GameObject> ();
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("TriggerEnter");
         if((Player & (1<<other.gameObject.layer)) != 0)
         {
-            Roof.SetActive(false);
+            PlayerCheck.Add(other.gameObject);
+            //Roof.SetActive(false);
+            if(PlayerCheck.Count > 1)
+            {
+                Roof.SetActive(false);
+            }
         }
     }
     private void OnTriggerExit(Collider other)

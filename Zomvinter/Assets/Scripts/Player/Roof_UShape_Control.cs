@@ -7,12 +7,18 @@ public class Roof_UShape_Control : MonoBehaviour
 {
     public GameObject Roof;
     public LayerMask Player;
+    private List<GameObject> PlayerCheck = new List<GameObject>();
     // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
     {
         if ((Player & (1 << other.gameObject.layer)) != 0)
         {
-            Roof.SetActive(false);
+            PlayerCheck.Add(other.gameObject);
+            //Roof.SetActive(false);
+            if (PlayerCheck.Count > 1)
+            {
+                Roof.SetActive(false);
+            }
         }
     }
     private void OnTriggerExit(Collider other)
