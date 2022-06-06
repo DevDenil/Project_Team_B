@@ -532,13 +532,16 @@ MonoBehaviour:
   _canvas: {fileID: 0}
   _cameraArm: {fileID: 2570748341751561953}
   myState: 0
+  myWeapon: {fileID: 0}
   HandSorket: {fileID: 7267237603558601581}
   BackLeftSorket: {fileID: 134897963589947532}
   BackRightSorket: {fileID: 285478267811765454}
   PistolGrip: {fileID: 986851431308756375}
   Armed: 0
+  MotionEnd: 1
   isFirst: 0
   isSecond: 0
+  isPistol: 0
   Aimed: 0
   BaseTrans: {fileID: 3585447897013587456}
 --- !u!54 &9174073722298830082
@@ -684,3 +687,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9eb2b53e6cba1e341975c273ae839b03, type: 3}
   m_PrefabInstance: {fileID: 8082519422044406922}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9001439216204921307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9eb2b53e6cba1e341975c273ae839b03, type: 3}
+  m_PrefabInstance: {fileID: 8082519422044406922}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &332981850192102543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9001439216204921307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa78914712c45e4997f7c06ad4fd0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 9174073722298830081}
+  Knife: {fileID: 0}
