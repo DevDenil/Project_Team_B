@@ -10,10 +10,9 @@ public class PlayerAnimEvent : MonoBehaviour
 
     public event UnityAction GetKnife = null; // 칼 액티브
     public event UnityAction PutKnife = null; // 칼 언액티브
-    public event UnityAction GetGun = null;
-    public event UnityAction PutGun = null;
+    public event UnityAction GetRifle = null;
     public event UnityAction GetPistol = null;
-    public event UnityAction PutPistol = null;
+    public event UnityAction PutGun = null;
     public event UnityAction AnimStart = null;
     public event UnityAction AnimEnd = null;
 
@@ -30,12 +29,15 @@ public class PlayerAnimEvent : MonoBehaviour
     /***********************************************************************
     *                               Anim Events
     ***********************************************************************/
+    /// <summary> 근접 공격 애니메이션 시작 </summary>
     public void StartStabbing()
     {
         GetKnife?.Invoke();
         Knife.GetComponent<Transform>().gameObject.SetActive(true);
         this.GetComponent<Animator>().SetBool("IsAttacking", true);
     }
+
+    /// <summary> 근접 공격 애니메이션 끝 </summary>
     public void EndStabbing()
     {
         PutKnife?.Invoke();
@@ -44,98 +46,42 @@ public class PlayerAnimEvent : MonoBehaviour
         this.GetComponent<Animator>().SetBool("IsAttacking", false);
     }
 
-    public void OnGetGun()//총 꺼내드는 애니메이션에 작동
+    /// <summary> 주무기 장착 </summary>
+    public void OnGetRifle()//총 꺼내드는 애니메이션에 작동
     {
-        GetGun?.Invoke();
-        // 1. 첫번째 무장을 선택한 경우
-        if(_player.isFirst)
-        {
-            // 1-1. 이미 무장 중인 경우 (2번째 무장을 사용 중)
-            if(_player.myWeapon != null)
-            {
-                Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
-                Destroy(_player.BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
-                _player.GetGun(0); // 주무장 1번째 슬롯의 아이템을 Hand 소켓에 생성
-                _player.UpdateBackWeapon(); // 백 소켓 업데이트
-            }
-            // 1-2. 무장이 없는 경우
-            else
-            {
-                Destroy(_player.BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
-                _player.GetGun(0); // 주무장 1번째 슬롯의 아이템을 Hand 소켓에 생성
-                _player.UpdateBackWeapon(); // 백 소켓 업데이트
-            }
-        }
-        // 2. 두번째 무장을 선택한 경우
-        else if(_player.isSecond)
-        {
-            // 2-1. 이미 무장 중인 경우 (1번째 무장을 사용 중)
-            if (_player.myWeapon != null)
-            {
-                Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
-                Destroy(_player.BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
-                _player.GetGun(1); // 주무장 2번째 슬롯의 아이템을 Hand 소켓에 생성
-                _player.UpdateBackWeapon(); // 백 소켓 업데이트
-            }
-            else
-            {
-                Destroy(_player.BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
-                _player.GetGun(1); // 주무장 1번째 슬롯의 아이템을 Hand 소켓에 생성
-                _player.UpdateBackWeapon(); // 백 소켓 업데이트
-            }
-        }
+        GetRifle?.Invoke();
+        if(_player.isFirst) _player.GetGun(0); // 주무장 1번째 슬롯의 아이템을 Hand 소켓에 생성
+        if (_player.isSecond) _player.GetGun(1); // 주무장 2번째 슬롯의 아이템을 Hand 소켓에 생성
+        _player.UpdateBackWeapon(); // 백 소켓 업데이트
     }
 
+    /// <summary> 보조무기 장착 </summary>
     public void OnGetPistol()
     {
         GetPistol?.Invoke();
-        // 1. 무장 중인 경우
-        if(_player.myWeapon != null)
-        {
-            Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
-            Destroy(_player.PistolGrip.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 허리에 있는 아이템 제거
-            _player.GetPistol(); // 부무장 슬롯의 아이템을 Hand 소켓에 생성
-            _player.UpdateBackWeapon(); // 백 소켓 업데이트
-        }
-        // 2. 무장 중이 아닌 경우
-        else
-        {
-            Destroy(_player.PistolGrip.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 허리에 있는 아이템 제거
-            _player.GetPistol(); // 부무장 슬롯의 아이템을 Hand 소켓에 생성
-            _player.UpdateBackWeapon(); // 백 소켓 업데이트
-        }
-    }
-    public void OnPutGun()
-    {
-        PutGun?.Invoke();
-        Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
-        _player.isFirst = false;
-        _player.isSecond = false;
-        _player.isPistol = false;
-        _player.Armed = false;
-        _player.UpdateBackWeapon(); // 백 소켓 업데이트
-    }
-    public void OnPutPistol()
-    {
-        PutPistol?.Invoke();
-        Destroy(_player.HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
-        _player.isFirst = false;
-        _player.isSecond = false;
-        _player.isPistol = false;
-        _player.Armed = false;
+        _player.GetPistol(); // 부무장 슬롯의 아이템을 Hand 소켓에 생성
         _player.UpdateBackWeapon(); // 백 소켓 업데이트
     }
 
+    /// <summary> 무장 해제 </summary>
+    public void OnPutGun()
+    {
+        PutGun?.Invoke();
+        _player.PutGun();
+        _player.UpdateBackWeapon(); // 백 소켓 업데이트
+    }
+
+    /// <summary> 애니메이션 동작 시작 </summary>
     public void OnAnimStart()
     {
         AnimStart?.Invoke();
         _player.AnimStart();
     }
 
+    /// <summary> 애니메이션 동작 끝 </summary>
     public void OnAnimEnd()
     {
         AnimEnd?.Invoke();
-        Debug.Log("Anim End");
         _player.AnimEnd();
     }
 }

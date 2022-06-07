@@ -273,6 +273,10 @@ public class Player : PlayerController, BattleSystem
     #region Public 함수
     public void GetGun(int index)
     {
+        if(myWeapon != null) Destroy(HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
+        if(isFirst) Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
+        if(isSecond) Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
+
         myWeapon = Instantiate(_Inventory.PrimaryItems[index].ItemPrefab, HandSorket.position, HandSorket.rotation); // Gun Object 생성
         myWeapon.transform.parent = HandSorket.transform; // Gun 오브젝트 소켓에 자식화
         myWeapon.layer = 0;
@@ -282,14 +286,25 @@ public class Player : PlayerController, BattleSystem
 
     public void GetPistol()
     {
-        if (myWeapon != null)
-        {
-            myWeapon = Instantiate(_Inventory.SecondaryItems.ItemPrefab, HandSorket.position, HandSorket.rotation);
-            myWeapon.transform.parent = HandSorket.transform;
-            myWeapon.layer = 0;
-            Destroy(myWeapon.GetComponent<Rigidbody>()); // 충돌 가능성 있는 컴포넌트 삭제
-            Destroy(myWeapon.GetComponent<BoxCollider>()); // 충돌 가능성 있는 컴포넌트 삭제
-        }
+        if (myWeapon != null) Destroy(HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
+        if (isFirst) Destroy(BackLeftSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
+        if (isSecond) Destroy(BackRightSorket.GetComponentInChildren<WeaponItem>().gameObject); // 꺼낼 등에 있는 아이템 제거
+
+        myWeapon = Instantiate(_Inventory.SecondaryItems.ItemPrefab, HandSorket.position, HandSorket.rotation);
+        myWeapon.transform.parent = HandSorket.transform;
+        myWeapon.layer = 0;
+        Destroy(myWeapon.GetComponent<Rigidbody>()); // 충돌 가능성 있는 컴포넌트 삭제
+        Destroy(myWeapon.GetComponent<BoxCollider>()); // 충돌 가능성 있는 컴포넌트 삭제
+    }
+
+    public void PutGun()
+    {
+        Destroy(HandSorket.GetComponentInChildren<WeaponItem>().gameObject); // 손에 있는 아이템 제거
+        myWeapon = null;
+        isFirst = false;
+        isSecond = false;
+        isPistol = false;
+        Armed = false;
     }
 
     public void UpdateBackWeapon()
@@ -330,14 +345,14 @@ public class Player : PlayerController, BattleSystem
     /// <summary> 레이어 구분을 위해 애니메이션 동작 시작 확인 </summary>
     public void AnimStart()
     {
-        MotionEnd = false;
+        if (MotionEnd) MotionEnd = false;
         myAnim.SetLayerWeight(1, 1.0f);
     }
 
     /// <summary> 레이어 구분을 위해 애니메이션 동작 끝 확인 </summary>
     public void AnimEnd()
     {
-        MotionEnd = true;
+        if (!MotionEnd) MotionEnd = true;
         myAnim.SetLayerWeight(1, 0.0f);
     }
     #endregion
@@ -410,7 +425,7 @@ public class Player : PlayerController, BattleSystem
 
         if(Input.GetKeyDown(KeyCode.R))
         {
-            myAnim.SetTrigger("Reload");
+            if(MotionEnd) myAnim.SetTrigger("Reload");
 
             //// 재장전 동작
         }
@@ -421,13 +436,12 @@ public class Player : PlayerController, BattleSystem
             // 1. 주무기 1번 슬롯에 아이템이 있고 등 소켓의 1번 슬롯에 아이템이 있는 경우
             if (_Inventory.PrimaryItems[0] != null && !isFirst && MotionEnd)
             {
+                if (!Armed) Armed = true;
+                if (!isFirst) isFirst = true; // 첫번째 주무기 true
+                if (isSecond) isSecond = false; // 두번째 주무기 false
+                if (isPistol) isPistol = false; // 보조무기 false
 
-                Armed = true;
-                isFirst = true; // 첫번째 주무기 true
-                isSecond = false; // 두번째 주무기 false
-                isPistol = false; // 보조무기 false
-
-                myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
+                if (isFirst) myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
 
                 if (!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태 체크
             }
@@ -435,22 +449,18 @@ public class Player : PlayerController, BattleSystem
         ///<summary> 두번째 주무기 장비 전환 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            // 무기 변경 애니메이션 실행
-
             // 1. 2번 슬롯에 아이템이 있는 경우
             if (_Inventory.PrimaryItems[1] != null && !isSecond && MotionEnd)
             {
+                if (!Armed) Armed = true;
+                if (isFirst) isFirst = false; // 첫번째 주무기 false
+                if (!isSecond) isSecond = true; // 두번째 주무기 true
+                if (isPistol) isPistol = false; // 보조무기 false
 
-                Armed = true;
-                isFirst = false; // 첫번째 주무기 false
-                isSecond = true; // 두번째 주무기 true
-                isPistol = false; // 보조무기 false
+                if (isSecond) myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
 
-                myAnim.SetTrigger("GetGun"); // 무장 애니메이션 재생
-
-                if(!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태가 false 인 경우 true
+                if (!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태가 false 인 경우 true
             }
-            
         }
         ///<summary> 보조무기 장비 전환 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -458,15 +468,14 @@ public class Player : PlayerController, BattleSystem
             // 1. 2번 슬롯에 아이템이 있는 경우
             if (_Inventory.SecondaryItems != null && !isPistol && MotionEnd)
             {
+                if (!Armed) Armed = true;
+                if (isFirst) isFirst = false; // 첫번째 주무기 false
+                if (isSecond) isSecond = false; // 두번째 주무기 false
+                if (!isPistol) isPistol = true; // 보조무기 true
 
-                Armed = true;
-                isFirst = false; // 첫번째 주무기 false
-                isSecond = false; // 두번째 주무기 false
-                isPistol = true; // 보조무기 true
+                if (isPistol) myAnim.SetTrigger("GetPistol");
 
-                myAnim.SetTrigger("GetPistol");
-
-                myAnim.SetBool("isPistol", true);
+                if(!myAnim.GetBool("isPistol")) myAnim.SetBool("isPistol", true);
 
                 if (!myAnim.GetBool("isArmed")) myAnim.SetBool("isArmed", true); // 무장 상태가 false 인 경우 true
             }
@@ -475,23 +484,27 @@ public class Player : PlayerController, BattleSystem
         ///<summary> 장비 해제 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (HandSorket.GetComponentInChildren<WeaponItem>() != null && MotionEnd)
+            if (isFirst || isSecond || isPistol)
             {
-                if(isFirst)
+                if (HandSorket.GetComponentInChildren<WeaponItem>() != null && MotionEnd)
                 {
-                    myAnim.SetTrigger("PutGun");
-                }
-                else if(isSecond)
-                {
-                    myAnim.SetTrigger("PutGun");
-                }
-                else if(isPistol)
-                {
-                    myAnim.SetTrigger("PutPistol");
-                }
+                    if (isFirst)
+                    {
+                        myAnim.SetTrigger("PutGun");
+                    }
+                    else if (isSecond)
+                    {
+                        myAnim.SetTrigger("PutGun");
+                    }
+                    else if (isPistol)
+                    {
+                        myAnim.SetTrigger("PutPistol");
+                    }
 
-                myAnim.SetBool("isAiming", false);
-                myAnim.SetBool("isArmed", false);
+                    if (Armed) Armed = false;
+                    myAnim.SetBool("isAiming", false);
+                    myAnim.SetBool("isArmed", false);
+                }
             }
         }
         #endregion
