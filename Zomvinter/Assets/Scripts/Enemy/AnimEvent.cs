@@ -9,10 +9,6 @@ public class AnimEvent : MonoBehaviour
     public event UnityAction Attack = null;
     public event UnityAction AttackStart = null;
     public event UnityAction AttackEnd = null;
-    public event UnityAction IsRushing = null;
-    public event UnityAction Attackclear = null;
-    public event UnityAction endRush = null;
-    public event UnityAction Camerashake = null;
 
     /// <summary> 공격 딜리게이트 </summary>
     public void OnAttack()
@@ -30,25 +26,5 @@ public class AnimEvent : MonoBehaviour
     public void OnAttackEnd()
     {
         AttackEnd?.Invoke();
-    }
-
-    public void IsRush()
-    {
-        IsRushing?.Invoke();
-    }
-
-    public void EndRush()
-    {
-        endRush?.Invoke();
-    }
-
-    public void AttackClear()
-    {
-        Attackclear?.Invoke();
-    }
-
-    public void CameraShake()
-    {
-        Camerashake.Invoke();
     }
 }

@@ -29,7 +29,7 @@ public class TimeLight : MonoBehaviour
     void Update()
     {
         Intensity = Mathf.Clamp(Intensity, 0.0f, 25.0f);
-        NightLight.GetComponentInChildren<Light>().intensity = Intensity;
+        //NightLight.GetComponentInChildren<Light>().intensity = Intensity;
         this.transform.Rotate(Vector3.right, SunRotSpeed * Time.deltaTime);
         //this.transform.Rotate(Vector3.right, TimeScale * Time.deltaTime);
 
@@ -57,30 +57,22 @@ public class TimeLight : MonoBehaviour
             time.day++;
         }
 
-<<<<<<< HEAD
         if (IsNight && Intensity < 35.0f)
-=======
-        
-        if(IsNight && Intensity < 35.0f)
->>>>>>> 05_Grouping_PlayerEvent
         {
-            Intensity += 2 * Time.deltaTime;
+            Intensity += 0.6f * Time.deltaTime;
         }
         else if (!IsNight && Intensity > Mathf.Epsilon)
         {
-            Intensity -= 2 * Time.deltaTime;
+            Intensity -= 0.8f * Time.deltaTime;
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 05_Grouping_PlayerEvent
         if (IsNight)
         {
             if (currentFogDensity <= nightFogDensity)
             {
                 currentFogDensity += 0.01f * Time.deltaTime;
                 RenderSettings.fogDensity = currentFogDensity;
+                Intensity += 1.0f * Time.deltaTime;
             }
         }
         else
@@ -89,6 +81,7 @@ public class TimeLight : MonoBehaviour
             {
                 currentFogDensity -= 0.01f * Time.deltaTime;
                 RenderSettings.fogDensity = currentFogDensity;
+                Intensity -= 1.0f * Time.deltaTime;
             }
         }
 

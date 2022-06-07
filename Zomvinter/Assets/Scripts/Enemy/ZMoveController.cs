@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 //LJM
 public class ZMoveController : Character
 {
     /* 지역 변수 -----------------------------------------------------------------------------------------------*/
+
+    private float AttTime = 0.0f;
 
     /* 시작 함수 -----------------------------------------------------------------------------------------------*/
     void Start()
@@ -44,7 +45,6 @@ public class ZMoveController : Character
         Vector3 Dir = pos - this.transform.position;
         float Dist = Dir.magnitude;
         Dir.Normalize();
-        float AttTime = AttackDelay;
 
         //While 조건문으로 Aggro 해제 조건 삽입
         while (true)
@@ -52,82 +52,44 @@ public class ZMoveController : Character
             //공격 거리 유지
             if (Dist > AttackRange)
             {
-                if (myAnim.GetBool("IsAttacking") == false)
+                myAnim.SetBool("isMoving", true);
+                float delta = MoveSpeed * Time.deltaTime;
+
+                if (Dist < delta)
                 {
-                    myAnim.SetBool("isMoving", true);
-                    float delta = MoveSpeed * Time.deltaTime;
-                    if (Dist < delta)
-                    {
-                        delta = Dist;
-                    }
-                    this.transform.Translate(Dir * delta, Space.World);
-                    Dist -= delta;
+                    delta = Dist;
                 }
+                
+                this.transform.Translate(Dir * delta, Space.World);
+                Dist -= delta;
             }
             else
             {
                 myAnim.SetBool("isMoving", false);
-                if (myAnim.GetBool("IsAttacking") == false)
+                AttTime += Time.deltaTime;
+                if (AttackDelay <= AttTime)
                 {
-                    AttTime += Time.deltaTime;
-                    if (AttackDelay <= AttTime)
-                    {
-                        //Debug.Log(AttackTime);
-                        /*if(랜덤 난수)
-                         * {
-                         * 크리티컬 확률 Anim
-                         * }
-                         * else 
-                         * {
-                         * 일반 공격 확률 Anim
-                         * }
-                         */
+                    //Debug.Log(AttackTime);
+                    /*if(랜덤 난수)
+                     * {
+                     * 크리티컬 확률 Anim
+                     * }
+                     * else 
+                     * {
+                     * 일반 공격 확률 Anim
+                     * }
+                     */
 
-                        myAnim.SetTrigger("Attack");
-                        AttTime = 0.0f;
-                    }
+                    myAnim.SetTrigger("Attack");
+                    AttTime = 0.0f;
                 }
             }
             yield return null;
         }
     }
-
-    protected void RoamToPosition(Vector3 pos, float MoveSpeed, float TurnSpeed, UnityAction done = null)
-    {
-        if (RoamRoutine != null) StopCoroutine(RoamRoutine);
-        RoamRoutine = StartCoroutine(Roaming(pos, MoveSpeed, done));
-        if (RotRoutine != null) StopCoroutine(RotRoutine);
-        RotRoutine = StartCoroutine(Rotating(pos, TurnSpeed));
-    }
-
-    Coroutine RoamRoutine;
-
-    protected IEnumerator Roaming(Vector3 pos, float MoveSpeed, UnityAction done)
-    {
-        Vector3 Dir = pos - this.transform.position;
-        float Dist = Dir.magnitude;
-        Dir.Normalize();
-        myAnim.SetBool("isMoving", true);
-        while(Dist > Mathf.Epsilon)
-        {
-            float delta = MoveSpeed * Time.deltaTime;
-            if (Dist < delta)
-            {
-                delta = Dist;
-            }
-            this.transform.Translate(Dir * delta, Space.World);
-            Dist -= delta;
-            yield return null;
-        }
-        myAnim.SetBool("isMoving", false);
-        RoamRoutine = null;
-        done?.Invoke();
-        yield return null;
-    }
-
     /* 회전 코루틴 -----------------------------------------------------------------------------------------------*/
 
-    protected Coroutine RotRoutine = null;
+    Coroutine RotRoutine = null;
     protected IEnumerator Rotating(Vector3 pos, float TurnSpeed)
     {
         //지점 방향 벡터
