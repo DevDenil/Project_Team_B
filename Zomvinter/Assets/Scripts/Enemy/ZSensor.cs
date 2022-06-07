@@ -32,6 +32,23 @@ public class ZSensor : MonoBehaviour
             */
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if ((myEnemyMask & (1 << other.gameObject.layer)) != 0)
+        {
+            myEnemy = other.gameObject;
+            //FindTarget?.Invoke();
+            /*
+            if (myTarget == null)
+            {
+                myTarget = other.gameObject.GetComponent<BattleSystem>();
+                FindTarget?.Invoke();
+            }
+            */
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         myEnemy = null;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 //LJM
 public class ZMonster_Normal : ZMoveController, BattleSystem
 {
@@ -27,15 +28,17 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     /// <summary> 내 타겟 오브젝트 레이어 </summary>
     LayerMask EnemyMask;
     /// <summary> 내 타겟 오브젝트 위치 값 </summary>
-    Transform myTarget = null;
+    public Transform myTarget = null;
 
     /// <summary> 내 공격 판정 오브젝트 위치값 </summary>
     public Transform myWeapon;
 
     /// <summary> 캐릭터 정보 구조체 선언 </summary>
     MonsterData myData;
+    [SerializeField]
     CharacterStat myStat;
-    
+
+    public int rnd;
     //bool AttackTerm = false;
 
     /* 유한 상태 기계 -----------------------------------------------------------------------------------------------*/
@@ -45,6 +48,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     {
         CREATE, IDLE, ROAM, BATTLE, DEAD
     }
+    [SerializeField]
     STATE myState;
 
     /// <summary> 유한 상태 기계 Start </summary>
@@ -57,20 +61,33 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.IDLE:
-                Debug.Log("생성");
-                myStat.MoveSpeed = 1.5f;
+                if (rnd == 0)
+                {
+                    myAnim.SetBool("IsRun", true);
+                    myStat.MoveSpeed = 1.5f;
+                }
+                else if(rnd == 1)
+                {
+                    myAnim.SetBool("IsRun", false);
+                    myStat.MoveSpeed = 0.7f;
+                }
                 myStat.TurnSpeed = 180.0f;
-                myData.AttRange = 1.0f;
-                myData.AttDelay = 3.5f;
+                myData.AttRange = 1.5f;
+                myData.AttDelay = 1.5f;
                 myData.AttSpeed = 1.0f;
                 myData.UnChaseTime = 3.0f;
                 myStat.DP = 5.0f;
                 EnemyMask = LayerMask.GetMask("Player");
-                ChangeState(STATE.IDLE); 
+                ChangeState(STATE.ROAM);
                 break;
             case STATE.ROAM:
+                myAnim.SetBool("isMoving", false);
+                StopAllCoroutines();
+                StartCoroutine(Waitting(Random.Range(1.0f, 3.0f), Roaming));
                 break;
             case STATE.BATTLE:
+                myAnim.SetBool("isMoving", false);
+                StopAllCoroutines();
                 break;
             case STATE.DEAD:
                 break;
@@ -85,7 +102,6 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.IDLE:
-                FindTarget();
                 break;
             case STATE.ROAM:
                 FindTarget();
@@ -120,7 +136,6 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     {
         if (myAnim.GetBool("AttackTerm"))
         {
-            Debug.Log("공격 성공");
             Collider[] list = Physics.OverlapSphere(myWeapon.position, 1.0f, EnemyMask);
             foreach (Collider col in list)
             {
@@ -131,7 +146,10 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
                 }
             }
         }
-        else Debug.Log("ss");
+        else
+        {
+
+        }
     }
     /// <summary> 공격 애니메이션 시작 지점 체크 함수 </summary>
     void OnAttackStart() 
@@ -180,17 +198,39 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         }
         else
         {
-            //UnChaseCor = StartCoroutine(UnChaseTimer(myData.UnChaseTime));
-            ChangeState(STATE.IDLE);
+            ChangeState(STATE.ROAM);
+            return;
         }
+    }
+
+    void Roaming()
+    {
+        Vector3 pos = new Vector3();
+        pos.x = Random.Range(-5.0f, 5.0f);
+        pos.z = Random.Range(-5.0f, 5.0f);
+        base.RoamToPosition(pos, myStat.MoveSpeed, myStat.TurnSpeed, () => StartCoroutine(Waitting(Random.Range(1.0f, 3.0f), Roaming)));
+    }
+
+    IEnumerator Waitting(float t, UnityAction done)
+    {
+        yield return new WaitForSeconds(t);
+        done?.Invoke();
     }
 
     /// <summary> 타겟 추격 함수 </summary>
     private void ChaseTarget()
     {
         //타겟Pos, 이동 속도, 공격 거리, 공격 딜레이, 공격 속도, 턴 속도
-        MoveToPosition(myTarget.transform, myStat.MoveSpeed, 
-            myData.AttRange, myData.AttDelay, myData.AttSpeed, myStat.TurnSpeed);
+        if (mySensor.myEnemy != null)
+        {
+            MoveToPosition(myTarget.transform, myStat.MoveSpeed,
+                myData.AttRange, myData.AttDelay, myData.AttSpeed, myStat.TurnSpeed);
+        }
+        else
+        {
+            myTarget = null;
+            ChangeState(STATE.ROAM);
+        }
     }
 
 
