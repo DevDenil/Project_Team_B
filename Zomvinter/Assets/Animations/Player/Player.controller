@@ -147,25 +147,25 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2678877355066380511}
-    m_Position: {x: 320, y: -430, z: 0}
+    m_Position: {x: 160, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4337803343649529857}
-    m_Position: {x: 430, y: -230, z: 0}
+    m_Position: {x: 200, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2265312946748608751}
-    m_Position: {x: 370, y: -320, z: 0}
+    m_Position: {x: 230, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7600551676820362448}
-    m_Position: {x: 320, y: -20, z: 0}
+    m_Position: {x: -40, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4491472565827694382}
-    m_Position: {x: -170, y: -150, z: 0}
+    m_Position: {x: -50, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1568389745418495278}
-    m_Position: {x: 90, y: -220, z: 0}
+    m_Position: {x: -140, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6525442523954764393}
-    m_Position: {x: -40, y: -330, z: 0}
+    m_Position: {x: -140, y: -170, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 150376264012744992}
@@ -173,9 +173,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 100, y: -100, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: -170, y: 80, z: 0}
+  m_AnyStatePosition: {x: -240, y: -40, z: 0}
+  m_EntryPosition: {x: -250, y: 70, z: 0}
+  m_ExitPosition: {x: 730, y: -70, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 7600551676820362448}
 --- !u!1101 &-7906846757131276245
@@ -1148,9 +1148,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 40, y: -120, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: -130, y: 10, z: 0}
+  m_AnyStatePosition: {x: 80, y: -90, z: 0}
+  m_EntryPosition: {x: 80, y: -30, z: 0}
+  m_ExitPosition: {x: 490, y: -20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 0}
 --- !u!1101 &-892832183159008479
@@ -2250,7 +2250,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnArmBlend
+  m_Name: MoveBlend
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

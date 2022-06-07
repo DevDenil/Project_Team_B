@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> 소비 아이템 정보 </summary>
-[CreateAssetMenu(fileName = "Item_Consumable_", menuName = "Inventory System/Item Data/Countable/Consumabler", order = 1)]
+[CreateAssetMenu(fileName = "Item_Countable_", menuName = "Inventory System/Item Data/Countable/Potion", order = 1)]
 public class PotionItemData : CountableItemData
 {
     /// <summary> 효과량(회복량 등) </summary>
