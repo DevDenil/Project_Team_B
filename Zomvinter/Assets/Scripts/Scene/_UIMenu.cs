@@ -60,9 +60,10 @@ public class _UIMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(0);
     }
-    private void StartGame()
+    public void StartGame()
     {
-        SceneLoader.Inst.LoadScene("Ω√¿€ æ¿"); // Ω√¿€ æ¿ «“¥Á
+        Debug.Log("StartGame");
+        SceneLoader.Inst.LoadScene(5); // Ω√¿€ æ¿ «“¥Á
     }
     #endregion
 }
