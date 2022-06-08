@@ -112,7 +112,7 @@ public class ZMonster_Tank : ZMoveController, BattleSystem
     void Start()
     {
         ChangeState(STATE.ROAM); // 유한 상태 기계 초기화
-
+        SkillDelay = 5.0f;
         /// 딜리게이트 추가 ///
         GetComponentInChildren<AnimEvent>().AttackStart += OnAttackStart;
         GetComponentInChildren<AnimEvent>().AttackEnd += OnAttackEnd;

@@ -15,7 +15,7 @@ public class Roof_UShape_Control : MonoBehaviour
         {
             PlayerCheck.Add(other.gameObject);
             //Roof.SetActive(false);
-            if (PlayerCheck.Count > 1)
+            if (PlayerCheck.Count > 0)
             {
                 Roof.SetActive(false);
             }
