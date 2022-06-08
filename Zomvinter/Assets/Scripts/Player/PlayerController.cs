@@ -17,16 +17,6 @@ public class PlayerController : MonoBehaviour
             return _anim;
         }
     }
-    /*-----------------------------------------------------------------------------------------------*/
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
     
     /*-----------------------------------------------------------------------------------------------*/
     protected void Moving(Transform Base, Vector3 pos, float moveSpeed, Transform CamTr)
@@ -41,7 +31,9 @@ public class PlayerController : MonoBehaviour
         bool IsRun = myAnim.GetBool("isRun");
 
         Base.Translate(pos * delta, CamTr);
+        
         pos = this.transform.rotation * CamTr.rotation * pos;
+
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);
     }

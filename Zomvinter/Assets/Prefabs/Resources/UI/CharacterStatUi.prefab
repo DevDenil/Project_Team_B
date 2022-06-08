@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 757.9707, y: -0.033309937}
-  m_SizeDelta: {x: 695, y: 15}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 350, y: 15}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6050601644731564487
 CanvasRenderer:
@@ -1290,54 +1290,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a8a15e1ed1a96439a7b40177458277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BtnArea: {fileID: 5088144570176464289}
   SkillPointText: {fileID: 4766858285132375770}
-  sp: 10
+  BtnArea: {fileID: 5088144570176464289}
   StrengthGague: {fileID: 4766858286217972202}
   ConstitutionGague: {fileID: 4766858284567909244}
   DexterityGague: {fileID: 4766858285426621968}
   EnduranceGauge: {fileID: 4766858285782510757}
   IntelligenceGague: {fileID: 4766858285856031617}
-  StrengthBar:
-  - {fileID: 4766858286260814842}
-  - {fileID: 4766858285198938448}
-  - {fileID: 4766858285611680928}
-  - {fileID: 4766858284588251125}
-  - {fileID: 4766858284433937733}
-  - {fileID: 4766858284623119062}
-  - {fileID: 4766858284138816941}
-  ConstitutionBar:
-  - {fileID: 4766858285940123832}
-  - {fileID: 4766858284531957896}
-  - {fileID: 4766858285755559428}
-  - {fileID: 4766858285748351083}
-  - {fileID: 4766858284654689388}
-  - {fileID: 4766858284777131320}
-  - {fileID: 4766858284303338084}
-  DexterityBar:
-  - {fileID: 4766858285337368744}
-  - {fileID: 4766858284347334109}
-  - {fileID: 4766858285419303641}
-  - {fileID: 4766858284670759302}
-  - {fileID: 4766858285445683634}
-  - {fileID: 4766858285218862447}
-  - {fileID: 4766858284407291596}
-  EnduranceBar:
-  - {fileID: 4766858285198389729}
-  - {fileID: 4766858285930002651}
-  - {fileID: 4766858284298498221}
-  - {fileID: 4766858286039196857}
-  - {fileID: 4766858285229445792}
-  - {fileID: 4766858286258350497}
-  - {fileID: 4766858285611318955}
-  IntelligenceBar:
-  - {fileID: 4766858284574645182}
-  - {fileID: 4766858285960349086}
-  - {fileID: 4766858286268030078}
-  - {fileID: 4766858286093024617}
-  - {fileID: 4766858286000860329}
-  - {fileID: 4766858284395057943}
-  - {fileID: 4766858285852856874}
 --- !u!1 &4766858284507226432
 GameObject:
   m_ObjectHideFlags: 0

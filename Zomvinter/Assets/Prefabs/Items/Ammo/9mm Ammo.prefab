@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2220201151638089339}
+  - component: {fileID: 1485519196341034543}
   m_Layer: 0
   m_Name: 9mm Ammo
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1485519196341034543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7911542139791146629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177d18a7f551f354c94138c4178fe342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AmmoData: {fileID: 11400000, guid: 2a8165963ca14ba43bcfcafed94b061f, type: 2}
 --- !u!1001 &3554359545771606444
 PrefabInstance:
   m_ObjectHideFlags: 0

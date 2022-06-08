@@ -72,6 +72,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
                     myStat.MoveSpeed = 0.7f;
                 }
                 myStat.TurnSpeed = 180.0f;
+                myStat.HP = 100.0f;
                 myData.AttRange = 1.5f;
                 myData.AttDelay = 1.5f;
                 myData.AttSpeed = 1.0f;
