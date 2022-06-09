@@ -192,7 +192,7 @@ public class Slot : MonoBehaviour, IDropHandler
         if (value)
         {
             // 슬롯 이미지 색 활성화
-            _slotImage.color = Color.black;
+            _slotImage.color = Color.white;
         }
         else
         {
