@@ -303,57 +303,69 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         //CurParent = this.transform.parent;
         //this.transform.SetParent(CurParent.parent);
-        this.gameObject.GetComponent<Image>().raycastTarget = false;
+        Slot MoveSlot = eventData.pointerClick.GetComponentInParent<Slot>();
+        if (MoveSlot.SlotState == ItemType.Any)
+        {
+            this.gameObject.GetComponent<Image>().raycastTarget = false;
+        }
     }
 
     /// <summary> 드래그 중 </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        this.transform.position = eventData.position;
-        IsOverUI = EventSystem.current.IsPointerOverGameObject();
+        Slot MoveSlot = eventData.pointerClick.GetComponentInParent<Slot>();
+        if (MoveSlot.SlotState == ItemType.Any)
+        {
+            this.transform.position = eventData.position;
+            IsOverUI = EventSystem.current.IsPointerOverGameObject();
+        }
     }
 
     /// <summary> 드래그 끝날 시 </summary>
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (IsOverUI)
+        Slot MoveSlot = eventData.pointerClick.GetComponentInParent<Slot>();
+        if (MoveSlot.SlotState == ItemType.Any)
         {
-            //this.transform.SetParent(CurParent);
-            this.transform.localPosition = Vector2.zero;
-            this.gameObject.GetComponent<Image>().raycastTarget = true;
-        }
-        else
-        {
-            Vector3 DropPos = this.GetComponentInParent<Inventory>().myPlayerPos.position;
-            DropPos.y += 2.0f;
-
-            //this.transform.SetParent(CurParent);
-            this.transform.localPosition = Vector2.zero;
-            this.gameObject.GetComponent<Image>().raycastTarget = true;
-
-            if (this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab != null)
+            if (IsOverUI)
             {
-                ItemData item = this.gameObject.GetComponentInParent<Slot>().ItemProperties;
-                GameObject obj = Instantiate(this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab,
-                    DropPos, Quaternion.identity);
-                //if(item.ItemType == ItemType.Expand)
-                //{
-                //    obj.AddComponent<PotionItem>();
-                //    obj.GetComponent<PotionItem>().PotionData = (PotionItemData)item;
-                //}
-                //else if (item.ItemType == ItemType.Primary || item.ItemType == ItemType.Secondary)
-                //{
-                //    obj.AddComponent<WeaponItem>();
-                //    obj.GetComponent<WeaponItem>().WeaponData = (WeaponItemData)item;
-                //}
+                //this.transform.SetParent(CurParent);
+                this.transform.localPosition = Vector2.zero;
+                this.gameObject.GetComponent<Image>().raycastTarget = true;
             }
+            else
+            {
+                Vector3 DropPos = this.GetComponentInParent<Inventory>().myPlayerPos.position;
+                DropPos.y += 2.0f;
 
-            int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
+                //this.transform.SetParent(CurParent);
+                this.transform.localPosition = Vector2.zero;
+                this.gameObject.GetComponent<Image>().raycastTarget = true;
 
-            this.gameObject.GetComponentInParent<Inventory>().Items.RemoveAt(CurIndex);
+                if (this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab != null)
+                {
+                    ItemData item = this.gameObject.GetComponentInParent<Slot>().ItemProperties;
+                    GameObject obj = Instantiate(this.gameObject.GetComponentInParent<Slot>().ItemProperties.ItemPrefab,
+                        DropPos, Quaternion.identity);
+                    //if(item.ItemType == ItemType.Expand)
+                    //{
+                    //    obj.AddComponent<PotionItem>();
+                    //    obj.GetComponent<PotionItem>().PotionData = (PotionItemData)item;
+                    //}
+                    //else if (item.ItemType == ItemType.Primary || item.ItemType == ItemType.Secondary)
+                    //{
+                    //    obj.AddComponent<WeaponItem>();
+                    //    obj.GetComponent<WeaponItem>().WeaponData = (WeaponItemData)item;
+                    //}
+                }
 
-            this.GetComponentInParent<Slot>().RemoveItem();
+                int CurIndex = this.GetComponentInParent<Slot>().SlotIndex;
 
+                this.gameObject.GetComponentInParent<Inventory>().Items.RemoveAt(CurIndex);
+
+                this.GetComponentInParent<Slot>().RemoveItem();
+
+            }
         }
     }
     #endregion
