@@ -18,7 +18,7 @@ public class GagueControl : MonoBehaviour
     void Update()
     {
         HPGagueApply(Player.Stat.HP, Player.Stat.MaxHP);
-        //StaminaGagueApply(Player.Stat.Stamina);
+        StaminaGagueApply(Player.Stat.Stamina, Player.Stat.MaxStamina);
         HungryGagueApply(Player.Stat.Hunger, Player.Stat.MaxHunger);
         ThirstGagueApply(Player.Stat.Thirsty, Player.Stat.MaxThirsty);
     }
@@ -30,6 +30,7 @@ public class GagueControl : MonoBehaviour
     }
     private void StaminaGagueApply(float minStat, float MaxStat)
     {
+        staminaBar.value = minStat / MaxStat;
 
     }
     private void HungryGagueApply(float minStat, float MaxStat)

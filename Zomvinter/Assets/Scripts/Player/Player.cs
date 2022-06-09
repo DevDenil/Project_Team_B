@@ -52,7 +52,14 @@ public class Player : PlayerController, BattleSystem
     #endregion
 
     #region 코루틴 영역
+    // 생존 요소 코루틴
     private Coroutine aliveCycle = null;
+
+    // 스테미너 사용 코루틴
+    private Coroutine Use = null;
+    // 스테미너 회복 코루틴
+    private Coroutine Recovery = null;
+
     #endregion
 
     #region 무장 영역
@@ -187,7 +194,7 @@ public class Player : PlayerController, BattleSystem
         Stat.CycleSpeed = 1.0f;
         Stat.MaxHP = 100.0f; // 최대 체력
         Stat.MaxHunger = 100.0f; // 최대 허기량
-        Stat.MaxStamina = 50.0f; // 최대 스테미나
+        Stat.MaxStamina = 100.0f; // 최대 스테미나
         Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
 
         //초기 캐릭터 수치
@@ -349,20 +356,25 @@ public class Player : PlayerController, BattleSystem
         ///<summary> 달리기 시작 Input 메서드 </summary>
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            myAnim.SetBool("isRun", true);
-            
-            // 스태미너 소모
-
-
-            // 1. 무장 상태일 때 달리는 경우
-            if(myAnim.GetBool("isArmed"))
+            if (Stat.Stamina > 0.0f)
             {
-                Stat.MoveSpeed = 2.5f;
-            }
-            // 2. 비 무장 상태일 때 달리는 경우
-            else
-            {
-                Stat.MoveSpeed = 3.0f;
+                myAnim.SetBool("isRun", true);
+
+                // 1. 무장 상태일 때 달리는 경우
+                if (myAnim.GetBool("isArmed"))
+                {
+                    Stat.MoveSpeed = 2.5f;
+                }
+                // 2. 비 무장 상태일 때 달리는 경우
+                else
+                {
+                    Stat.MoveSpeed = 3.0f;
+                }
+
+                StopCoroutine("RecoveryStamina");
+                Recovery = null;
+                if (Use != null) return;
+                Use = StartCoroutine("UseStamina");
             }
         }
 
@@ -381,6 +393,11 @@ public class Player : PlayerController, BattleSystem
             {
                 Stat.MoveSpeed = 2.0f;
             }
+
+            StopCoroutine("UseStamina");
+            Use = null;
+            if (Recovery != null) return;
+            Recovery = StartCoroutine("RecoveryStamina");
         }
         #endregion
 
@@ -569,10 +586,6 @@ public class Player : PlayerController, BattleSystem
         myKnife.transform.rotation = KnifeGrip.rotation;
     }
 
-    private void OnAttack()
-    {
-        //base.BulletRotate(bulletRotate);
-    }
     private void Fire(float AP)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -663,6 +676,39 @@ public class Player : PlayerController, BattleSystem
             yield return new WaitForSecondsRealtime(1.0f);
         }
         yield return null;
+    }
+
+    /// <summary> 스테미너 소모 코루틴 </summary>
+    IEnumerator UseStamina()
+    {
+        while (Stat.Stamina > 0.0f)
+        {
+            if (Stat.Stamina <= 0.0f)
+            {
+                Stat.Stamina = 0.0f;
+            }
+            Stat.Stamina -= 5.0f;
+            Debug.Log(Stat.Stamina + " / " + Stat.MaxStamina);
+            yield return new WaitForSeconds(1.0f);
+        }
+        Use = null;
+    }
+
+    /// <summary> 스테미너 회복 코루틴 </summary>
+    IEnumerator RecoveryStamina()
+    {
+        yield return new WaitForSeconds(2.0f);
+        while (Stat.Stamina < Stat.MaxStamina)
+        {
+            if (Stat.Stamina >= Stat.MaxStamina)
+            {
+                Stat.Stamina = 100.0f;
+            }
+            Stat.Stamina += 1.0f;
+            Debug.Log(Stat.Stamina + " / " + Stat.MaxStamina);
+            yield return new WaitForSeconds(1.0f);
+        }
+        Recovery = null;
     }
     #endregion
 }
