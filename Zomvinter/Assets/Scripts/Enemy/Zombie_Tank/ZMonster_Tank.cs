@@ -116,7 +116,7 @@ public class ZMonster_Tank : ZMoveController, BattleSystem
     // Start is called before the first frame update
     void Start()
     {
-        myStat.HP = 100.0f;
+        myStat.HP = 10000.0f;
         myStat.MoveSpeed = 3.0f;
         myStat.TurnSpeed = 180.0f;
         myData.AttRange = 1.8f;

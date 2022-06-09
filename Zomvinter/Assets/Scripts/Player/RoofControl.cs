@@ -9,7 +9,6 @@ public class RoofControl : MonoBehaviour
     private List<GameObject> PlayerCheck = new List<GameObject> ();
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter");
         if((Player & (1<<other.gameObject.layer)) != 0)
         {
             PlayerCheck.Add(other.gameObject);

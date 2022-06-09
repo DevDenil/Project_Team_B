@@ -148,7 +148,9 @@ public class StatUI : MonoBehaviour
     private void ApplyStrSkillLevel(int SkillLevel) // 힘 레벨 증가
     {
         Player.Stat.Strength = Player.Stat.Strength +  2; //기존 스탯에 스킬레벨당 Str +2
+        Player.Stat.MaxHP = Player.Stat.MaxHP + (Player.Stat.Strength * 10 * (1 / 100));
         Debug.Log("Str : " + Player.Stat.Strength);
+        Debug.Log("HP : " + Player.Stat.HP + "/ " + Player.Stat.MaxHP);
     }
     private void ApplyConSkillLevel(int SkillLevel) // 최대체력 레벨 증가 
     {

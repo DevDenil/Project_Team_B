@@ -471,15 +471,12 @@ MonoBehaviour:
   myCanvas: {fileID: 0}
   myInventory: {fileID: 0}
   LootableItems: []
-  LootableObject: []
   ItemLayerMask:
     serializedVersion: 2
     m_Bits: 512
   LootableLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  SearchingObj: {fileID: 0}
-  ItemTable: {fileID: 0}
 --- !u!1 &9174073722298830084
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +532,7 @@ MonoBehaviour:
   myKnife: {fileID: 9098439081385341749}
   EnemyMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   HandSorket: {fileID: 7267237603558601581}
   BackLeftSorket: {fileID: 134897963589947532}
   BackRightSorket: {fileID: 285478267811765454}

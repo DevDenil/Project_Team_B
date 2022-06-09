@@ -21,14 +21,19 @@ public class AmmoItem : CountableItem
     private void OnEnable()
     {
         fireVector = this.transform.position;
-        // StartCoroutine(FireBullet());
     }
+
+    public void Fire(float WeaponAP, float PlayerAP)
+    {
+        StartCoroutine(FireBullet(WeaponAP, PlayerAP));
+    }
+
 
     /***********************************************************************
     *                               Corutine
     ***********************************************************************/
     #region ÄÚ·çÆ¾
-    public IEnumerator FireBullet()
+    public IEnumerator FireBullet(float WeaponAP, float PlayerAP)
     {
         while (true)
         {

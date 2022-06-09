@@ -324,9 +324,9 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     /// <summary> 드래그 끝날 시 </summary>
     public void OnEndDrag(PointerEventData eventData)
     {
-        Slot MoveSlot = eventData.pointerClick.GetComponentInParent<Slot>();
-        if (MoveSlot.SlotState == ItemType.Any)
-        {
+        //Slot MoveSlot = eventData.pointerClick.GetComponentInParent<Slot>();
+        //if (MoveSlot.SlotState == ItemType.Any)
+        //{
             if (IsOverUI)
             {
                 //this.transform.SetParent(CurParent);
@@ -366,7 +366,7 @@ public class SlotItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 this.GetComponentInParent<Slot>().RemoveItem();
 
             }
-        }
+        //}
     }
     #endregion
 }

@@ -126,7 +126,10 @@ public class Player : PlayerController, BattleSystem
 
     private void FixedUpdate()
     {
-        Move(Stat.MoveSpeed);
+        if (!myAnim.GetBool("isDead"))
+        {
+            Move(Stat.MoveSpeed);
+        }
     }
     #endregion
 
@@ -157,6 +160,8 @@ public class Player : PlayerController, BattleSystem
             case STATE.BATTLE:
                 break;
             case STATE.DEAD:
+                myAnim.SetTrigger("Dead");
+                myAnim.SetBool("isDead", true);
                 break;
         }
     }
@@ -244,10 +249,14 @@ public class Player : PlayerController, BattleSystem
     }
 
     /// <summary> 생존 루틴 실행 </summary>
-    private void AliveCoroutine()
+    void AliveCoroutine()
     {
         if (aliveCycle != null) return;
         aliveCycle = StartCoroutine(AliveCycle());
+    }
+
+    public void StatCalc()
+    { 
     }
     #endregion
 
@@ -408,7 +417,7 @@ public class Player : PlayerController, BattleSystem
             // 조준 상태 인 경우
             if(myAnim.GetBool("isAiming"))
             {
-                Fire(Stat.AP);
+                Fire(myWeapon.GetComponent<WeaponItem>().WeaponData.Damage, Stat.AP);
             }
         }
 
@@ -574,7 +583,7 @@ public class Player : PlayerController, BattleSystem
             BattleSystem bs = col.gameObject.GetComponent<BattleSystem>();
             if (bs != null)
             {
-                bs.OnDamage(50.0f);
+                bs.OnDamage(Stat.AP);
             }
         }
     }
@@ -586,7 +595,7 @@ public class Player : PlayerController, BattleSystem
         myKnife.transform.rotation = KnifeGrip.rotation;
     }
 
-    private void Fire(float AP)
+    private void Fire(float WeaponAP, float PlayerAP)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(ray, out RaycastHit hit, 9999.0f))
@@ -602,7 +611,7 @@ public class Player : PlayerController, BattleSystem
             // 부모 관계 null
             bullet.transform.parent = null;
             // forward 방향으로 이동하는 코루틴 호출
-            bullet.GetComponent<AmmoItem>().StartCoroutine("FireBullet");
+            bullet.GetComponent<AmmoItem>().Fire(WeaponAP, PlayerAP);
         }
     }
     #endregion

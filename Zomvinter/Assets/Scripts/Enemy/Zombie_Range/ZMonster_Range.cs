@@ -61,7 +61,7 @@ public class ZMonster_Range : ZMoveController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.IDLE:
-                myStat.HP = 100.0f;
+                myStat.HP = 1000.0f;
                 BMoveSpeed = 15.0f;
                 myStat.MoveSpeed = 2.5f;
                 myStat.TurnSpeed = 180.0f;
