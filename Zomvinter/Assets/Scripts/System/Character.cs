@@ -36,7 +36,6 @@ public struct CharacterStat
     public float CycleSpeed; // 허기, 갈증 감소 속도
     public float StaminaCycle; // 스테미나 감소 속도
 
-<<<<<<< HEAD
     //----------- SP 사용시 증가하는 스탯 ---------------
     public int Strength; // 힘 
     public int Constitution; // 최대체력 관련 
@@ -44,15 +43,7 @@ public struct CharacterStat
     public int Endurance; // 스태미나 관련 
     public int Intelligence; // 지능
     //--------------------------------------------------
-=======
 
-    public int Strength;
-    public int Constitution;
-    public int Dexterity;
-    public int Endurance;
-    public int Intelligence;
-
->>>>>>> origin/07_Player
     public float MoveSpeed;
     public float TurnSpeed;
 }

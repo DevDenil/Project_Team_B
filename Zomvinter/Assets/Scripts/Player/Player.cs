@@ -15,13 +15,9 @@ public class Player : PlayerController, BattleSystem
 {
     #region 플레이어 데이터 영역
     //스텟 구조체
-<<<<<<< HEAD
-    public static CharacterStat Stat;
-=======
     [Header("플레이어 스탯")]
     [SerializeField]
-    private static CharacterStat Stat;
->>>>>>> origin/07_Player
+    public static CharacterStat Stat;
     #endregion
 
     #region 인벤토리 UI 영역
@@ -196,11 +192,7 @@ public class Player : PlayerController, BattleSystem
 
         //초기 캐릭터 수치
         Stat.HP = Stat.MaxHP;
-<<<<<<< HEAD
-        Stat.AP = 0.0f;
-=======
         Stat.AP = 10.0f;
->>>>>>> origin/07_Player
         Stat.DP = 5.0f;
         Stat.MoveSpeed = 2.0f;
         Stat.TurnSpeed = 180.0f;
