@@ -13,6 +13,7 @@ public class AnimEvent : MonoBehaviour
     public event UnityAction Attackclear = null;
     public event UnityAction endRush = null;
     public event UnityAction Camerashake = null;
+    public event UnityAction RangeAttack = null;
 
     /// <summary> 공격 딜리게이트 </summary>
     public void OnAttack()
@@ -49,6 +50,11 @@ public class AnimEvent : MonoBehaviour
 
     public void CameraShake()
     {
-        Camerashake.Invoke();
+        Camerashake?.Invoke();
+    }
+
+    public void OnRangeAttack()
+    {
+        RangeAttack?.Invoke();
     }
 }

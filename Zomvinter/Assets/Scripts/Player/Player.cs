@@ -13,7 +13,7 @@ public class Player : PlayerController, BattleSystem
 {
     #region 플레이어 데이터 영역
     //스텟 구조체
-    private static CharacterStat Stat;
+    public static CharacterStat Stat;
     #endregion
 
     #region 인벤토리 UI 영역

@@ -39,7 +39,7 @@ public class AmmoItem : CountableItem
                 // 1. Monster 레이어의 오브젝트에 충돌 한 경우
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Monster"))
                 {
-                    hit.transform.GetComponent<ZMonster_Normal>().OnDamage(AmmoData.AmmoDamage);
+                    hit.transform.GetComponent<BattleSystem>().OnDamage(AmmoData.AmmoDamage);
                 }
                 // 2. Wood 레이어의 오브젝트에 충돌 한 경우
                 else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Wood"))

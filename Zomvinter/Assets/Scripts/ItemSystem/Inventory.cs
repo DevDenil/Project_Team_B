@@ -416,5 +416,10 @@ public class Inventory : MonoBehaviour
         // 방어구
         // 가방
     }
+
+    public void FindItem()
+    {
+
+    }
     #endregion
 }
