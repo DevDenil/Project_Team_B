@@ -139,8 +139,8 @@ public class Player : PlayerController, BattleSystem
             case STATE.NONE:
                 break;
             case STATE.CREATE:
-                InitStat();
                 InitStatClamp();
+                InitStat();
                 UpdateBackWeapon();
                 ChangeState(STATE.ALIVE);
                 break;
@@ -182,6 +182,13 @@ public class Player : PlayerController, BattleSystem
     #region Init Methods
     private void InitStat()
     {
+        // 초기 캐릭터 최대 수치
+        Stat.CycleSpeed = 1.0f;
+        Stat.MaxHP = 100.0f; // 최대 체력
+        Stat.MaxHunger = 100.0f; // 최대 허기량
+        Stat.MaxStamina = 50.0f; // 최대 스테미나
+        Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
+
         //초기 캐릭터 수치
         Stat.HP = Stat.MaxHP;
         Stat.AP = 0.0f;
@@ -191,13 +198,6 @@ public class Player : PlayerController, BattleSystem
         Stat.Hunger = Stat.MaxHunger;
         Stat.Thirsty = Stat.MaxThirsty;
         Stat.Stamina = Stat.MaxStamina;
-
-        // 초기 캐릭터 최대 수치
-        Stat.CycleSpeed = 1.0f;
-        Stat.MaxHP = 100.0f; // 최대 체력
-        Stat.MaxHunger = 100.0f; // 최대 허기량
-        Stat.MaxStamina = 50.0f; // 최대 스테미나
-        Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
 
         //초기 캐릭터 능력치 레벨
         Stat.Strength = 0;

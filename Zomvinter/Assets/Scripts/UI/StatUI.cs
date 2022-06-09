@@ -9,6 +9,8 @@ public class StatUI : MonoBehaviour
     [SerializeField]
     /// <summary> 스킬 포인트 텍스트 </summary>
     TMPro.TMP_Text SkillPointText;
+    //[SerializeField]
+    //List<Player.Stat>
     #endregion
 
     #region 버튼 영역

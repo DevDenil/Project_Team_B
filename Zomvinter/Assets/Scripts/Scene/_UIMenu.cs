@@ -62,7 +62,6 @@ public class _UIMenu : MonoBehaviour
     }
     public void StartGame()
     {
-        Debug.Log("StartGame");
         SceneLoader.Inst.LoadScene(5); // Ω√¿€ æ¿ «“¥Á
     }
     #endregion
