@@ -26,7 +26,7 @@ public class GagueControl : MonoBehaviour
     private void HPGagueApply(float minStat, float MaxStat)
     {
         hpBar.value = minStat / MaxStat;
-        Debug.Log(Player.Stat.HP+", "+Player.Stat.MaxHP);
+        Debug.Log("HP : " + Player.Stat.HP+"/ "+Player.Stat.MaxHP);
     }
     private void StaminaGagueApply(float minStat, float MaxStat)
     {
