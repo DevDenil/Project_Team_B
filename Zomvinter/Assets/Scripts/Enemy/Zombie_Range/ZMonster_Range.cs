@@ -2,12 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-//LJM
-public class ZMonster_Normal : ZMoveController, BattleSystem
-{
-    /* 반환 변수 -----------------------------------------------------------------------------------------------*/
 
-    /// <summary> 좀비 인식 범위 오브젝트 반환 </summary>
+public class ZMonster_Range : ZMoveController, BattleSystem
+{
     ZSensor _sensor = null;
     ZSensor mySensor
     {
@@ -26,12 +23,15 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     /* 전역 변수 -----------------------------------------------------------------------------------------------*/
 
     /// <summary> 내 타겟 오브젝트 레이어 </summary>
-    LayerMask EnemyMask;
+    public LayerMask EnemyMask;
     /// <summary> 내 타겟 오브젝트 위치 값 </summary>
     public Transform myTarget = null;
 
     /// <summary> 내 공격 판정 오브젝트 위치값 </summary>
     public Transform myWeapon;
+    public Transform BTarget;
+    public GameObject Bullet;
+    public float BMoveSpeed;
 
     /// <summary> 캐릭터 정보 구조체 선언 </summary>
     MonsterData myData;
@@ -61,24 +61,15 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
             case STATE.CREATE:
                 break;
             case STATE.IDLE:
-                if (rnd == 0)
-                {
-                    myAnim.SetBool("IsRun", true);
-                    myStat.MoveSpeed = 1.5f;
-                }
-                else if (rnd == 1)
-                {
-                    myAnim.SetBool("IsRun", false);
-                    myStat.MoveSpeed = 0.7f;
-                }
-                myStat.HP = 100;
-                myStat.TurnSpeed = 180.0f;
                 myStat.HP = 100.0f;
-                myData.AttRange = 1.5f;
-                myData.AttDelay = 1.5f;
+                BMoveSpeed = 15.0f;
+                myStat.MoveSpeed = 2.5f;
+                myStat.TurnSpeed = 180.0f;
+                myData.AttRange = 6.0f;
+                myData.AttDelay = 2.5f;
                 myData.AttSpeed = 1.0f;
                 myData.UnChaseTime = 3.0f;
-                myStat.DP = 5.0f;
+                myStat.DP = 8.0f;
                 EnemyMask = LayerMask.GetMask("Player");
                 ChangeState(STATE.ROAM);
                 break;
@@ -119,7 +110,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         }
     }
     /* 실행 함수 -----------------------------------------------------------------------------------------------*/
-    
+
     void Start()
     {
         ChangeState(STATE.IDLE); // 유한 상태 기계 초기화
@@ -127,6 +118,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         /// 딜리게이트 추가 ///
         GetComponentInChildren<AnimEvent>().AttackStart += OnAttackStart;
         GetComponentInChildren<AnimEvent>().AttackEnd += OnAttackEnd;
+        GetComponentInChildren<AnimEvent>().RangeAttack += OnRangeAttack;
     }
 
     void Update()
@@ -138,33 +130,24 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
     /// <summary> 공격 판정 함수 </summary>
     void OnAttack()
     {
-        if (myAnim.GetBool("AttackTerm"))
-        {
-            Collider[] list = Physics.OverlapSphere(myWeapon.position, 1.0f, EnemyMask);
-            foreach (Collider col in list)
-            {
-                BattleSystem bs = col.gameObject.GetComponent<BattleSystem>();
-                if (bs != null)
-                {
-                    bs.OnDamage(myStat.DP);
-                }
-            }
-        }
-        else
-        {
-
-        }
+        
     }
     /// <summary> 공격 애니메이션 시작 지점 체크 함수 </summary>
-    void OnAttackStart() 
+    void OnAttackStart()
     {
-        myAnim.SetBool("AttackTerm", true); 
+        myAnim.SetBool("AttackTerm", true);
         OnAttack();
     }
     /// <summary> 공격 애니메이션 끝 지점 체크 함수 </summary>
     void OnAttackEnd()
     {
         myAnim.SetBool("AttackTerm", false);
+    }
+
+    void OnRangeAttack()
+    {
+        Transform Target = BTarget;
+        StartCoroutine(BulletMove(Target.position));
     }
     /* 배틀 시스템 - 피격 -----------------------------------------------------------------------------------------------*/
     /// <summary> 피격 함수 </summary>
@@ -232,18 +215,24 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         }
     }
 
-
-    /*
-    Coroutine UnChaseCor = null;
-    IEnumerator UnChaseTimer (float T)
+    IEnumerator BulletMove(Vector3 pos)
     {
-        if(mySensor.myEnemy == null)
+        GameObject obj = Instantiate(Bullet, myWeapon.position, myWeapon.rotation);
+        Vector3 Dir = obj.transform.position - pos;
+        float Dist = Dir.magnitude * 2;
+        Dir.Normalize();
+        
+        while (Dist > Mathf.Epsilon)
         {
-            yield return new WaitForSeconds(T);
+            float delta = BMoveSpeed * Time.deltaTime;
+            if(Dist < delta)
+            {
+                Dist = delta;
+            }
+            obj.transform.Translate(-Dir * delta, Space.World);
+            Dist -= delta;
+            yield return null;
         }
-
-        myTarget = null;
-        UnChaseCor = null;
+        Destroy(obj);
     }
-    */
 }

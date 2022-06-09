@@ -31,6 +31,7 @@ public class TimeLight : MonoBehaviour
         Intensity = Mathf.Clamp(Intensity, 0.0f, 25.0f);
         NightLight.GetComponentInChildren<Light>().intensity = Intensity;
         this.transform.Rotate(Vector3.right, SunRotSpeed * Time.deltaTime);
+
         //this.transform.Rotate(Vector3.right, TimeScale * Time.deltaTime);
 
         /*if (time.Gametime >= 6.0f || time.Gametime < 20.0f)

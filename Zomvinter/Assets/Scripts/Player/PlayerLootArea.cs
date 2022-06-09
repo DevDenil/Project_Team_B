@@ -15,28 +15,18 @@ public class PlayerLootArea : MonoBehaviour
 
     public List<GameObject> LootableItems = new List<GameObject>();
 
-    public List<GameObject> LootableObject = new List<GameObject>();
-
     [SerializeField]
     private LayerMask ItemLayerMask;
     [SerializeField]
     private LayerMask LootableLayerMask;
 
-
     /// <summary> PickUp ÆË¾÷ UI </summary>
     PickUpUI myPickUpUI = null;
     GameObject InstPickupUI = null;
-    [SerializeField]
-    GameObject SearchingObj = null;
 
     /// <summary> Loot ÆË¾÷ UI </summary>
-    PickUpUI myLootUI = null;
-    GameObject InstLootUI = null;
-    [SerializeField]
-    GameObject ItemTable = null;
 
     /// <summary> ¼­Äª ÆË¾÷ UI </summary>
-    GameObject ObjectUI = null;
 
     void Start()
     {
@@ -46,7 +36,7 @@ public class PlayerLootArea : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && LootableItems.Count != 0)
+        if (Input.GetKeyDown(KeyCode.F) && LootableItems.Count != 0)
         {
 
             ItemData item = null;
@@ -62,7 +52,10 @@ public class PlayerLootArea : MonoBehaviour
             {
                 item = LootableItems[0].GetComponent<PotionItem>().PotionData;
             }
-
+            else if (LootableItems[0].GetComponent<IngredientItem>() is IngredientItem)
+            {
+                item = LootableItems[0].GetComponent<IngredientItem>().IngredientData;
+            }
             int Index = myInventory.FindEmptySlotIndex(myInventory.Items, myInventory.Items.Count);
             if (Index != -1)
             {
@@ -72,47 +65,10 @@ public class PlayerLootArea : MonoBehaviour
                 Destroy(InstPickupUI);
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.F) && LootableObject.Count != 0)
-        {
-            if (ItemTable == null)
-            {
-                if (InstLootUI != null) Destroy(InstLootUI);
-                if (SearchingObj == null && LootableObject != null)
-                    if (ObjectUI == null)
-                    {
-                        if (InstLootUI != null)
-                        {
-                            Destroy(InstLootUI);
-                        }
-                        if (SearchingObj == null && LootableObject != null)
-                        {
-                            SearchingObj = Instantiate(Resources.Load("UI/SearchingObj"), GameObject.Find("Canvas").transform) as GameObject;
-                            StartCoroutine(SearchingObject(SearchingObj));
-                        }
-                    }
-                    else
-                    {
-                        Destroy(ItemTable);
-                        ItemTable = null;
-                    }
-
-                Destroy(ObjectUI);
-                ObjectUI = null;
-            }
-        }
     }
     /*-----------------------------------------------------------------------------------------------*/
     private void OnTriggerEnter(Collider other)
     {
-        if ((LootableLayerMask & (1 << other.gameObject.layer)) != 0)
-        {
-            LootableObject.Add(other.gameObject);
-            if (InstLootUI == null) InstLootUI = Instantiate(Resources.Load("UI/Popup_Loot"), GameObject.Find("Canvas").transform) as GameObject;
-            myLootUI = InstLootUI.GetComponent<PickUpUI>();
-            myLootUI.Initialize(other.GetComponent<Transform>().transform, 50.0f);
-
-        }
         if ((ItemLayerMask & (1 << other.gameObject.layer)) != 0)
         {
             LootableItems.Add(other.gameObject);
@@ -129,24 +85,6 @@ public class PlayerLootArea : MonoBehaviour
     {
         LootableItems.Remove(other.gameObject);
         Destroy(InstPickupUI);
-        LootableObject.Remove(other.gameObject);
-        Destroy(InstLootUI);
-        Destroy(SearchingObj);
-        Destroy(ItemTable);
-    }
-
-    IEnumerator SearchingObject(GameObject obj)
-    {
-        /* ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà ÁÙ */
-        while (obj.gameObject.GetComponent<Slider>().value < 1.0f)
-        {
-            obj.gameObject.GetComponent<Slider>().value += Time.deltaTime;
-            yield return null;
-        }
-        Destroy(obj);
-        SearchingObj = null;
-        ItemTable = Instantiate(Resources.Load("UI/ItemTableUI"), GameObject.Find("Canvas").transform) as GameObject;
-        Destroy(ObjectUI);
     }
 
     //IEnumerator SearchingObject(GameObject UI)
