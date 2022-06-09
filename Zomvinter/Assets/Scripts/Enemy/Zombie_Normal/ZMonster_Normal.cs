@@ -94,6 +94,7 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
             case STATE.DEAD:
                 StopAllCoroutines();
                 myAnim.SetTrigger("Dead");
+                StartCoroutine(Death());
                 break;
         }
     }
@@ -232,6 +233,22 @@ public class ZMonster_Normal : ZMoveController, BattleSystem
         }
     }
 
+    IEnumerator Death()
+    {
+        Destroy(this.GetComponent<Rigidbody>());
+        Destroy(this.GetComponent<CapsuleCollider>());
+        yield return new WaitForSeconds(3.0f);
+        float dist = 1.0f;
+        while (dist > 0.0f)
+        {
+            float delta = Time.deltaTime * 0.5f;
+            this.transform.Translate(-Vector3.up * Time.deltaTime, Space.World);
+            dist -= delta;
+            yield return null;
+        }
+        Destroy(this.gameObject);
+        
+    }
 
     /*
     Coroutine UnChaseCor = null;
