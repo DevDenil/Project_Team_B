@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
     /***********************************************************************
     *                               Public Properties
     ***********************************************************************/
-    #region
+    #region Public 프로퍼티
     /// <summary> 내 플레이어의 위치 </summary>
     public Transform myPlayerPos;
 
@@ -80,7 +80,7 @@ public class Inventory : MonoBehaviour
     /***********************************************************************
     *                               Private Fields
     ***********************************************************************/
-    #region
+    #region 
     /// <summary> 연결된 InventoryUI 스크립트 </summary>
     [SerializeField]
     private InventoryUI _inventoryUI;

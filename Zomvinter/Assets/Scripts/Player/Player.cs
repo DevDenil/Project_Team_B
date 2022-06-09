@@ -183,6 +183,13 @@ public class Player : PlayerController, BattleSystem
     #region Init Methods
     private void InitStat()
     {
+        // 초기 캐릭터 최대 수치
+        Stat.CycleSpeed = 1.0f;
+        Stat.MaxHP = 100.0f; // 최대 체력
+        Stat.MaxHunger = 100.0f; // 최대 허기량
+        Stat.MaxStamina = 50.0f; // 최대 스테미나
+        Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
+
         //초기 캐릭터 수치
         Stat.HP = Stat.MaxHP;
         Stat.AP = 10.0f;
@@ -193,19 +200,12 @@ public class Player : PlayerController, BattleSystem
         Stat.Thirsty = Stat.MaxThirsty;
         Stat.Stamina = Stat.MaxStamina;
 
-        // 초기 캐릭터 최대 수치
-        Stat.CycleSpeed = 1.0f;
-        Stat.MaxHP = 100.0f; // 최대 체력
-        Stat.MaxHunger = 100.0f; // 최대 허기량
-        Stat.MaxStamina = 50.0f; // 최대 스테미나
-        Stat.MaxThirsty = 100.0f; // 최대 갈증 수치
-
         //초기 캐릭터 능력치 레벨
         Stat.Strength = 0;
-        Stat.Cadio = 0;
-        Stat.Handicraft = 0;
-        Stat.Agility = 0;
-        Stat.Intellect = 0;
+        Stat.Constitution = 0;
+        Stat.Dexterity = 0;
+        Stat.Endurance = 0;
+        Stat.Intelligence = 0;
     }
 
     /// <summary> 캐릭터 스탯 값의 최소 최대값 고정 </summary>
@@ -575,10 +575,22 @@ public class Player : PlayerController, BattleSystem
     }
     private void Fire(float AP)
     {
-        // Instantiate(Resources.Load("Effect/WFX_MF FPS RIFLE1"), myWeapon.GetComponent<WeaponItem>().MuzzlePoint.position, myWeapon.GetComponent<WeaponItem>().MuzzlePoint.rotation);
-        GameObject bullet = Instantiate(myWeapon.GetComponent<WeaponItem>().WeaponData.Bullet, myWeapon.GetComponent<WeaponItem>().MuzzlePoint.position, myWeapon.GetComponent<WeaponItem>().MuzzlePoint.rotation);
-        bullet.transform.parent = null;
-        bullet.GetComponent<AmmoItem>().StartCoroutine("FireBullet");
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(Physics.Raycast(ray, out RaycastHit hit, 9999.0f))
+        {
+            // 두 지점의 방향 벡터
+            Vector3 dir = hit.point - myWeapon.GetComponent<WeaponItem>().MuzzlePoint.position;
+            // 방향 벡터의 각도
+            Quaternion rot = Quaternion.LookRotation(dir.normalized);
+
+            // 오브젝트 생성
+            GameObject bullet = Instantiate(myWeapon.GetComponent<WeaponItem>().WeaponData.Bullet, myWeapon.GetComponent<WeaponItem>().MuzzlePoint.position, rot);
+
+            // 부모 관계 null
+            bullet.transform.parent = null;
+            // forward 방향으로 이동하는 코루틴 호출
+            bullet.GetComponent<AmmoItem>().StartCoroutine("FireBullet");
+        }
     }
     #endregion
 

@@ -31,8 +31,10 @@ public class PlayerController : MonoBehaviour
         bool IsRun = myAnim.GetBool("isRun");
 
         Base.Translate(pos * delta, CamTr);
-        
-        pos = this.transform.rotation * CamTr.rotation * pos;
+
+        Quaternion rot = Quaternion.Euler(new Vector3(0, -this.transform.rotation.eulerAngles.y, 0));
+
+        pos = rot * pos;
 
         myAnim.SetFloat("pos.x", pos.x);
         myAnim.SetFloat("pos.z", pos.z);

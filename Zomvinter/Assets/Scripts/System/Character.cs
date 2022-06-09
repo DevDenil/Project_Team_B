@@ -38,10 +38,10 @@ public struct CharacterStat
 
 
     public int Strength;
-    public int Cadio;
-    public int Handicraft;
-    public int Agility;
-    public int Intellect;
+    public int Constitution;
+    public int Dexterity;
+    public int Endurance;
+    public int Intelligence;
 
     public float MoveSpeed;
     public float TurnSpeed;
