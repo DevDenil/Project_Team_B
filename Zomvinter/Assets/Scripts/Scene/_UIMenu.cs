@@ -21,8 +21,8 @@ public class _UIMenu : MonoBehaviour
     /// <summary> 디버깅용 에디터 이벤트 메서드 (Awake나 Start에 동일한 코드를 작성 할 것) </summary>
     private void OnValidate()
     {
-        InitButtonSetup();
-        AddListener();
+        //InitButtonSetup();
+        //AddListener();
     }
 
     private void Awake()

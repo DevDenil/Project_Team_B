@@ -36,13 +36,13 @@ public struct CharacterStat
     public float CycleSpeed; // 허기, 갈증 감소 속도
     public float StaminaCycle; // 스테미나 감소 속도
 
-
-    public int Strength;
-    public int Cadio;
-    public int Handicraft;
-    public int Agility;
-    public int Intellect;
-
+    //----------- SP 사용시 증가하는 스탯 ---------------
+    public int Strength; // 힘 
+    public int Constitution; // 최대체력 관련 
+    public int Dexterity; // 손재주
+    public int Endurance; // 스태미나 관련 
+    public int Intelligence; // 지능
+    //--------------------------------------------------
     public float MoveSpeed;
     public float TurnSpeed;
 }

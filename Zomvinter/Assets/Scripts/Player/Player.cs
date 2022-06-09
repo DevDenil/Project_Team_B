@@ -13,7 +13,7 @@ public class Player : PlayerController, BattleSystem
 {
     #region 플레이어 데이터 영역
     //스텟 구조체
-    private static CharacterStat Stat;
+    public static CharacterStat Stat;
     #endregion
 
     #region 인벤토리 UI 영역
@@ -201,10 +201,10 @@ public class Player : PlayerController, BattleSystem
 
         //초기 캐릭터 능력치 레벨
         Stat.Strength = 0;
-        Stat.Cadio = 0;
-        Stat.Handicraft = 0;
-        Stat.Agility = 0;
-        Stat.Intellect = 0;
+        Stat.Constitution = 0;
+        Stat.Dexterity = 0;
+        Stat.Endurance = 0;
+        Stat.Intelligence = 0;
     }
 
     /// <summary> 캐릭터 스탯 값의 최소 최대값 고정 </summary>

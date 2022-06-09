@@ -82,6 +82,7 @@ public class StatUI : MonoBehaviour
     {
         VisaulizeSP();
         VisualizeButtonArea();
+        //Debug.Log("Update" + Player.Stat.Strength);
     }
 
     private void Start()
@@ -116,11 +117,14 @@ public class StatUI : MonoBehaviour
     }
     private int UseSP(int Skill)
     {
-        if (Skill >= 0 || Skill < 7)
+        if (SP >= 1) // 스킬포인트가 0일때도 사용가능한 오류 수정 
         {
-            Skill += 1;
-            SP -= 1;
-            return Skill;
+            if (Skill >= 0 || Skill < 7)
+            {
+               Skill += 1;
+                SP -= 1;
+                return Skill;
+            }
         }
         return Skill;
     }
@@ -137,6 +141,32 @@ public class StatUI : MonoBehaviour
             isMax = false;
         }
         return isMax;
+    }
+
+    private void ApplyStrSkillLevel(int SkillLevel) // 힘 레벨 증가
+    {
+        Player.Stat.Strength = Player.Stat.Strength +  2; //기존 스탯에 스킬레벨당 Str +2
+        Debug.Log("Str : " + Player.Stat.Strength);
+    }
+    private void ApplyConSkillLevel(int SkillLevel) // 최대체력 레벨 증가 
+    {
+        Player.Stat.Constitution = Player.Stat.Constitution + 2; 
+        Debug.Log("Con : " + Player.Stat.Constitution);
+    }
+    private void ApplyDexSkillLevel(int SkillLevel) // 손재주 레벨 증가 
+    {
+        Player.Stat.Dexterity = Player.Stat.Dexterity + 2; 
+        Debug.Log("Dex : " + Player.Stat.Dexterity);
+    }
+    private void ApplyEndSkillLevel(int SkillLevel) // 스태미나 레벨 증가 
+    {
+        Player.Stat.Endurance = Player.Stat.Endurance + 2; 
+        Debug.Log("End : " + Player.Stat.Endurance);
+    }
+    private void ApplyIntSkillLevel(int SkillLevel) // 지능 레벨 증가 
+    {
+        Player.Stat.Intelligence = Player.Stat.Intelligence + 2;
+        Debug.Log("Int : " + Player.Stat.Intelligence);
     }
     #endregion
 
@@ -162,6 +192,8 @@ public class StatUI : MonoBehaviour
             StrengthLevel = UseSP(StrengthLevel);
             StrengthBar[StrengthLevel - 1].color = Color.red;
             DeActiveSkillBtn(0, StrengthLevel);
+
+            ApplyStrSkillLevel(StrengthLevel); //스킬 레벨업 시 플레이어 스탯.힘을 상승시킴 
         }
     }
 
@@ -173,6 +205,7 @@ public class StatUI : MonoBehaviour
             ConstitutionLevel = UseSP(ConstitutionLevel);
             ConstitutionBar[ConstitutionLevel - 1].color = Color.red;
             DeActiveSkillBtn(1, ConstitutionLevel);
+            ApplyConSkillLevel(ConstitutionLevel); 
         }
     }
 
@@ -184,6 +217,7 @@ public class StatUI : MonoBehaviour
             DexterityLevel = UseSP(DexterityLevel);
             DexterityBar[DexterityLevel - 1].color = Color.red;
             DeActiveSkillBtn(2, DexterityLevel);
+            ApplyDexSkillLevel(DexterityLevel);
         }
     }
 
@@ -195,6 +229,7 @@ public class StatUI : MonoBehaviour
             EnduranceLevel = UseSP(EnduranceLevel);
             EnduranceBar[EnduranceLevel - 1].color = Color.red;
             DeActiveSkillBtn(3, EnduranceLevel);
+            ApplyEndSkillLevel(EnduranceLevel);
         }
     }
 
@@ -206,6 +241,7 @@ public class StatUI : MonoBehaviour
             IntelligenceLevel = UseSP(IntelligenceLevel);
             IntelligenceBar[IntelligenceLevel - 1].color = Color.red;
             DeActiveSkillBtn(4, IntelligenceLevel);
+            ApplyIntSkillLevel(IntelligenceLevel);
         }
     }
     #endregion
